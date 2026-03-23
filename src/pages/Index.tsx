@@ -1,17 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+"use client";
 
-import { MadeWithDyad } from "@/components/made-with-dyad";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+
+import Hero from "@/components/hero";
+import About from "@/components/about";
+import Skills from "@/components/skills";
+import Projects from "@/components/projects";
+import Contact from "@/components/contact";
+import MadeWithDyad from "@/components/made-with-dyad";
 
 const Index = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    console.error(
+      "404 Error: User attempted to access non-existent route:",
+      location.pathname,
+    );
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">
-          Start building your amazing project here!
-        </p>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+        <MadeWithDyad />
       </div>
-      <MadeWithDyad />
     </div>
   );
 };

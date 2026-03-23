@@ -1,6 +1,8 @@
-export const MadeWithDyad = () => {
+"use client";
+
+const MadeWithDyad = () => {
   return (
-    <div className="p-4 text-center">
+    <div className="p-8 text-center">
       <a
         href="https://www.dyad.sh/"
         target="_blank"
@@ -12,3 +14,5 @@ export const MadeWithDyad = () => {
     </div>
   );
 };
+
+export default MadeWithDyad;
