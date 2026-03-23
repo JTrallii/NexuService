@@ -22,6 +22,7 @@ import {
   XCircle
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
+import { cn } from "@/lib/utils";
 
 interface OrderDetails {
   id: string;
