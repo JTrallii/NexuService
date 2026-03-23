@@ -89,11 +89,15 @@ const Landing = () => {
           
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { icon: Zap, title: "Agilidade", desc: "Processos rápidos que economizam seu tempo valioso todos os dias." },
-              { icon: Shield, title: "Segurança", desc: "Seus dados protegidos com os mais altos padrões de criptografia." },
-              { icon: BarChart3, title: "Métricas", desc: "Insights poderosos sobre o seu faturamento e crescimento mensal." }
+              { icon: Zap, title: "Agilidade", desc: "Processos rápidos que economizam seu tempo valioso todos os dias.", path: "/agilidade" },
+              { icon: Shield, title: "Segurança", desc: "Seus dados protegidos com os mais altos padrões de criptografia.", path: "/seguranca" },
+              { icon: BarChart3, title: "Métricas", desc: "Insights poderosos sobre o seu faturamento e crescimento mensal.", path: "/metricas" }
             ].map((f, i) => (
-              <div key={i} className="bg-white/[0.03] backdrop-blur-md p-10 rounded-[2rem] border border-white/10 hover:border-indigo-500/50 hover:-translate-y-2 transition-all duration-500 group">
+              <Link 
+                key={i} 
+                to={f.path}
+                className="bg-white/[0.03] backdrop-blur-md p-10 rounded-[2rem] border border-white/10 hover:border-indigo-500/50 hover:-translate-y-2 transition-all duration-500 group block"
+              >
                 <div className="w-16 h-16 bg-gradient-to-tr from-[#6366F1]/10 to-[#8B5CF6]/10 text-indigo-400 rounded-2xl flex items-center justify-center mb-8 border border-white/5">
                   <f.icon size={30} />
                 </div>
@@ -102,7 +106,7 @@ const Landing = () => {
                 <div className="mt-8 flex items-center text-[#22D3EE] font-bold text-sm cursor-pointer group-hover:translate-x-2 transition-transform">
                   Detalhes <ChevronRight size={16} />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

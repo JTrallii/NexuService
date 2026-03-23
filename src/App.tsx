@@ -13,6 +13,9 @@ import Services from "./pages/Services";
 import Budgets from "./pages/Budgets";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Agilidade from "./pages/Agilidade";
+import Seguranca from "./pages/Seguranca";
+import Metricas from "./pages/Metricas";
 import DashboardLayout from "./components/layout/DashboardLayout";
 
 const queryClient = new QueryClient();
@@ -28,6 +31,11 @@ const App = () => (
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
+          {/* Feature Pages */}
+          <Route path="/agilidade" element={<Agilidade />} />
+          <Route path="/seguranca" element={<Seguranca />} />
+          <Route path="/metricas" element={<Metricas />} />
 
           {/* Protected Routes (Layout Wrapper) */}
           <Route element={<DashboardLayout />}>
