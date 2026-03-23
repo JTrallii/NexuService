@@ -8,7 +8,7 @@ const Hero = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Olá, eu sou <span className="text-blue-300">John Doe</span>
+            Olá, eu sou <span className="text-blue-300">Jason Tralli</span>
           </h1>
           <h2 className="text-xl md:text-2xl font-medium mb-8 text-blue-100">
             Desenvolvedor Fullstack especializado em Java (Backend) e React/Next.js (Frontend)
