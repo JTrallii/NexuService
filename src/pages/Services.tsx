@@ -4,6 +4,7 @@ import { Plus, Search, Filter, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import NewServiceModal from "@/components/services/NewServiceModal";
 
 const Services = () => {
   const services = [
@@ -28,9 +29,12 @@ const Services = () => {
           <h1 className="text-3xl font-black text-white tracking-tight mb-1">Serviços</h1>
           <p className="text-[#9CA3AF] text-sm font-medium">Acompanhe suas ordens de serviço ativas.</p>
         </div>
-        <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold h-12 px-6 shadow-lg shadow-indigo-500/20 border-none transition-all group">
-          <Plus size={18} className="mr-2 group-hover:scale-110 transition-transform" /> Novo Serviço
-        </Button>
+        
+        <NewServiceModal>
+          <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold h-12 px-6 shadow-lg shadow-indigo-500/20 border-none transition-all group">
+            <Plus size={18} className="mr-2 group-hover:scale-110 transition-transform" /> Novo Serviço
+          </Button>
+        </NewServiceModal>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
