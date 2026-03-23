@@ -11,7 +11,8 @@ import {
   Menu,
   X,
   Bell,
-  Search
+  Search,
+  ClipboardList
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -25,14 +26,13 @@ const DashboardLayout = () => {
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
     { icon: Users, label: "Clientes", path: "/clients" },
-    { icon: Wrench, label: "Serviços", path: "/services" },
+    { icon: ClipboardList, label: "Ordens de Serviço", path: "/services" },
     { icon: FileText, label: "Orçamentos", path: "/budgets" },
     { icon: Settings, label: "Configurações", path: "/settings" },
   ];
 
   return (
     <div className="min-h-screen bg-[#0B0F1A] flex">
-      {/* Sidebar */}
       <aside className={cn(
         "fixed inset-y-0 left-0 z-50 w-72 bg-[#0F172A] border-r border-white/5 transition-all duration-300 lg:translate-x-0 lg:static lg:inset-0",
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -79,7 +79,6 @@ const DashboardLayout = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header className="h-20 bg-[#0B0F1A]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-6 lg:px-10 sticky top-0 z-30">
           <div className="flex items-center gap-4 flex-1">
@@ -89,14 +88,6 @@ const DashboardLayout = () => {
             >
               <Menu size={22} />
             </button>
-            
-            <div className="hidden md:flex relative max-w-md w-full ml-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={16} />
-              <Input 
-                className="pl-10 bg-white/5 border-white/10 rounded-xl text-white focus-visible:ring-[#6366F1] h-10 w-full" 
-                placeholder="Pesquisar..." 
-              />
-            </div>
           </div>
           
           <div className="flex items-center gap-3">
@@ -104,14 +95,8 @@ const DashboardLayout = () => {
               <Bell size={20} />
             </Button>
             <div className="h-8 w-[1px] bg-white/5 mx-2 hidden sm:block"></div>
-            <div className="flex items-center gap-3 pl-2 group cursor-pointer">
-              <div className="text-right hidden sm:block">
-                <p className="text-sm font-bold text-white leading-tight">Admin User</p>
-                <p className="text-[10px] text-[#22D3EE] font-bold uppercase">Pro Account</p>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
-                AD
-              </div>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
+              AD
             </div>
           </div>
         </header>
