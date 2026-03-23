@@ -31,32 +31,24 @@ const DashboardLayout = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex">
-      {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 lg:hidden" 
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
+    <div className="min-h-screen bg-[#0B0F1A] flex">
       {/* Sidebar */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200/60 transition-all duration-300 lg:translate-x-0 lg:static lg:inset-0",
+        "fixed inset-y-0 left-0 z-50 w-72 bg-[#0F172A] border-r border-white/5 transition-all duration-300 lg:translate-x-0 lg:static lg:inset-0",
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="h-full flex flex-col">
           <div className="p-8">
             <Link to="/dashboard" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+              <div className="w-10 h-10 bg-gradient-to-tr from-[#6366F1] to-[#8B5CF6] rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
                 <Wrench size={22} />
               </div>
-              <span className="font-bold text-xl text-slate-900 tracking-tight">ServiceFlow</span>
+              <span className="font-bold text-xl text-white tracking-tight">ServiceFlow</span>
             </Link>
           </div>
 
           <nav className="flex-1 px-4 space-y-1.5">
-            <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Menu Principal</p>
+            <p className="px-4 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-widest mb-4">Módulos</p>
             {menuItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
@@ -67,26 +59,21 @@ const DashboardLayout = () => {
                   className={cn(
                     "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group",
                     isActive 
-                      ? "bg-indigo-50 text-indigo-700 shadow-sm" 
-                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                      ? "bg-white/5 text-[#22D3EE] border border-white/5" 
+                      : "text-[#9CA3AF] hover:bg-white/[0.02] hover:text-white"
                   )}
                 >
-                  <item.icon size={18} className={cn("transition-colors", isActive ? "text-indigo-600" : "group-hover:text-slate-900")} />
+                  <item.icon size={18} className={cn("transition-colors", isActive ? "text-[#22D3EE]" : "group-hover:text-white")} />
                   {item.label}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="p-6 border-t border-slate-100">
-            <div className="bg-slate-50 rounded-2xl p-4 mb-4">
-              <p className="text-xs font-bold text-slate-900 mb-1">Plano Pro</p>
-              <p className="text-[10px] text-slate-500 mb-3">Sua conta expira em 12 dias.</p>
-              <Button size="sm" className="w-full bg-white border border-slate-200 text-slate-900 hover:bg-slate-100 text-[10px] h-8 shadow-none">Renovar Agora</Button>
-            </div>
-            <Button variant="ghost" className="w-full justify-start gap-3 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-xl">
+          <div className="p-6 border-t border-white/5">
+            <Button variant="ghost" className="w-full justify-start gap-3 text-[#9CA3AF] hover:text-rose-400 hover:bg-rose-500/10 rounded-xl">
               <LogOut size={18} />
-              Sair da Conta
+              Sair
             </Button>
           </div>
         </div>
@@ -94,36 +81,35 @@ const DashboardLayout = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200/60 flex items-center justify-between px-6 lg:px-10 sticky top-0 z-30">
+        <header className="h-20 bg-[#0B0F1A]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-6 lg:px-10 sticky top-0 z-30">
           <div className="flex items-center gap-4 flex-1">
             <button 
-              className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+              className="lg:hidden p-2 text-white hover:bg-white/5 rounded-lg transition-colors"
               onClick={() => setIsSidebarOpen(true)}
             >
               <Menu size={22} />
             </button>
             
             <div className="hidden md:flex relative max-w-md w-full ml-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={16} />
               <Input 
-                className="pl-10 bg-slate-100/50 border-none rounded-xl focus-visible:ring-1 focus-visible:ring-indigo-500 h-10 w-full" 
-                placeholder="Pesquisar em tudo..." 
+                className="pl-10 bg-white/5 border-white/10 rounded-xl text-white focus-visible:ring-[#6366F1] h-10 w-full" 
+                placeholder="Pesquisar..." 
               />
             </div>
           </div>
           
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="text-slate-500 hover:bg-slate-100 rounded-xl relative">
+            <Button variant="ghost" size="icon" className="text-[#9CA3AF] hover:bg-white/5 rounded-xl">
               <Bell size={20} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-indigo-600 rounded-full border-2 border-white"></span>
             </Button>
-            <div className="h-8 w-[1px] bg-slate-200 mx-2 hidden sm:block"></div>
+            <div className="h-8 w-[1px] bg-white/5 mx-2 hidden sm:block"></div>
             <div className="flex items-center gap-3 pl-2 group cursor-pointer">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-bold text-slate-900 leading-tight">Admin User</p>
-                <p className="text-[10px] text-indigo-600 font-bold uppercase tracking-tighter">Administrador</p>
+                <p className="text-sm font-bold text-white leading-tight">Admin User</p>
+                <p className="text-[10px] text-[#22D3EE] font-bold uppercase">Pro Account</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-200 flex items-center justify-center text-slate-600 font-bold shadow-sm transition-transform group-hover:scale-105">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
                 AD
               </div>
             </div>
