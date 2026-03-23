@@ -1,6 +1,6 @@
 "use client";
 
-import { Users, Wrench, Clock, DollarSign, ArrowUpRight, Calendar, MoreVertical } from "lucide-react";
+import { Users, Wrench, Clock, DollarSign, ArrowUpRight, Calendar, MoreVertical, FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
