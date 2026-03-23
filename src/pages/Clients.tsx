@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Search, MoreHorizontal, Mail, Phone, UserPlus } from "lucide-react";
+import { Search, MoreHorizontal, Mail, Phone, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import NewClientModal from "@/components/clients/NewClientModal";
 
 const Clients = () => {
   const clients = [
@@ -28,10 +29,13 @@ const Clients = () => {
           <h1 className="text-3xl font-black text-white tracking-tight mb-1">Clientes</h1>
           <p className="text-[#9CA3AF] text-sm font-medium">Gerencie sua base de contatos com facilidade.</p>
         </div>
-        <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold h-12 px-6 shadow-lg shadow-indigo-500/20 border-none transition-all group">
-          <UserPlus size={18} className="mr-2 group-hover:scale-110 transition-transform" /> 
-          Novo Cliente
-        </Button>
+        
+        <NewClientModal>
+          <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold h-12 px-6 shadow-lg shadow-indigo-500/20 border-none transition-all group">
+            <UserPlus size={18} className="mr-2 group-hover:scale-110 transition-transform" /> 
+            Novo Cliente
+          </Button>
+        </NewClientModal>
       </div>
 
       {/* Table Container */}
