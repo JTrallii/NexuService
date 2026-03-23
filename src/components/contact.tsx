@@ -13,9 +13,8 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica de envio do formulário
-    console.log("Form submitted:", formData);
-    alert("Mensagem enviada com sucesso! Entrarei em contato em breve.");
+    console.log("Data transmitted:", formData);
+    alert("TRANSMISSÃO CONCLUÍDA. AGUARDE RESPOSTA.");
     setFormData({ name: "", email: "", message: "" });
   };
 
@@ -27,153 +26,132 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="bg-gray-50 py-16 md:py-24">
+    <section id="contact" className="bg-[#0D0D0D] py-24 relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center text-gray-900">
-            Vamos Conversar?
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Estou sempre aberto a novas oportunidades e projetos interessantes. 
-            Entre em contato para discutirmos como podemos trabalhar juntos.
-          </p>
+          <div className="text-center mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold text-[#00FF41] mb-4">04. CANAL_DE_COMUNICACAO</h2>
+            <p className="text-[#00FF41]/60 font-mono text-xs uppercase tracking-widest">
+              ESTABELECENDO CONEXÃO PONTO-A-PONTO
+            </p>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-semibold mb-6 text-gray-900">
-                Envie uma Mensagem
+            <div className="bg-[#00FF41]/5 p-8 border border-[#00FF41]/20 glow-border">
+              <h3 className="text-sm font-bold mb-8 text-[#00FF41] uppercase tracking-widest">
+                > ENVIAR_PACOTE_DE_DADOS
               </h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-700">
-                    Nome Completo
+                  <label className="block text-[10px] font-mono mb-2 text-[#00FF41]/60 uppercase">
+                    IDENTIFICAÇÃO_USUÁRIO
                   </label>
                   <input
                     type="text"
-                    id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="Seu nome"
+                    className="w-full bg-black border border-[#00FF41]/20 px-4 py-3 text-[#00FF41] font-mono text-sm focus:outline-none focus:border-[#00FF41] transition-all"
+                    placeholder="NOME_COMPLETO"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-700">
-                    Email
+                  <label className="block text-[10px] font-mono mb-2 text-[#00FF41]/60 uppercase">
+                    ENDEREÇO_IP_EMAIL
                   </label>
                   <input
                     type="email"
-                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="seu@email.com"
+                    className="w-full bg-black border border-[#00FF41]/20 px-4 py-3 text-[#00FF41] font-mono text-sm focus:outline-none focus:border-[#00FF41] transition-all"
+                    placeholder="EMAIL@HOST.COM"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-700">
-                    Mensagem
+                  <label className="block text-[10px] font-mono mb-2 text-[#00FF41]/60 uppercase">
+                    CONTEÚDO_DA_MENSAGEM
                   </label>
                   <textarea
-                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={5}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-                    placeholder="Conte-me sobre seu projeto ou oportunidade..."
+                    rows={4}
+                    className="w-full bg-black border border-[#00FF41]/20 px-4 py-3 text-[#00FF41] font-mono text-sm focus:outline-none focus:border-[#00FF41] transition-all resize-none"
+                    placeholder="DESCREVA_O_PROJETO_OU_OPORTUNIDADE..."
                   />
                 </div>
 
                 <Button
                   type="submit"
-                  variant="default"
-                  size="lg"
-                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  className="w-full bg-[#00FF41] hover:bg-[#00FF41]/80 text-black font-bold rounded-none py-6 btn-scan"
                 >
-                  Enviar Mensagem
+                  TRANSMITIR_DADOS
                 </Button>
               </form>
             </div>
 
             {/* Contact Info */}
-            <div className="space-y-8">
+            <div className="space-y-8 font-mono">
               <div>
-                <h3 className="text-xl font-semibold mb-6 text-gray-900">
-                  Informações de Contato
+                <h3 className="text-sm font-bold mb-8 text-[#00FF41] uppercase tracking-widest">
+                  > PONTOS_DE_ACESSO
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <Mail className="h-5 w-5 text-blue-600 mt-1" />
-                    <div>
-                      <p className="font-medium text-gray-900">Email</p>
-                      <a 
-                        href="mailto:john.doe@example.com" 
-                        className="text-gray-600 hover:text-blue-600 transition-colors"
-                      >
-                        john.doe@example.com
-                      </a>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 group">
+                    <div className="p-2 border border-[#00FF41]/20 text-[#00FF41] group-hover:border-[#00FF41] transition-all">
+                      <Mail size={18} />
                     </div>
+                    <a href="mailto:jason.tralli@example.com" className="text-xs text-slate-400 hover:text-[#00FF41] transition-colors">
+                      jason.tralli@example.com
+                    </a>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <Linkedin className="h-5 w-5 text-blue-600 mt-1" />
-                    <div>
-                      <p className="font-medium text-gray-900">LinkedIn</p>
-                      <a 
-                        href="https://linkedin.com/in/johndoe" 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-600 hover:text-blue-600 transition-colors"
-                      >
-                        linkedin.com/in/johndoe
-                      </a>
+                  <div className="flex items-center gap-4 group">
+                    <div className="p-2 border border-[#00FF41]/20 text-[#00FF41] group-hover:border-[#00FF41] transition-all">
+                      <Linkedin size={18} />
                     </div>
+                    <a href="#" className="text-xs text-slate-400 hover:text-[#00FF41] transition-colors">
+                      linkedin.com/in/jasontralli
+                    </a>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <Github className="h-5 w-5 text-blue-600 mt-1" />
-                    <div>
-                      <p className="font-medium text-gray-900">GitHub</p>
-                      <a 
-                        href="https://github.com/johndoe" 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-600 hover:text-blue-600 transition-colors"
-                      >
-                        github.com/johndoe
-                      </a>
+                  <div className="flex items-center gap-4 group">
+                    <div className="p-2 border border-[#00FF41]/20 text-[#00FF41] group-hover:border-[#00FF41] transition-all">
+                      <Github size={18} />
                     </div>
+                    <a href="#" className="text-xs text-slate-400 hover:text-[#00FF41] transition-colors">
+                      github.com/jasontralli
+                    </a>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <MapPin className="h-5 w-5 text-blue-600 mt-1" />
-                    <div>
-                      <p className="font-medium text-gray-900">Localização</p>
-                      <p className="text-gray-600">Disponível para trabalho remoto</p>
+                  <div className="flex items-center gap-4 group">
+                    <div className="p-2 border border-[#00FF41]/20 text-[#00FF41] group-hover:border-[#00FF41] transition-all">
+                      <MapPin size={18} />
                     </div>
+                    <span className="text-xs text-slate-400">
+                      REMOTE_ACCESS_ONLY
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
-                <h4 className="font-semibold text-gray-900 mb-2">
-                  Currículo Disponível
+              <div className="p-6 border border-[#00FF41]/10 bg-[#00FF41]/5">
+                <h4 className="text-[10px] font-bold text-[#00FF41] mb-2 uppercase">
+                  CURRICULUM_VITAE.PDF
                 </h4>
-                <p className="text-gray-600 mb-4">
-                  Baixe meu currículo completo com mais detalhes sobre minha experiência e formação.
+                <p className="text-[10px] text-slate-500 mb-4">
+                  DOWNLOAD_AVAILABLE_FOR_AUTHORIZED_PERSONNEL
                 </p>
-                <Button variant="outline" className="w-full">
-                  Download CV
+                <Button variant="outline" className="w-full border-[#00FF41]/30 text-[#00FF41] hover:bg-[#00FF41]/10 rounded-none text-[10px]">
+                  GET_FILE_STREAM
                 </Button>
               </div>
             </div>

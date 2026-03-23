@@ -1,46 +1,46 @@
 "use client";
 
-import { Layout, Server, Settings, Database, Cloud, ShieldCheck } from "lucide-react";
+import { Layout, Server, Database } from "lucide-react";
 
 const Skills = () => {
   const skillCategories = [
     {
-      title: "Frontend Architecture",
-      icon: <Layout className="text-blue-400" size={24} />,
-      skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "State Management", "Performance Optimization"]
+      title: "FRONTEND_MODULE",
+      icon: <Layout className="text-[#00FF41]" size={24} />,
+      skills: ["React", "Next.js", "TypeScript", "Tailwind", "Redux", "Web-Vitals"]
     },
     {
-      title: "Backend Engineering",
-      icon: <Server className="text-cyan-400" size={24} />,
-      skills: ["Java", "Spring Boot", "Microservices", "RESTful APIs", "GraphQL", "Node.js"]
+      title: "BACKEND_ENGINE",
+      icon: <Server className="text-[#00FF41]" size={24} />,
+      skills: ["Java", "Spring Boot", "Microservices", "REST", "GraphQL", "Node.js"]
     },
     {
-      title: "Data & Infrastructure",
-      icon: <Database className="text-indigo-400" size={24} />,
-      skills: ["PostgreSQL", "Redis", "Docker", "AWS", "CI/CD Pipelines", "Kubernetes"]
+      title: "INFRA_DATA_CORE",
+      icon: <Database className="text-[#00FF41]" size={24} />,
+      skills: ["PostgreSQL", "Redis", "Docker", "AWS", "Kubernetes", "Terraform"]
     }
   ];
 
   return (
-    <section id="skills" className="bg-[#020617] py-24 relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
+    <section id="skills" className="bg-[#0D0D0D] py-24 relative">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Stack Tecnológica</h2>
-          <div className="h-1.5 w-20 bg-blue-600 mx-auto rounded-full"></div>
+          <h2 className="text-2xl md:text-4xl font-bold text-[#00FF41] mb-4">02. STACK_TECNOLOGICA</h2>
+          <div className="h-px w-32 bg-[#00FF41]/30 mx-auto"></div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {skillCategories.map((category, index) => (
-            <div key={index} className="group p-8 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm">
-              <div className="mb-6 p-3 rounded-xl bg-slate-800 w-fit group-hover:scale-110 transition-transform duration-300">
+            <div key={index} className="group p-8 border border-[#00FF41]/10 bg-[#00FF41]/5 hover:border-[#00FF41]/50 transition-all duration-300 glow-border">
+              <div className="mb-6 p-3 border border-[#00FF41]/20 w-fit group-hover:bg-[#00FF41]/10 transition-all">
                 {category.icon}
               </div>
-              <h3 className="text-xl font-bold text-white mb-6">{category.title}</h3>
+              <h3 className="text-lg font-bold text-white mb-6 tracking-widest">{category.title}</h3>
               <div className="flex flex-wrap gap-2">
                 {category.skills.map((skill, skillIndex) => (
                   <span
                     key={skillIndex}
-                    className="px-3 py-1 bg-slate-800/50 text-slate-300 rounded-lg text-sm border border-slate-700/50 hover:border-blue-500/30 hover:text-blue-400 transition-colors"
+                    className="px-2 py-1 border border-[#00FF41]/20 text-[#00FF41]/70 text-[10px] font-mono hover:border-[#00FF41] hover:text-[#00FF41] transition-colors"
                   >
                     {skill}
                   </span>
