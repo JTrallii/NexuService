@@ -11,6 +11,7 @@ import {
 import { useState, createContext } from "react";
 import { Button } from "@/components/ui/button";
 import Logo from "./Logo";
+import NewServiceModal from "@/components/services/NewServiceModal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -75,9 +76,11 @@ const DashboardLayout = () => {
 
             <div className="flex items-center gap-3 shrink-0">
               {role === "ADMIN" && (
-                <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2 hidden sm:flex">
-                  <Plus size={16} /> Nova Ordem
-                </Button>
+                <NewServiceModal>
+                  <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2 hidden sm:flex">
+                    <Plus size={16} /> Nova Ordem
+                  </Button>
+                </NewServiceModal>
               )}
               
               <div className="w-px h-6 bg-slate-200 mx-1 hidden sm:block" />
