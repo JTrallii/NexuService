@@ -33,7 +33,7 @@ const Clients = () => {
         
         <NewClientModal>
           <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
-            <UserPlus size={16} /> Adicionar Cliente
+            <UserPlus size={16} /> Novo Cliente
           </Button>
         </NewClientModal>
       </div>
