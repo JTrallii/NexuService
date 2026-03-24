@@ -1,15 +1,15 @@
 "use client";
 
-import { Users, ClipboardList, Clock, CreditCard, ArrowUpRight, Calendar, MoreVertical, FileText, CheckCircle2 } from "lucide-react";
+import { Users, ClipboardList, Clock, CreditCard, ArrowUpRight, Calendar, MoreVertical, AlertCircle, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const stats = [
     { title: "Total Ordens", value: "156", change: "+12%", icon: ClipboardList, color: "text-[#6366F1]", bg: "bg-indigo-500/10" },
-    { title: "Ordens Pagas", value: "84", change: "+8%", icon: CheckCircle2, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-    { title: "Pendentes", value: "12", change: "-2%", icon: Clock, color: "text-amber-400", bg: "bg-amber-500/10" },
-    { title: "Receita Paga", value: "R$ 42.8k", change: "+18%", icon: CreditCard, color: "text-[#22D3EE]", bg: "bg-cyan-500/10" },
+    { title: "Ordens Pagas", value: "84", change: "+8%", icon: CreditCard, color: "text-[#8B5CF6]", bg: "bg-purple-500/10" },
+    { title: "Aguardando Pagto", value: "18", change: "+5%", icon: Clock, color: "text-amber-400", bg: "bg-amber-500/10" },
+    { title: "Receita Paga", value: "R$ 42.8k", change: "+18%", icon: TrendingUp, color: "text-emerald-400", bg: "bg-emerald-500/10" },
   ];
 
   return (
@@ -63,7 +63,7 @@ const Dashboard = () => {
             <div className="space-y-6">
               {[
                 { name: "Instalação Predial", action: "OS Concluída", time: "Há 2h", color: "text-emerald-400", user: "Carlos" },
-                { name: "Reparo Elétrico", action: "Pagamento Recebido", time: "Há 5h", color: "text-[#22D3EE]", user: "Ana Paula" },
+                { name: "Reparo Elétrico", action: "Pagamento Recebido", time: "Há 5h", color: "text-[#8B5CF6]", user: "Ana Paula" },
                 { name: "Manutenção de Servidor", action: "OS Iniciada", time: "Há 8h", color: "text-indigo-400", user: "Roberto" },
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-5 group cursor-pointer">
@@ -83,32 +83,33 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-[#6366F1]/20 to-[#8B5CF6]/20 border-indigo-500/20 backdrop-blur-xl rounded-3xl overflow-hidden text-white relative">
-          <CardHeader className="p-8">
-            <CardTitle className="text-xl font-bold">Resumo Financeiro</CardTitle>
-            <p className="text-indigo-200 text-xs mt-1">Status de pagamentos</p>
-          </CardHeader>
-          <CardContent className="p-8 pt-0">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5">
-                <span className="text-sm font-medium text-indigo-100">Faturamento Bruto</span>
-                <span className="font-black text-white">R$ 58.200</span>
+        <div className="space-y-6">
+          <Card className="bg-gradient-to-br from-[#6366F1]/20 to-[#8B5CF6]/20 border-indigo-500/20 backdrop-blur-xl rounded-3xl overflow-hidden text-white relative">
+            <CardHeader className="p-8">
+              <CardTitle className="text-xl font-bold">Resumo Financeiro</CardTitle>
+              <p className="text-indigo-200 text-xs mt-1">Status de recebimentos</p>
+            </CardHeader>
+            <CardContent className="p-8 pt-0">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5">
+                  <span className="text-sm font-medium text-indigo-100">Líquido Recebido</span>
+                  <span className="font-black text-white">R$ 42.840</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-rose-500/10 rounded-2xl border border-rose-500/20">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle size={14} className="text-rose-400" />
+                    <span className="text-sm font-medium text-rose-100">Inadimplência</span>
+                  </div>
+                  <span className="font-black text-rose-400">R$ 2.400</span>
+                </div>
               </div>
-              <div className="flex justify-between items-center p-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
-                <span className="text-sm font-medium text-emerald-100">Líquido Recebido</span>
-                <span className="font-black text-emerald-400">R$ 42.840</span>
+              <div className="mt-8 p-6 rounded-2xl bg-white/5 border border-white/5">
+                <p className="text-xs font-bold uppercase text-indigo-200 mb-2 tracking-widest">Atenção</p>
+                <p className="text-sm text-white/80 leading-relaxed">Você tem <span className="text-[#22D3EE] font-bold">18 ordens</span> aguardando confirmação de pagamento.</p>
               </div>
-              <div className="flex justify-between items-center p-4 bg-rose-500/10 rounded-2xl border border-rose-500/20">
-                <span className="text-sm font-medium text-rose-100">Inadimplência</span>
-                <span className="font-black text-rose-400">R$ 2.400</span>
-              </div>
-            </div>
-            <div className="mt-8 p-6 rounded-2xl bg-white/5 border border-white/5">
-              <p className="text-xs font-bold uppercase text-indigo-200 mb-2 tracking-widest">Atenção</p>
-              <p className="text-sm text-white/80 leading-relaxed">Você tem 4 ordens concluídas aguardando confirmação de pagamento.</p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 "use client";
 
-import { Plus, FileText, Download, Check, X, Clock, ChevronRight } from "lucide-react";
+import { Plus, FileText, Download, Check, X, Clock, ChevronRight, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import NewBudgetModal from "@/components/budgets/NewBudgetModal";
+import { showSuccess } from "@/utils/toast";
 
 const Budgets = () => {
   const budgets = [
@@ -11,6 +12,10 @@ const Budgets = () => {
     { id: "ORC-2023-002", client: "Condomínio Solar", value: "R$ 2.150,00", date: "21/10/2023", status: "Pendente" },
     { id: "ORC-2023-003", client: "Padaria Central", value: "R$ 890,00", date: "22/10/2023", status: "Rejeitado" },
   ];
+
+  const handleGenerateOS = (budget: any) => {
+    showSuccess(`Ordem de serviço gerada para ${budget.client}! Verifique o módulo OS.`);
+  };
 
   const getStatusInfo = (status: string) => {
     switch (status) {
@@ -67,13 +72,23 @@ const Budgets = () => {
                   </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-white/5 flex gap-3">
-                  <Button variant="outline" size="sm" className="flex-1 rounded-xl border-white/10 text-white hover:bg-white/5 h-10 text-[10px] font-bold gap-2">
-                    <Download size={14} /> PDF
-                  </Button>
-                  <Button variant="ghost" size="sm" className="flex-1 rounded-xl text-[#9CA3AF] hover:text-white hover:bg-white/5 h-10 text-[10px] font-bold gap-1">
-                    DETALHES <ChevronRight size={14} />
-                  </Button>
+                <div className="mt-8 pt-6 border-t border-white/5 flex flex-col gap-3">
+                  {budget.status === "Aprovado" && (
+                    <Button 
+                      onClick={() => handleGenerateOS(budget)}
+                      className="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 rounded-xl h-10 text-[10px] font-black gap-2 uppercase tracking-widest"
+                    >
+                      <Zap size={14} fill="currentColor" /> Gerar Ordem de Serviço
+                    </Button>
+                  )}
+                  <div className="flex gap-3">
+                    <Button variant="outline" size="sm" className="flex-1 rounded-xl border-white/10 text-white hover:bg-white/5 h-10 text-[10px] font-bold gap-2">
+                      <Download size={14} /> PDF
+                    </Button>
+                    <Button variant="ghost" size="sm" className="flex-1 rounded-xl text-[#9CA3AF] hover:text-white hover:bg-white/5 h-10 text-[10px] font-bold gap-1">
+                      DETALHES <ChevronRight size={14} />
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
