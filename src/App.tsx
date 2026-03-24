@@ -9,7 +9,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
-import Services from "./pages/Services";
 import Budgets from "./pages/Budgets";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -37,11 +36,10 @@ const App = () => (
           <Route path="/seguranca" element={<Seguranca />} />
           <Route path="/metricas" element={<Metricas />} />
 
-          {/* Protected Routes (Layout Wrapper) */}
+          {/* Operational Routes (NexuService) */}
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/clients" element={<Clients />} />
-            <Route path="/services" element={<Services />} />
             <Route path="/budgets" element={<Budgets />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
