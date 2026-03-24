@@ -31,17 +31,18 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           
-          {/* Feature Pages */}
-          <Route path="/agilidade" element={<Agilidade />} />
-          <Route path="/seguranca" element={<Seguranca />} />
-          <Route path="/metricas" element={<Metricas />} />
-
           {/* Operational Routes (NexuService) */}
           <Route element={<DashboardLayout />}>
             <Route path="/painel-principal" element={<Dashboard />} />
             <Route path="/clientes" element={<Clients />} />
             <Route path="/orcamentos" element={<Budgets />} />
             <Route path="/configuracoes" element={<Settings />} />
+            
+            {/* Feature Pages now integrated into the system layout */}
+            <Route path="/agilidade" element={<Agilidade />} />
+            <Route path="/seguranca" element={<Seguranca />} />
+            <Route path="/metricas" element={<Metricas />} />
+            
             {/* Redirect old dashboard to new panel */}
             <Route path="/dashboard" element={<Navigate to="/painel-principal" replace />} />
           </Route>
