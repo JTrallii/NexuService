@@ -3,7 +3,6 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   Search, 
-  Bell, 
   User as UserIcon,
   RefreshCw,
   LogOut,
@@ -90,10 +89,6 @@ const DashboardLayout = () => {
               )}
               
               <div className="w-px h-6 bg-slate-200 mx-1 hidden sm:block" />
-
-              <Button variant="ghost" size="icon" className="text-slate-500 hover:bg-slate-50 rounded-lg">
-                <Bell size={20} />
-              </Button>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
