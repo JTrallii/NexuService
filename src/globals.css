@@ -4,59 +4,52 @@
 
 @layer base {
   :root {
-    --background: 222 47% 7%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 7%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 243 75% 59%;
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 188 86% 53%;
-    --secondary-foreground: 222 47% 7%;
-    --muted: 222 47% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 222 47% 15%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11.2%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 243 75% 59%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
   }
 }
 
 @layer base {
   * {
-    @apply border-white/5 selection:bg-indigo-500/30;
+    @apply border-border;
   }
   body {
-    @apply bg-[#0B0F1A] text-[#E5E7EB] font-sans antialiased;
-    background-image: 
-      radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%),
-      linear-gradient(to bottom, #0B0F1A, #0F172A);
-    background-attachment: fixed;
+    @apply bg-[#F8FAFC] text-foreground font-sans antialiased;
   }
 }
 
-.glass-card {
-  @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.05] shadow-2xl;
+/* Custom Table Styles */
+.table-row-hover:hover {
+  background-color: rgba(241, 245, 249, 0.5);
+  cursor: pointer;
 }
 
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#6366F1] to-[#8B5CF6];
+.status-badge {
+  @apply px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border;
 }
 
-.btn-primary {
-  @apply bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all duration-300 text-white font-semibold;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-
-.glow-effect {
-  @apply relative overflow-hidden;
-}
-
-.glow-effect::after {
-  content: '';
-  @apply absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity pointer-events-none;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

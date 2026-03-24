@@ -1,116 +1,191 @@
 "use client";
 
-import { Users, ClipboardList, Clock, CreditCard, ArrowUpRight, Calendar, MoreVertical, AlertCircle, TrendingUp } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useContext } from "react";
+import { 
+  ClipboardList, 
+  Search, 
+  Filter, 
+  ChevronRight, 
+  Clock, 
+  CheckCircle2, 
+  AlertCircle,
+  HelpCircle,
+  ArrowRight
+} from "lucide-react";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import ServiceDetailsModal from "@/components/services/ServiceDetailsModal";
+import { RoleContext } from "@/components/layout/DashboardLayout";
+import { cn } from "@/lib/utils";
 
 const Dashboard = () => {
-  const stats = [
-    { title: "Total Ordens", value: "156", change: "+12%", icon: ClipboardList, color: "text-[#6366F1]", bg: "bg-indigo-500/10" },
-    { title: "Ordens Pagas", value: "84", change: "+8%", icon: CreditCard, color: "text-[#8B5CF6]", bg: "bg-purple-500/10" },
-    { title: "Aguardando Pagto", value: "18", change: "+5%", icon: Clock, color: "text-amber-400", bg: "bg-amber-500/10" },
-    { title: "Receita Paga", value: "R$ 42.8k", change: "+18%", icon: TrendingUp, color: "text-emerald-400", bg: "bg-emerald-500/10" },
-  ];
+  const { role } = useContext(RoleContext);
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  const [services, setServices] = useState([
+    { id: "OS-001", title: "Reparo de Ar Condicionado", client: "Carlos Eduardo", date: "12/10/2023", status: "CONCLUIDO", price: "R$ 350,00", description: "Limpeza de filtros e carga de gás refrigerante R410A." },
+    { id: "OS-002", title: "Instalação Elétrica", client: "Mariana Souza", date: "15/10/2023", status: "EM_ANDAMENTO", price: "R$ 1.200,00", description: "Instalação de novo quadro de energia e 15 pontos de luz." },
+    { id: "OS-003", title: "Manutenção de Servidor", client: "Roberto Lima", date: "18/10/2023", status: "PENDENTE", price: "R$ 800,00", description: "Atualização de firmware e verificação de redundância de storage." },
+    { id: "OS-004", title: "Configuração de Rede", client: "Ana Paula", date: "20/10/2023", status: "PAGO", price: "R$ 450,00", description: "Configuração de roteadores mesh.", paidAt: "21/10/2023" },
+    { id: "OS-005", title: "Aguardando Peça", client: "João Silva", date: "22/10/2023", status: "AGUARDANDO_PECA", price: "R$ 2.100,00", description: "Troca de placa-mãe de servidor Dell." },
+    { id: "OS-006", title: "Atraso no Pagamento", client: "Empresa XPTO", date: "05/10/2023", status: "ATRASADA", price: "R$ 5.400,00", description: "Consultoria de segurança de rede." },
+  ]);
+
+  const updateOrderStatus = (id: string, newStatus: string, extraData?: any) => {
+    setServices(prev => prev.map(s => s.id === id ? { 
+      ...s, 
+      status: newStatus,
+      ...(newStatus === "CONCLUIDO" && { completedAt: new Date().toLocaleDateString('pt-BR') }),
+      ...(newStatus === "PAGO" && { paidAt: extraData?.paidAt || new Date().toLocaleDateString('pt-BR') })
+    } : s));
+  };
+
+  const getStatusInfo = (status: string) => {
+    switch (status) {
+      case "CONCLUIDO": return { label: "Concluída", class: "bg-emerald-50 text-emerald-700 border-emerald-200" };
+      case "EM_ANDAMENTO": return { label: "Em Andamento", class: "bg-blue-50 text-blue-700 border-blue-200" };
+      case "PAGO": return { label: "Paga", class: "bg-purple-50 text-purple-700 border-purple-200" };
+      case "PENDENTE": return { label: "Aberta", class: "bg-slate-100 text-slate-700 border-slate-200" };
+      case "AGUARDANDO_PECA": return { label: "Aguardando Peça", class: "bg-amber-50 text-amber-700 border-amber-200" };
+      case "ATRASADA": return { label: "Atrasada", class: "bg-rose-50 text-rose-700 border-rose-200" };
+      case "CANCELADO": return { label: "Cancelada", class: "bg-slate-50 text-slate-400 border-slate-100" };
+      default: return { label: status, class: "bg-slate-50 text-slate-500 border-slate-200" };
+    }
+  };
 
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight mb-1">Visão Geral</h1>
-          <p className="text-[#9CA3AF] text-sm font-medium">Controle operacional e financeiro em tempo real.</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Gestão de Ordens</h1>
+          <p className="text-sm text-slate-500 font-medium mt-1">Acompanhe ordens, clientes e recebimentos em tempo real.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-xl border-white/10 text-[#E5E7EB] hover:bg-white/5 font-bold text-xs h-11 px-5">
-            <Calendar className="mr-2" size={16} /> Relatórios
-          </Button>
-          <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold text-xs h-11 px-5 shadow-lg shadow-indigo-500/20 border-none transition-all">
-            Nova Ordem
-          </Button>
+        
+        {/* Discrete Summary Line */}
+        <div className="flex items-center gap-6 text-[13px] font-bold text-slate-600 bg-white px-5 py-2.5 rounded-lg border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+            Ordens abertas: <span className="text-slate-900">12</span>
+          </div>
+          <div className="w-px h-4 bg-slate-200" />
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
+            Pendentes de pagamento: <span className="text-slate-900">5</span>
+          </div>
+          <div className="w-px h-4 bg-slate-200" />
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+            Total a receber: <span className="text-slate-900">R$ 8.450,00</span>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <Card key={i} className="bg-white/[0.03] border-white/5 backdrop-blur-md hover:border-white/10 transition-all duration-300 rounded-2xl">
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className={`${stat.bg} ${stat.color} p-3 rounded-2xl`}>
-                  <stat.icon size={22} />
-                </div>
-                <div className={`flex items-center text-[10px] font-bold px-2 py-1 rounded-lg bg-white/5 ${stat.change.startsWith('+') ? 'text-emerald-400' : 'text-rose-400'}`}>
-                  {stat.change} <ArrowUpRight size={10} className="ml-1" />
-                </div>
-              </div>
-              <div>
-                <p className="text-sm font-bold text-[#9CA3AF] uppercase tracking-widest mb-1">{stat.title}</p>
-                <h3 className="text-3xl font-black text-white">{stat.value}</h3>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Filters Area */}
+      <div className="flex flex-wrap items-center gap-3 py-2">
+        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5">
+          <Filter size={14} className="text-slate-400" />
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtros:</span>
+        </div>
+        
+        <select className="h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500">
+          <option>Todos os Status</option>
+          <option>Abertas</option>
+          <option>Concluídas</option>
+          <option>Atrasadas</option>
+        </select>
+
+        <select className="h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500">
+          <option>Período: Este Mês</option>
+          <option>Últimos 7 dias</option>
+          <option>Hoje</option>
+        </select>
+
+        <Input 
+          placeholder="Filtrar por cliente..." 
+          className="h-9 w-48 bg-white border-slate-200 text-xs rounded-lg hidden sm:block"
+        />
+
+        <Button variant="ghost" className="h-9 px-3 text-xs font-bold text-blue-600 hover:bg-blue-50 rounded-lg ml-auto">
+          Limpar Filtros
+        </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <Card className="lg:col-span-2 bg-white/[0.03] border-white/5 backdrop-blur-md rounded-3xl overflow-hidden">
-          <CardHeader className="flex flex-row items-center justify-between p-8 border-b border-white/5">
-            <div>
-              <CardTitle className="text-xl font-bold text-white">Atividades Operacionais</CardTitle>
-              <p className="text-xs text-[#9CA3AF] mt-1">Últimas movimentações de Ordens de Serviço</p>
-            </div>
-            <Button variant="ghost" size="icon" className="text-[#9CA3AF] hover:bg-white/5 rounded-xl"><MoreVertical size={20} /></Button>
-          </CardHeader>
-          <CardContent className="p-8">
-            <div className="space-y-6">
-              {[
-                { name: "Instalação Predial", action: "OS Concluída", time: "Há 2h", color: "text-emerald-400", user: "Carlos" },
-                { name: "Reparo Elétrico", action: "Pagamento Recebido", time: "Há 5h", color: "text-[#8B5CF6]", user: "Ana Paula" },
-                { name: "Manutenção de Servidor", action: "OS Iniciada", time: "Há 8h", color: "text-indigo-400", user: "Roberto" },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-5 group cursor-pointer">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center font-bold text-white">
-                    {item.user.charAt(0)}
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-bold text-white group-hover:text-[#22D3EE] transition-colors">{item.action}</p>
-                    <p className="text-xs text-[#9CA3AF] font-medium">{item.name} • {item.time}</p>
-                  </div>
-                  <div className={`text-[10px] font-black uppercase px-2 py-1 rounded bg-white/5 ${item.color}`}>
-                    {item.user}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="space-y-6">
-          <Card className="bg-gradient-to-br from-[#6366F1]/20 to-[#8B5CF6]/20 border-indigo-500/20 backdrop-blur-xl rounded-3xl overflow-hidden text-white relative">
-            <CardHeader className="p-8">
-              <CardTitle className="text-xl font-bold">Resumo Financeiro</CardTitle>
-              <p className="text-indigo-200 text-xs mt-1">Status de recebimentos</p>
-            </CardHeader>
-            <CardContent className="p-8 pt-0">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5">
-                  <span className="text-sm font-medium text-indigo-100">Líquido Recebido</span>
-                  <span className="font-black text-white">R$ 42.840</span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-rose-500/10 rounded-2xl border border-rose-500/20">
-                  <div className="flex items-center gap-2">
-                    <AlertCircle size={14} className="text-rose-400" />
-                    <span className="text-sm font-medium text-rose-100">Inadimplência</span>
-                  </div>
-                  <span className="font-black text-rose-400">R$ 2.400</span>
-                </div>
-              </div>
-              <div className="mt-8 p-6 rounded-2xl bg-white/5 border border-white/5">
-                <p className="text-xs font-bold uppercase text-indigo-200 mb-2 tracking-widest">Atenção</p>
-                <p className="text-sm text-white/80 leading-relaxed">Você tem <span className="text-[#22D3EE] font-bold">18 ordens</span> aguardando confirmação de pagamento.</p>
-              </div>
-            </CardContent>
-          </Card>
+      {/* Main Table */}
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <Table>
+          <TableHeader className="bg-slate-50/50">
+            <TableRow className="hover:bg-transparent border-b border-slate-200">
+              <TableHead className="w-[100px] h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">Protocolo</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Cliente / Solicitante</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Serviço</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right">Valor</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pr-6 text-right">Abertura</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {services.map((service) => {
+              const status = getStatusInfo(service.status);
+              return (
+                <TableRow 
+                  key={service.id} 
+                  className="table-row-hover border-b border-slate-100 last:border-0 transition-colors"
+                  onClick={() => { setSelectedOrder(service); setIsDetailsOpen(true); }}
+                >
+                  <TableCell className="pl-6 py-4">
+                    <span className="text-[11px] font-bold text-slate-400 font-mono tracking-tighter">{service.id}</span>
+                  </TableCell>
+                  <TableCell className="py-4">
+                    <span className="text-sm font-bold text-slate-900">{service.client}</span>
+                  </TableCell>
+                  <TableCell className="py-4">
+                    <span className="text-xs font-medium text-slate-500">{service.title}</span>
+                  </TableCell>
+                  <TableCell className="py-4 text-center">
+                    <span className={cn("status-badge", status.class)}>
+                      {status.label}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-4 text-right">
+                    <span className="text-sm font-black text-slate-900 tracking-tight">{service.price}</span>
+                  </TableCell>
+                  <TableCell className="pr-6 py-4 text-right">
+                    <span className="text-[11px] font-medium text-slate-400">{service.date}</span>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        
+        {/* Table Footer */}
+        <div className="bg-slate-50/50 border-t border-slate-200 px-6 py-3 flex items-center justify-between">
+          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+            Exibindo {services.length} registros operacionais
+          </p>
+          <div className="flex gap-1">
+            <Button disabled variant="outline" size="sm" className="h-7 text-[10px] rounded-md px-2">Anterior</Button>
+            <Button disabled variant="outline" size="sm" className="h-7 text-[10px] rounded-md px-2">Próximo</Button>
+          </div>
         </div>
       </div>
+
+      <ServiceDetailsModal 
+        order={selectedOrder} 
+        open={isDetailsOpen} 
+        onOpenChange={setIsDetailsOpen}
+        onUpdateStatus={updateOrderStatus}
+      />
     </div>
   );
 };
