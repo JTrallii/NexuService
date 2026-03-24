@@ -1,6 +1,7 @@
 "use client";
 
-import { Search, Plus, Mail, Phone, Filter, Briefcase, Award } from "lucide-react";
+import { useState } from "react";
+import { Search, Plus, Mail, Phone, Filter, Briefcase, Award, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,16 +12,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import NewTechnicianModal from "@/components/technicians/NewTechnicianModal";
+import TechnicianModal from "@/components/technicians/TechnicianModal";
 import { cn } from "@/lib/utils";
 
 const Technicians = () => {
+  const [selectedTech, setSelectedTech] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const technicians = [
-    { id: 1, name: "Ricardo Silva", specialty: "Elétrica", level: "Sênior", phone: "(11) 98888-0001", status: "Ativo", email: "ricardo@empresa.com" },
-    { id: 2, name: "André Lucas", specialty: "Climatização", level: "Pleno", phone: "(11) 98888-0002", status: "Ativo", email: "andre@empresa.com" },
-    { id: 3, name: "Paula Santos", specialty: "Infra de TI", level: "Especialista", phone: "(11) 98888-0003", status: "Ativo", email: "paula@empresa.com" },
-    { id: 4, name: "Marcos Lima", specialty: "Obras Civis", level: "Júnior", phone: "(11) 98888-0004", status: "Inativo", email: "marcos@empresa.com" },
+    { id: 1, name: "Ricardo Silva", specialty: "Elétrica", level: "Sênior", phone: "(11) 98888-0001", status: "Ativo", email: "ricardo@empresa.com", cpf: "123.456.789-00", area: "São Paulo - Capital" },
+    { id: 2, name: "André Lucas", specialty: "Climatização", level: "Pleno", phone: "(11) 98888-0002", status: "Ativo", email: "andre@empresa.com", cpf: "234.567.890-11", area: "ABCD" },
+    { id: 3, name: "Paula Santos", specialty: "Infra de TI", level: "Especialista", phone: "(11) 98888-0003", status: "Ativo", email: "paula@empresa.com", cpf: "345.678.901-22", area: "Osasco/Barueri" },
+    { id: 4, name: "Marcos Lima", specialty: "Obras Civis", level: "Júnior", phone: "(11) 98888-0004", status: "Inativo", email: "marcos@empresa.com", cpf: "456.789.012-33", area: "Interior" },
   ];
+
+  const handleEdit = (tech: any) => {
+    setSelectedTech(tech);
+    setIsModalOpen(true);
+  };
+
+  const handleAdd = () => {
+    setSelectedTech(null);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -30,11 +44,12 @@ const Technicians = () => {
           <p className="text-sm text-slate-500 font-medium mt-1">Gerencie os profissionais de campo e suas especialidades.</p>
         </div>
         
-        <NewTechnicianModal>
-          <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
-            <Plus size={16} /> Novo Técnico
-          </Button>
-        </NewTechnicianModal>
+        <Button 
+          onClick={handleAdd}
+          className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2"
+        >
+          <Plus size={16} /> Novo Técnico
+        </Button>
       </div>
 
       <div className="flex flex-wrap items-center gap-3 py-2">
@@ -63,7 +78,7 @@ const Technicians = () => {
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Especialidade</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Nível</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
-              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Contato</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -99,7 +114,17 @@ const Technicians = () => {
                   </span>
                 </TableCell>
                 <TableCell className="pr-6 py-4 text-right">
-                  <span className="text-[11px] font-bold text-slate-700">{tech.phone}</span>
+                  <div className="flex items-center justify-end gap-2">
+                    <div className="text-[11px] font-bold text-slate-700 mr-2">{tech.phone}</div>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => handleEdit(tech)}
+                      className="h-8 w-8 text-slate-400 hover:text-blue-600"
+                    >
+                      <Edit2 size={14} />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -112,6 +137,12 @@ const Technicians = () => {
           </p>
         </div>
       </div>
+
+      <TechnicianModal 
+        open={isModalOpen} 
+        onOpenChange={setIsModalOpen} 
+        technician={selectedTech} 
+      />
     </div>
   );
 };
