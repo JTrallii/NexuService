@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, MoreHorizontal, Mail, Phone, UserPlus } from "lucide-react";
+import { Search, Plus, Mail, Phone, MoreHorizontal, UserPlus, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,101 +12,97 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import NewClientModal from "@/components/clients/NewClientModal";
+import { cn } from "@/lib/utils";
 
 const Clients = () => {
   const clients = [
-    { id: 1, name: "Carlos Eduardo", email: "carlos@email.com", phone: "(11) 98888-7777", status: "Ativo" },
-    { id: 2, name: "Mariana Souza", email: "mariana@email.com", phone: "(11) 97777-6666", status: "Ativo" },
-    { id: 3, name: "Roberto Lima", email: "roberto@email.com", phone: "(11) 96666-5555", status: "Inativo" },
-    { id: 4, name: "Ana Paula", email: "ana@email.com", phone: "(11) 95555-4444", status: "Ativo" },
+    { id: 1, name: "Carlos Eduardo", email: "carlos@email.com", phone: "(11) 98888-7777", status: "Ativo", lastOrder: "12/10/2023" },
+    { id: 2, name: "Mariana Souza", email: "mariana@email.com", phone: "(11) 97777-6666", status: "Ativo", lastOrder: "15/10/2023" },
+    { id: 3, name: "Roberto Lima", email: "roberto@email.com", phone: "(11) 96666-5555", status: "Inativo", lastOrder: "18/10/2023" },
+    { id: 4, name: "Ana Paula", email: "ana@email.com", phone: "(11) 95555-4444", status: "Ativo", lastOrder: "20/10/2023" },
+    { id: 5, name: "João Silva", email: "joao@email.com", phone: "(11) 94444-3333", status: "Ativo", lastOrder: "22/10/2023" },
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight mb-1">Clientes</h1>
-          <p className="text-[#9CA3AF] text-sm font-medium">Gerencie sua base de contatos com facilidade.</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Gestão de Clientes</h1>
+          <p className="text-sm text-slate-500 font-medium mt-1">Gerencie sua base de contatos e histórico de atendimentos.</p>
         </div>
         
         <NewClientModal>
-          <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold h-12 px-6 shadow-lg shadow-indigo-500/20 border-none transition-all group">
-            <UserPlus size={18} className="mr-2 group-hover:scale-110 transition-transform" /> 
-            Novo Cliente
+          <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
+            <UserPlus size={16} /> Adicionar Cliente
           </Button>
         </NewClientModal>
       </div>
 
-      {/* Table Container */}
-      <div className="bg-white/[0.03] backdrop-blur-xl rounded-[2rem] border border-white/5 overflow-hidden shadow-2xl">
-        {/* Search Bar */}
-        <div className="p-6 border-b border-white/5 flex items-center gap-4">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={18} />
-            <Input 
-              className="pl-12 bg-white/5 border-white/10 rounded-xl text-white placeholder:text-[#9CA3AF]/40 focus-visible:ring-[#6366F1] h-12" 
-              placeholder="Buscar por nome ou e-mail..." 
-            />
-          </div>
+      <div className="flex flex-wrap items-center gap-3 py-2">
+        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5">
+          <Filter size={14} className="text-slate-400" />
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtros:</span>
         </div>
+        
+        <select className="h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500">
+          <option>Todos os Status</option>
+          <option>Ativos</option>
+          <option>Inativos</option>
+        </select>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-b border-white/5 hover:bg-transparent">
-                <TableHead className="text-[#E5E7EB] font-bold h-14 px-6">Nome</TableHead>
-                <TableHead className="text-[#E5E7EB] font-bold h-14 px-6">Contato</TableHead>
-                <TableHead className="text-[#E5E7EB] font-bold h-14 px-6">Status</TableHead>
-                <TableHead className="text-[#E5E7EB] font-bold h-14 px-6 text-right">Ações</TableHead>
+        <Input 
+          placeholder="Buscar por nome ou e-mail..." 
+          className="h-9 w-64 bg-white border-slate-200 text-xs rounded-lg"
+        />
+      </div>
+
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <Table>
+          <TableHeader className="bg-slate-50/50">
+            <TableRow className="hover:bg-transparent border-b border-slate-200">
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">Cliente</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">E-mail</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Telefone</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Última Ordem</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {clients.map((client) => (
+              <TableRow key={client.id} className="table-row-hover border-b border-slate-100 last:border-0 transition-colors">
+                <TableCell className="pl-6 py-4">
+                  <span className="text-sm font-bold text-slate-900">{client.name}</span>
+                </TableCell>
+                <TableCell className="py-4">
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                    <Mail size={12} className="text-slate-400" /> {client.email}
+                  </div>
+                </TableCell>
+                <TableCell className="py-4">
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                    <Phone size={12} className="text-slate-400" /> {client.phone}
+                  </div>
+                </TableCell>
+                <TableCell className="py-4 text-center">
+                  <span className={cn(
+                    "status-badge",
+                    client.status === 'Ativo' ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-slate-100 text-slate-500 border-slate-200"
+                  )}>
+                    {client.status}
+                  </span>
+                </TableCell>
+                <TableCell className="pr-6 py-4 text-right">
+                  <span className="text-[11px] font-medium text-slate-400">{client.lastOrder}</span>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {clients.map((client) => (
-                <TableRow key={client.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-                  <TableCell className="py-5 px-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#6366F1]/20 to-[#8B5CF6]/20 text-[#22D3EE] flex items-center justify-center font-bold border border-white/5">
-                        {client.name.charAt(0)}
-                      </div>
-                      <span className="font-bold text-white text-base">{client.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="py-5 px-6">
-                    <div className="space-y-1.5">
-                      <div className="flex items-center gap-2 text-sm text-[#9CA3AF] group-hover:text-[#E5E7EB] transition-colors">
-                        <Mail size={14} className="text-[#6366F1]" /> {client.email}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-[#9CA3AF] group-hover:text-[#E5E7EB] transition-colors">
-                        <Phone size={14} className="text-[#22D3EE]" /> {client.phone}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="py-5 px-6">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                      client.status === 'Ativo' 
-                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                        : 'bg-white/5 text-[#9CA3AF] border border-white/10'
-                    }`}>
-                      <span className={`w-1.5 h-1.5 rounded-full mr-2 ${client.status === 'Ativo' ? 'bg-emerald-400' : 'bg-[#9CA3AF]'}`} />
-                      {client.status}
-                    </span>
-                  </TableCell>
-                  <TableCell className="py-5 px-6 text-right">
-                    <Button variant="ghost" size="icon" className="text-[#9CA3AF] hover:text-white hover:bg-white/5 rounded-xl">
-                      <MoreHorizontal size={20} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-
-        {/* Footer/Pagination Placeholder */}
-        <div className="p-6 bg-white/[0.01] border-t border-white/5 flex justify-center">
-          <p className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-[0.2em]">Exibindo {clients.length} registros</p>
+            ))}
+          </TableBody>
+        </Table>
+        
+        <div className="bg-slate-50/50 border-t border-slate-200 px-6 py-3 flex items-center justify-between">
+          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+            {clients.length} clientes registrados
+          </p>
         </div>
       </div>
     </div>

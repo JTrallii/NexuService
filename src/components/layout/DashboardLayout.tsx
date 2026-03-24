@@ -1,6 +1,6 @@
 "use client";
 
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   Wrench, 
   Search, 
@@ -32,35 +32,38 @@ export const RoleContext = createContext({
 const DashboardLayout = () => {
   const [role, setRole] = useState("ADMIN");
   const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleRole = () => {
     setRole(role === "ADMIN" ? "USER" : "ADMIN");
   };
 
   const navItems = [
-    { label: "Ordens", path: "/dashboard", roles: ["ADMIN", "USER"] },
-    { label: "Clientes", path: "/clients", roles: ["ADMIN"] },
-    { label: "Orçamentos", path: "/budgets", roles: ["ADMIN"] },
-    { label: "Configurações", path: "/settings", roles: ["ADMIN"] },
+    { label: "Ordens", path: "/painel-principal", roles: ["ADMIN", "USER"] },
+    { label: "Clientes", path: "/clientes", roles: ["ADMIN"] },
+    { label: "Orçamentos", path: "/orcamentos", roles: ["ADMIN"] },
+    { label: "Configurações", path: "/configuracoes", roles: ["ADMIN"] },
   ];
 
   const visibleNav = navItems.filter(item => item.roles.includes(role));
 
+  const handleLogout = () => {
+    navigate("/login");
+  };
+
   return (
     <RoleContext.Provider value={{ role, toggleRole }}>
-      <div className="min-h-screen flex flex-col">
-        {/* Fixed Header */}
+      <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+        {/* Header Horizontal Fixo */}
         <header className="fixed top-0 w-full h-16 bg-white border-b border-slate-200 z-50 px-6">
           <div className="max-w-[1600px] mx-auto h-full flex items-center justify-between gap-8">
-            {/* Brand */}
-            <Link to="/dashboard" className="flex items-center gap-2.5 shrink-0">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+            <Link to="/painel-principal" className="flex items-center gap-2.5 shrink-0 group">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white group-hover:bg-blue-700 transition-colors">
                 <Wrench size={18} />
               </div>
               <span className="font-bold text-lg tracking-tight text-slate-900">NexuService</span>
             </Link>
 
-            {/* Navigation */}
             <nav className="hidden lg:flex items-center gap-1 shrink-0">
               {visibleNav.map((item) => (
                 <Link
@@ -78,7 +81,6 @@ const DashboardLayout = () => {
               ))}
             </nav>
 
-            {/* Search Bar */}
             <div className="flex-1 max-w-xl relative group hidden md:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={16} />
               <Input 
@@ -87,7 +89,6 @@ const DashboardLayout = () => {
               />
             </div>
 
-            {/* Actions & User */}
             <div className="flex items-center gap-3 shrink-0">
               {role === "ADMIN" && (
                 <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2 hidden sm:flex">
@@ -122,11 +123,11 @@ const DashboardLayout = () => {
                   <DropdownMenuItem onClick={toggleRole} className="cursor-pointer gap-2">
                     <RefreshCw size={14} /> Alternar para {role === "ADMIN" ? "Usuário" : "Admin"}
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="gap-2">
+                  <DropdownMenuItem onClick={() => navigate("/configuracoes")} className="gap-2 cursor-pointer">
                     <UserIcon size={14} /> Meu Perfil
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-red-600 gap-2">
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 gap-2 cursor-pointer">
                     <LogOut size={14} /> Sair
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -135,24 +136,20 @@ const DashboardLayout = () => {
           </div>
         </header>
 
-        {/* Main Content */}
         <main className="flex-1 pt-16 flex flex-col">
           <div className="flex-1 max-w-[1600px] w-full mx-auto p-6 lg:p-10">
             <Outlet />
           </div>
           
-          {/* Functional Footer */}
-          <footer className="w-full bg-white border-t border-slate-200 py-3 px-6 shrink-0">
+          <footer className="w-full bg-white border-t border-slate-200 py-3 px-6 shrink-0 mt-auto">
             <div className="max-w-[1600px] mx-auto flex justify-between items-center text-[11px] font-medium text-slate-500 uppercase tracking-wider">
               <div className="flex gap-4">
                 <span>Última atualização: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                 <span className="text-slate-300">|</span>
-                <span className="text-amber-600">2 pagamentos em atraso</span>
+                <span className="text-amber-600 font-bold">2 pagamentos em atraso</span>
               </div>
               <div className="flex gap-4">
-                <span>Sistema V1.0.4</span>
-                <span className="text-slate-300">|</span>
-                <span>NexuService &copy; {new Date().getFullYear()}</span>
+                <span>V1.0.4 - NexuService &copy; {new Date().getFullYear()}</span>
               </div>
             </div>
           </footer>

@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -38,10 +38,12 @@ const App = () => (
 
           {/* Operational Routes (NexuService) */}
           <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/clients" element={<Clients />} />
-            <Route path="/budgets" element={<Budgets />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/painel-principal" element={<Dashboard />} />
+            <Route path="/clientes" element={<Clients />} />
+            <Route path="/orcamentos" element={<Budgets />} />
+            <Route path="/configuracoes" element={<Settings />} />
+            {/* Redirect old dashboard to new panel */}
+            <Route path="/dashboard" element={<Navigate to="/painel-principal" replace />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

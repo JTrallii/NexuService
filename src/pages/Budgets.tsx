@@ -1,99 +1,123 @@
 "use client";
 
-import { Plus, FileText, Download, Check, X, Clock, ChevronRight, Zap } from "lucide-react";
+import { Plus, FileText, Download, Check, X, Clock, Filter, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import NewBudgetModal from "@/components/budgets/NewBudgetModal";
 import { showSuccess } from "@/utils/toast";
+import { cn } from "@/lib/utils";
 
 const Budgets = () => {
   const budgets = [
-    { id: "ORC-2023-001", client: "Construtora Alfa", value: "R$ 15.400,00", date: "20/10/2023", status: "Aprovado" },
-    { id: "ORC-2023-002", client: "Condomínio Solar", value: "R$ 2.150,00", date: "21/10/2023", status: "Pendente" },
-    { id: "ORC-2023-003", client: "Padaria Central", value: "R$ 890,00", date: "22/10/2023", status: "Rejeitado" },
+    { id: "ORC-23-001", client: "Construtora Alfa", value: "R$ 15.400,00", date: "20/10/2023", status: "Aprovado" },
+    { id: "ORC-23-002", client: "Condomínio Solar", value: "R$ 2.150,00", date: "21/10/2023", status: "Pendente" },
+    { id: "ORC-23-003", client: "Padaria Central", value: "R$ 890,00", date: "22/10/2023", status: "Rejeitado" },
+    { id: "ORC-23-004", client: "Escola Objetivo", value: "R$ 4.200,00", date: "23/10/2023", status: "Aprovado" },
   ];
 
-  const handleGenerateOS = (budget: any) => {
-    showSuccess(`Ordem de serviço gerada para ${budget.client}! Verifique o módulo OS.`);
+  const handleGenerateOS = (client: string) => {
+    showSuccess(`Ordem de serviço gerada para ${client}!`);
   };
 
   const getStatusInfo = (status: string) => {
     switch (status) {
-      case "Aprovado": return { icon: <Check size={14} />, class: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", border: "bg-emerald-500" };
-      case "Pendente": return { icon: <Clock size={14} />, class: "text-amber-400 bg-amber-500/10 border-amber-500/20", border: "bg-amber-500" };
-      case "Rejeitado": return { icon: <X size={14} />, class: "text-rose-400 bg-rose-500/10 border-rose-500/20", border: "bg-rose-500" };
-      default: return { icon: null, class: "text-[#9CA3AF] bg-white/5 border-white/10", border: "bg-white/10" };
+      case "Aprovado": return { class: "bg-emerald-50 text-emerald-700 border-emerald-200" };
+      case "Pendente": return { class: "bg-amber-50 text-amber-700 border-amber-200" };
+      case "Rejeitado": return { class: "bg-rose-50 text-rose-700 border-rose-200" };
+      default: return { class: "bg-slate-100 text-slate-500 border-slate-200" };
     }
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight mb-1">Orçamentos</h1>
-          <p className="text-[#9CA3AF] text-sm font-medium">Gerencie suas propostas comerciais enviadas.</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Propostas e Orçamentos</h1>
+          <p className="text-sm text-slate-500 font-medium mt-1">Acompanhe propostas comerciais enviadas e taxas de aprovação.</p>
         </div>
         
         <NewBudgetModal>
-          <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold h-12 px-6 shadow-lg shadow-indigo-500/20 border-none transition-all group">
-            <Plus size={18} className="mr-2 group-hover:scale-110 transition-transform" /> Novo Orçamento
+          <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
+            <Plus size={16} /> Nova Proposta
           </Button>
         </NewBudgetModal>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {budgets.map((budget) => {
-          const status = getStatusInfo(budget.status);
-          return (
-            <Card key={budget.id} className="bg-white/[0.03] border-white/5 backdrop-blur-md hover:border-white/10 transition-all duration-300 rounded-[2rem] overflow-hidden group">
-              <div className={`h-1.5 w-full ${status.border}`} />
-              <CardContent className="p-8">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="p-3 bg-white/5 border border-white/10 rounded-2xl text-[#6366F1]">
-                    <FileText size={24} />
-                  </div>
-                  <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${status.class}`}>
-                    {status.icon}
-                    {budget.status}
-                  </div>
-                </div>
-                
-                <h3 className="font-bold text-white text-xl mb-1 tracking-tight group-hover:text-[#22D3EE] transition-colors">{budget.client}</h3>
-                <p className="text-[10px] text-[#9CA3AF] font-bold uppercase tracking-widest mb-6">{budget.id}</p>
-                
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-[10px] text-[#9CA3AF] uppercase font-bold tracking-widest mb-1">Valor do Projeto</p>
-                    <p className="text-2xl font-black text-white">{budget.value}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] text-[#9CA3AF] uppercase font-bold tracking-widest mb-1">Expira em</p>
-                    <p className="text-xs font-bold text-white">{budget.date}</p>
-                  </div>
-                </div>
+      <div className="flex flex-wrap items-center gap-3 py-2">
+        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5">
+          <Filter size={14} className="text-slate-400" />
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtros:</span>
+        </div>
+        
+        <select className="h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500">
+          <option>Todos os Status</option>
+          <option>Aprovados</option>
+          <option>Pendentes</option>
+        </select>
 
-                <div className="mt-8 pt-6 border-t border-white/5 flex flex-col gap-3">
-                  {budget.status === "Aprovado" && (
-                    <Button 
-                      onClick={() => handleGenerateOS(budget)}
-                      className="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 rounded-xl h-10 text-[10px] font-black gap-2 uppercase tracking-widest"
-                    >
-                      <Zap size={14} fill="currentColor" /> Gerar Ordem de Serviço
-                    </Button>
-                  )}
-                  <div className="flex gap-3">
-                    <Button variant="outline" size="sm" className="flex-1 rounded-xl border-white/10 text-white hover:bg-white/5 h-10 text-[10px] font-bold gap-2">
-                      <Download size={14} /> PDF
-                    </Button>
-                    <Button variant="ghost" size="sm" className="flex-1 rounded-xl text-[#9CA3AF] hover:text-white hover:bg-white/5 h-10 text-[10px] font-bold gap-1">
-                      DETALHES <ChevronRight size={14} />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+        <Input 
+          placeholder="Buscar proposta..." 
+          className="h-9 w-64 bg-white border-slate-200 text-xs rounded-lg"
+        />
+      </div>
+
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <Table>
+          <TableHeader className="bg-slate-50/50">
+            <TableRow className="hover:bg-transparent border-b border-slate-200">
+              <TableHead className="w-[120px] h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">ID</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Cliente</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right">Valor</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pr-6 text-right">Data</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {budgets.map((budget) => {
+              const status = getStatusInfo(budget.status);
+              return (
+                <TableRow key={budget.id} className="table-row-hover border-b border-slate-100 last:border-0 transition-colors">
+                  <TableCell className="pl-6 py-4">
+                    <span className="text-[11px] font-bold text-slate-400 font-mono tracking-tighter">{budget.id}</span>
+                  </TableCell>
+                  <TableCell className="py-4">
+                    <span className="text-sm font-bold text-slate-900">{budget.client}</span>
+                  </TableCell>
+                  <TableCell className="py-4 text-center">
+                    <span className={cn("status-badge", status.class)}>
+                      {budget.status}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-4 text-right">
+                    <span className="text-sm font-black text-slate-900">{budget.value}</span>
+                  </TableCell>
+                  <TableCell className="pr-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-3">
+                      <span className="text-[11px] font-medium text-slate-400">{budget.date}</span>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400 hover:text-blue-600">
+                        <Download size={14} />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        
+        <div className="bg-slate-50/50 border-t border-slate-200 px-6 py-3 flex items-center justify-between">
+          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+            Taxa de aprovação: <span className="text-emerald-600">75%</span>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -2,118 +2,117 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Shield, BarChart3, Wrench, ChevronRight, Star } from "lucide-react";
-import Footer from "@/components/layout/Footer";
+import { ArrowRight, Wrench, Shield, Zap, BarChart3, ChevronRight, CheckCircle2 } from "lucide-react";
 
 const Landing = () => {
   return (
-    <div className="min-h-screen bg-transparent">
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-[#0B0F1A]/50 backdrop-blur-xl border-b border-white/[0.05]">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-tr from-[#6366F1] to-[#8B5CF6] rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
-              <Wrench size={22} />
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Navbar Minimalista */}
+      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+              <Wrench size={18} />
             </div>
-            <span className="font-bold text-2xl text-white tracking-tight">ServiceFlow</span>
+            <span className="font-bold text-lg tracking-tight">NexuService</span>
           </div>
           
-          <div className="hidden md:flex items-center gap-10">
-            {["Recursos", "Preços", "Sobre"].map((item) => (
-              <a key={item} href="#" className="text-sm font-medium text-[#9CA3AF] hover:text-[#22D3EE] transition-colors">{item}</a>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-4">
-            <Link to="/login">
-              <Button variant="ghost" className="text-[#E5E7EB] hover:bg-white/5 rounded-lg px-6">Entrar</Button>
-            </Link>
+          <div className="flex items-center gap-6">
+            <Link to="/login" className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Entrar</Link>
             <Link to="/register">
-              <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:shadow-[0_0_20px_rgba(99,102,241,0.3)] text-white font-bold rounded-lg px-6 h-11 border-none transition-all">
-                Começar Grátis
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg px-5 h-9 text-xs">
+                Começar Agora
               </Button>
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-48 pb-24 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 blur-[120px] -z-10 rounded-full"></div>
-        
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#22D3EE] text-xs font-bold mb-10">
-            <Star size={14} fill="currentColor" />
-            <span>SISTEMA DE GESTÃO INTELIGENTE</span>
+      {/* Hero Section Operacional */}
+      <section className="pt-40 pb-20 px-6">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-widest">
+            Gestão Operacional de Alta Performance
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.9]">
-            Gerencie serviços <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#6366F1] to-[#8B5CF6]">com maestria.</span>
+          <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-tight text-slate-900">
+            A plataforma definitiva para <br />
+            <span className="text-blue-600">gestão de serviços técnicos.</span>
           </h1>
           
-          <p className="text-xl text-[#9CA3AF] mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
-            A plataforma definitiva para profissionais que buscam elevar o nível de sua gestão. Organize clientes, serviços e orçamentos em segundos.
+          <p className="text-lg text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed">
+            Elimine a burocracia e foque na execução. O NexuService centraliza ordens, clientes e pagamentos em uma interface limpa e eficiente.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-24">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/register">
-              <Button size="lg" className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:shadow-[0_0_25px_rgba(99,102,241,0.4)] text-white px-10 h-16 text-lg rounded-xl font-bold transition-all border-none">
-                Criar minha conta <ArrowRight className="ml-2" />
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-10 h-14 text-sm rounded-xl font-bold shadow-xl shadow-blue-500/20">
+                Criar Conta Gratuita <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="px-10 h-16 text-lg rounded-xl font-bold border-white/10 text-white hover:bg-white/5 backdrop-blur-sm transition-all">
-              Ver Demonstração
-            </Button>
+            <Link to="/login">
+              <Button size="lg" variant="outline" className="px-10 h-14 text-sm rounded-xl font-bold border-slate-200 text-slate-600 hover:bg-slate-50">
+                Acessar Sistema
+              </Button>
+            </Link>
           </div>
 
-          <div className="relative max-w-5xl mx-auto">
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-[2.5rem] blur opacity-20"></div>
-            <div className="relative bg-[#0F172A] rounded-[2.5rem] p-4 shadow-2xl border border-white/10">
-              <img 
-                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop" 
-                alt="Dashboard Mockup" 
-                className="w-full rounded-2xl opacity-90 brightness-75 grayscale hover:grayscale-0 hover:brightness-100 transition-all duration-700 shadow-inner"
-              />
+          <div className="pt-16 max-w-5xl mx-auto">
+            <div className="p-4 bg-slate-100 rounded-[2rem] border border-slate-200">
+              <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+                <img 
+                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2400&auto=format&fit=crop" 
+                  alt="Plataforma NexuService" 
+                  className="w-full h-auto opacity-90"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-32 relative">
+      {/* Recursos Focados */}
+      <section className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl font-black text-white mb-4 tracking-tight">Tecnologia ao seu favor.</h2>
-            <p className="text-[#9CA3AF] font-medium">Recursos pensados para a escala do seu negócio.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-10">
             {[
-              { icon: Zap, title: "Agilidade", desc: "Processos rápidos que economizam seu tempo valioso todos os dias.", path: "/agilidade" },
-              { icon: Shield, title: "Segurança", desc: "Seus dados protegidos com os mais altos padrões de criptografia.", path: "/seguranca" },
-              { icon: BarChart3, title: "Métricas", desc: "Insights poderosos sobre o seu faturamento e crescimento mensal.", path: "/metricas" }
-            ].map((f, i) => (
-              <Link 
-                key={i} 
-                to={f.path}
-                className="bg-white/[0.03] backdrop-blur-md p-10 rounded-[2rem] border border-white/10 hover:border-indigo-500/50 hover:-translate-y-2 transition-all duration-500 group block"
-              >
-                <div className="w-16 h-16 bg-gradient-to-tr from-[#6366F1]/10 to-[#8B5CF6]/10 text-indigo-400 rounded-2xl flex items-center justify-center mb-8 border border-white/5">
-                  <f.icon size={30} />
+              { icon: Zap, title: "Agilidade", desc: "Fluxo operacional otimizado para abertura e fechamento de ordens em segundos.", path: "/agilidade" },
+              { icon: Shield, title: "Segurança", desc: "Dados protegidos com criptografia de ponta a ponta e backups automáticos.", path: "/seguranca" },
+              { icon: BarChart3, title: "Métricas", desc: "Visão clara do seu faturamento e produtividade da equipe em tempo real.", path: "/metricas" }
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-10 rounded-[2rem] border border-slate-200 shadow-sm hover:border-blue-500/50 transition-all group">
+                <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6 border border-blue-100">
+                  <item.icon size={24} />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-white">{f.title}</h3>
-                <p className="text-[#9CA3AF] leading-relaxed font-medium">{f.desc}</p>
-                <div className="mt-8 flex items-center text-[#22D3EE] font-bold text-sm cursor-pointer group-hover:translate-x-2 transition-transform">
-                  Detalhes <ChevronRight size={16} />
-                </div>
-              </Link>
+                <h3 className="text-xl font-bold mb-3 text-slate-900">{item.title}</h3>
+                <p className="text-slate-500 text-sm font-medium leading-relaxed">{item.desc}</p>
+                <Link to={item.path} className="mt-6 flex items-center text-blue-600 font-bold text-xs uppercase tracking-widest hover:gap-2 transition-all">
+                  Saber mais <ChevronRight size={14} />
+                </Link>
+              </div>
             ))}
           </div>
         </div>
       </section>
-      
-      <Footer />
+
+      {/* Footer Minimalista */}
+      <footer className="py-16 border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-2.5">
+            <div className="w-6 h-6 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+              <Wrench size={14} />
+            </div>
+            <span className="font-bold text-sm tracking-tight text-slate-900">NexuService</span>
+          </div>
+          <p className="text-slate-400 text-xs font-medium">
+            &copy; {new Date().getFullYear()} NexuService Enterprise. Todos os direitos reservados.
+          </p>
+          <div className="flex gap-6 text-xs font-bold text-slate-400">
+            <a href="#" className="hover:text-blue-600 transition-colors">Privacidade</a>
+            <a href="#" className="hover:text-blue-600 transition-colors">Termos</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
