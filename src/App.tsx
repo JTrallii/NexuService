@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
 import Budgets from "./pages/Budgets";
+import Technicians from "./pages/Technicians";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Agilidade from "./pages/Agilidade";
@@ -35,15 +36,14 @@ const App = () => (
           <Route element={<DashboardLayout />}>
             <Route path="/painel-principal" element={<Dashboard />} />
             <Route path="/clientes" element={<Clients />} />
+            <Route path="/tecnicos" element={<Technicians />} />
             <Route path="/orcamentos" element={<Budgets />} />
             <Route path="/configuracoes" element={<Settings />} />
             
-            {/* Feature Pages now integrated into the system layout */}
             <Route path="/agilidade" element={<Agilidade />} />
             <Route path="/seguranca" element={<Seguranca />} />
             <Route path="/metricas" element={<Metricas />} />
             
-            {/* Redirect old dashboard to new panel */}
             <Route path="/dashboard" element={<Navigate to="/painel-principal" replace />} />
           </Route>
 

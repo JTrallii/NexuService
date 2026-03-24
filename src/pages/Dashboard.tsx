@@ -9,7 +9,7 @@ import {
   Clock, 
   CheckCircle2, 
   AlertCircle,
-  HelpCircle,
+  User,
   ArrowRight
 } from "lucide-react";
 import { 
@@ -32,12 +32,11 @@ const Dashboard = () => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const [services, setServices] = useState([
-    { id: "OS-001", title: "Reparo de Ar Condicionado", client: "Carlos Eduardo", date: "12/10/2023", status: "CONCLUIDO", price: "R$ 350,00", description: "Limpeza de filtros e carga de gás refrigerante R410A." },
-    { id: "OS-002", title: "Instalação Elétrica", client: "Mariana Souza", date: "15/10/2023", status: "EM_ANDAMENTO", price: "R$ 1.200,00", description: "Instalação de novo quadro de energia e 15 pontos de luz." },
-    { id: "OS-003", title: "Manutenção de Servidor", client: "Roberto Lima", date: "18/10/2023", status: "PENDENTE", price: "R$ 800,00", description: "Atualização de firmware e verificação de redundância de storage." },
-    { id: "OS-004", title: "Configuração de Rede", client: "Ana Paula", date: "20/10/2023", status: "PAGO", price: "R$ 450,00", description: "Configuração de roteadores mesh.", paidAt: "21/10/2023" },
-    { id: "OS-005", title: "Aguardando Peça", client: "João Silva", date: "22/10/2023", status: "AGUARDANDO_PECA", price: "R$ 2.100,00", description: "Troca de placa-mãe de servidor Dell." },
-    { id: "OS-006", title: "Atraso no Pagamento", client: "Empresa XPTO", date: "05/10/2023", status: "ATRASADA", price: "R$ 5.400,00", description: "Consultoria de segurança de rede." },
+    { id: "OS-001", title: "Reparo de Ar Condicionado", client: "Carlos Eduardo", technician: "Ricardo Silva", date: "12/10/2023", status: "CONCLUIDO", price: "R$ 350,00", description: "Limpeza de filtros e carga de gás refrigerante R410A." },
+    { id: "OS-002", title: "Instalação Elétrica", client: "Mariana Souza", technician: "André Lucas", date: "15/10/2023", status: "EM_ANDAMENTO", price: "R$ 1.200,00", description: "Instalação de novo quadro de energia e 15 pontos de luz." },
+    { id: "OS-003", title: "Manutenção de Servidor", client: "Roberto Lima", technician: "Paula Santos", date: "18/10/2023", status: "PENDENTE", price: "R$ 800,00", description: "Atualização de firmware e verificação de redundância de storage." },
+    { id: "OS-004", title: "Configuração de Rede", client: "Ana Paula", technician: "Paula Santos", date: "20/10/2023", status: "PAGO", price: "R$ 450,00", description: "Configuração de roteadores mesh.", paidAt: "21/10/2023" },
+    { id: "OS-005", title: "Aguardando Peça", client: "João Silva", technician: "Ricardo Silva", date: "22/10/2023", status: "AGUARDANDO_PECA", price: "R$ 2.100,00", description: "Troca de placa-mãe de servidor Dell." },
   ]);
 
   const updateOrderStatus = (id: string, newStatus: string, extraData?: any) => {
@@ -57,7 +56,6 @@ const Dashboard = () => {
       case "PENDENTE": return { label: "Aberta", class: "bg-slate-100 text-slate-700 border-slate-200" };
       case "AGUARDANDO_PECA": return { label: "Aguardando Peça", class: "bg-amber-50 text-amber-700 border-amber-200" };
       case "ATRASADA": return { label: "Atrasada", class: "bg-rose-50 text-rose-700 border-rose-200" };
-      case "CANCELADO": return { label: "Cancelada", class: "bg-slate-50 text-slate-400 border-slate-100" };
       default: return { label: status, class: "bg-slate-50 text-slate-500 border-slate-200" };
     }
   };
@@ -68,10 +66,9 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Gestão de Ordens</h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">Acompanhe ordens, clientes e recebimentos em tempo real.</p>
+          <p className="text-sm text-slate-500 font-medium mt-1">Acompanhe ordens, clientes e técnicos alocados.</p>
         </div>
         
-        {/* Discrete Summary Line */}
         <div className="flex items-center gap-6 text-[13px] font-bold text-slate-600 bg-white px-5 py-2.5 rounded-lg border border-slate-200 shadow-sm">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
@@ -79,45 +76,10 @@ const Dashboard = () => {
           </div>
           <div className="w-px h-4 bg-slate-200" />
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
-            Pendentes de pagamento: <span className="text-slate-900">5</span>
-          </div>
-          <div className="w-px h-4 bg-slate-200" />
-          <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-            Total a receber: <span className="text-slate-900">R$ 8.450,00</span>
+            Equipe em campo: <span className="text-slate-900">8</span>
           </div>
         </div>
-      </div>
-
-      {/* Filters Area */}
-      <div className="flex flex-wrap items-center gap-3 py-2">
-        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5">
-          <Filter size={14} className="text-slate-400" />
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtros:</span>
-        </div>
-        
-        <select className="h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500">
-          <option>Todos os Status</option>
-          <option>Abertas</option>
-          <option>Concluídas</option>
-          <option>Atrasadas</option>
-        </select>
-
-        <select className="h-9 px-3 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500">
-          <option>Período: Este Mês</option>
-          <option>Últimos 7 dias</option>
-          <option>Hoje</option>
-        </select>
-
-        <Input 
-          placeholder="Filtrar por cliente..." 
-          className="h-9 w-48 bg-white border-slate-200 text-xs rounded-lg hidden sm:block"
-        />
-
-        <Button variant="ghost" className="h-9 px-3 text-xs font-bold text-blue-600 hover:bg-blue-50 rounded-lg ml-auto">
-          Limpar Filtros
-        </Button>
       </div>
 
       {/* Main Table */}
@@ -126,11 +88,11 @@ const Dashboard = () => {
           <TableHeader className="bg-slate-50/50">
             <TableRow className="hover:bg-transparent border-b border-slate-200">
               <TableHead className="w-[100px] h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">Protocolo</TableHead>
-              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Cliente / Solicitante</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Cliente</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Técnico Responsável</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Serviço</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
-              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right">Valor</TableHead>
-              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pr-6 text-right">Abertura</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Abertura</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -149,15 +111,20 @@ const Dashboard = () => {
                     <span className="text-sm font-bold text-slate-900">{service.client}</span>
                   </TableCell>
                   <TableCell className="py-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center text-[10px] font-bold text-blue-600 border border-blue-100">
+                        {service.technician[0]}
+                      </div>
+                      <span className="text-xs font-semibold text-slate-600">{service.technician}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="py-4">
                     <span className="text-xs font-medium text-slate-500">{service.title}</span>
                   </TableCell>
                   <TableCell className="py-4 text-center">
                     <span className={cn("status-badge", status.class)}>
                       {status.label}
                     </span>
-                  </TableCell>
-                  <TableCell className="py-4 text-right">
-                    <span className="text-sm font-black text-slate-900 tracking-tight">{service.price}</span>
                   </TableCell>
                   <TableCell className="pr-6 py-4 text-right">
                     <span className="text-[11px] font-medium text-slate-400">{service.date}</span>
@@ -167,17 +134,6 @@ const Dashboard = () => {
             })}
           </TableBody>
         </Table>
-        
-        {/* Table Footer */}
-        <div className="bg-slate-50/50 border-t border-slate-200 px-6 py-3 flex items-center justify-between">
-          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-            Exibindo {services.length} registros operacionais
-          </p>
-          <div className="flex gap-1">
-            <Button disabled variant="outline" size="sm" className="h-7 text-[10px] rounded-md px-2">Anterior</Button>
-            <Button disabled variant="outline" size="sm" className="h-7 text-[10px] rounded-md px-2">Próximo</Button>
-          </div>
-        </div>
       </div>
 
       <ServiceDetailsModal 

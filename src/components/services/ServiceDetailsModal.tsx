@@ -14,13 +14,11 @@ import {
   Clock, 
   CreditCard, 
   User, 
-  Calendar, 
+  Briefcase,
   FileText, 
-  AlertCircle,
   XCircle,
   Play,
   Phone,
-  ArrowRight
 } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 import { cn } from "@/lib/utils";
@@ -31,6 +29,7 @@ interface OrderDetails {
   id: string;
   title: string;
   client: string;
+  technician?: string;
   date: string;
   status: string;
   price: string;
@@ -68,18 +67,9 @@ const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: Serv
       case "EM_ANDAMENTO": return "text-blue-600 bg-blue-50 border-blue-100";
       case "PAGO": return "text-purple-600 bg-purple-50 border-purple-100";
       case "PENDENTE": return "text-slate-600 bg-slate-50 border-slate-200";
-      case "AGUARDANDO_PECA": return "text-amber-600 bg-amber-50 border-amber-100";
-      case "ATRASADA": return "text-rose-600 bg-rose-50 border-rose-100";
       default: return "text-slate-500 bg-slate-50 border-slate-100";
     }
   };
-
-  const timelineEvents = [
-    { label: "Abertura da Ordem", date: order.date, active: true },
-    { label: "Execução Iniciada", date: order.status === "PENDENTE" ? "Pendente" : "Processado", active: order.status !== "PENDENTE" },
-    { label: "Conclusão Técnica", date: order.completedAt || "Aguardando", active: ["CONCLUIDO", "PAGO"].includes(order.status) },
-    { label: "Liquidação Financeira", date: order.paidAt || "Aberto", active: order.status === "PAGO" },
-  ];
 
   return (
     <>
@@ -106,49 +96,51 @@ const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: Serv
             <div className="p-8 overflow-y-auto no-scrollbar">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div className="md:col-span-2 space-y-8">
-                  {/* Basic Info */}
+                  {/* Allocation Info */}
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-1.5">
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                        <User size={12} className="text-blue-500" /> Cliente
+                        <User size={12} className="text-blue-500" /> Cliente Solicitante
                       </p>
                       <p className="text-sm font-bold text-slate-900">{order.client}</p>
                     </div>
                     <div className="space-y-1.5">
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                        <Phone size={12} className="text-slate-400" /> Contato
+                        <Briefcase size={12} className="text-blue-500" /> Técnico Responsável
                       </p>
-                      <p className="text-sm font-semibold text-slate-600">(11) 98888-7777</p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full bg-blue-600 text-[8px] flex items-center justify-center text-white font-black uppercase">
+                          {order.technician?.[0] || 'T'}
+                        </div>
+                        <p className="text-sm font-bold text-slate-900">{order.technician || "Não atribuído"}</p>
+                      </div>
                     </div>
                   </div>
 
                   {/* Description */}
                   <div className="space-y-2.5">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Escopo do Serviço</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Escopo Técnico</p>
                     <div className="p-5 bg-slate-50 rounded-lg border border-slate-200">
                       <p className="text-sm text-slate-600 leading-relaxed">
-                        {order.description || "Descrição operacional não preenchida para esta ordem."}
+                        {order.description || "Descrição operacional não preenchida."}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Timeline */}
+                {/* Vertical Stats */}
                 <div className="space-y-6">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Linha do Tempo</p>
-                  <div className="space-y-6 relative before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
-                    {timelineEvents.map((event, i) => (
-                      <div key={i} className="flex gap-4 relative">
-                        <div className={cn(
-                          "w-4 h-4 rounded-full border-2 border-white z-10 mt-1 shadow-sm",
-                          event.active ? "bg-blue-600" : "bg-slate-200"
-                        )} />
-                        <div className="flex-1">
-                          <p className={cn("text-xs font-bold", event.active ? "text-slate-900" : "text-slate-400")}>{event.label}</p>
-                          <p className="text-[10px] text-slate-400 font-medium">{event.date}</p>
+                  <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Logs do Protocolo</p>
+                    <div className="space-y-4">
+                      <div className="flex gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5" />
+                        <div>
+                          <p className="text-[10px] font-bold text-slate-900">Abertura</p>
+                          <p className="text-[10px] text-slate-500">{order.date}</p>
                         </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -181,16 +173,6 @@ const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: Serv
                     className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold h-10 rounded-lg gap-2 text-xs"
                   >
                     <CreditCard size={16} /> Confirmar Recebimento
-                  </Button>
-                )}
-
-                {role === "ADMIN" && ["PENDENTE", "EM_ANDAMENTO", "AGUARDANDO_PECA"].includes(order.status) && (
-                  <Button 
-                    variant="outline" 
-                    onClick={() => handleStatusUpdate("CANCELADO")}
-                    className="h-10 text-rose-600 hover:bg-rose-50 border-rose-200 rounded-lg text-xs font-bold px-4"
-                  >
-                    <XCircle size={16} className="mr-2" /> Cancelar
                   </Button>
                 )}
               </div>

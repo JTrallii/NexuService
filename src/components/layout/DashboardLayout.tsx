@@ -39,6 +39,7 @@ const DashboardLayout = () => {
   const navItems = [
     { label: "Ordens", path: "/painel-principal", roles: ["ADMIN", "USER"] },
     { label: "Clientes", path: "/clientes", roles: ["ADMIN"] },
+    { label: "Técnicos", path: "/tecnicos", roles: ["ADMIN"] },
     { label: "Orçamentos", path: "/orcamentos", roles: ["ADMIN"] },
     { label: "Configurações", path: "/configuracoes", roles: ["ADMIN"] },
   ];
