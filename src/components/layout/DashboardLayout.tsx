@@ -2,7 +2,6 @@
 
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { 
-  Wrench, 
   Search, 
   Bell, 
   User as UserIcon,
@@ -14,6 +13,7 @@ import {
 import { useState, createContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Logo from "./Logo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,21 +47,13 @@ const DashboardLayout = () => {
 
   const visibleNav = navItems.filter(item => item.roles.includes(role));
 
-  const handleLogout = () => {
-    navigate("/login");
-  };
-
   return (
     <RoleContext.Provider value={{ role, toggleRole }}>
       <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-        {/* Header Horizontal Fixo */}
         <header className="fixed top-0 w-full h-16 bg-white border-b border-slate-200 z-50 px-6">
           <div className="max-w-[1600px] mx-auto h-full flex items-center justify-between gap-8">
-            <Link to="/painel-principal" className="flex items-center gap-2.5 shrink-0 group">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white group-hover:bg-blue-700 transition-colors">
-                <Wrench size={18} />
-              </div>
-              <span className="font-bold text-lg tracking-tight text-slate-900">NexuService</span>
+            <Link to="/painel-principal" className="shrink-0">
+              <Logo />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-1 shrink-0">
@@ -127,7 +119,7 @@ const DashboardLayout = () => {
                     <UserIcon size={14} /> Meu Perfil
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 gap-2 cursor-pointer">
+                  <DropdownMenuItem onClick={() => navigate("/login")} className="text-red-600 gap-2 cursor-pointer">
                     <LogOut size={14} /> Sair
                   </DropdownMenuItem>
                 </DropdownMenuContent>

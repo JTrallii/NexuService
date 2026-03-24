@@ -2,20 +2,17 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Wrench, Shield, Zap, BarChart3, ChevronRight, CheckCircle2 } from "lucide-react";
+import Logo from "@/components/layout/Logo";
+import { ArrowRight, Shield, Zap, BarChart3, ChevronRight } from "lucide-react";
 
 const Landing = () => {
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      {/* Navbar Minimalista */}
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-              <Wrench size={18} />
-            </div>
-            <span className="font-bold text-lg tracking-tight">NexuService</span>
-          </div>
+          <Link to="/">
+            <Logo />
+          </Link>
           
           <div className="flex items-center gap-6">
             <Link to="/login" className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Entrar</Link>
@@ -98,12 +95,9 @@ const Landing = () => {
       {/* Footer Minimalista */}
       <footer className="py-16 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-              <Wrench size={14} />
-            </div>
-            <span className="font-bold text-sm tracking-tight text-slate-900">NexuService</span>
-          </div>
+          <Link to="/">
+            <Logo textSize="text-sm" />
+          </Link>
           <p className="text-slate-400 text-xs font-medium">
             &copy; {new Date().getFullYear()} NexuService Enterprise. Todos os direitos reservados.
           </p>

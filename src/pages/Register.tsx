@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Wrench, CheckCircle2 } from "lucide-react";
+import Logo from "@/components/layout/Logo";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,11 +18,8 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4 py-20">
       <div className="max-w-md w-full">
         <div className="text-center mb-10">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-8">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
-              <Wrench size={20} />
-            </div>
-            <span className="font-bold text-2xl text-slate-900 tracking-tight">NexuService</span>
+          <Link to="/" className="inline-flex mb-8">
+            <Logo textSize="text-2xl" iconSize={20} />
           </Link>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Criar nova conta</h1>
           <p className="text-slate-500 text-sm font-medium mt-1">Comece a gerenciar seus serviços hoje</p>
