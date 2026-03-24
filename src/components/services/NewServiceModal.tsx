@@ -49,7 +49,7 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
             <div>
               <DialogTitle className="text-xl font-bold text-slate-900">Nova Ordem de Serviço</DialogTitle>
               <DialogDescription className="text-xs font-medium text-slate-500">
-                Abertura de chamado técnico e alocação de recursos.
+                Abertura de chamado técnico com alocação de responsável e prazos.
               </DialogDescription>
             </div>
           </div>
@@ -60,12 +60,12 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
             {/* Seção: Identificação do Serviço */}
             <div className="space-y-4">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
-                <FileText size={12} className="text-blue-500" /> Informações do Serviço
+                <FileText size={12} className="text-blue-500" /> Detalhes da Operação
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Título da Ordem (Assunto) *</Label>
-                  <Input placeholder="Ex: Manutenção de Ar Condicionado Central" required className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Título do Serviço / Assunto *</Label>
+                  <Input placeholder="Ex: Reparo Crítico no Servidor Principal" required className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
@@ -78,13 +78,14 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
                     <SelectContent>
                       <SelectItem value="carlos">Carlos Eduardo</SelectItem>
                       <SelectItem value="mariana">Mariana Souza</SelectItem>
-                      <SelectItem value="empresa">Empresa NEXU S.A.</SelectItem>
+                      <SelectItem value="roberto">Roberto Lima</SelectItem>
+                      <SelectItem value="empresa">Construtora Alfa S.A.</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                    <ShieldAlert size={12} className="text-rose-500" /> Nível de Prioridade
+                    <ShieldAlert size={12} className="text-rose-500" /> Nível de Urgência
                   </Label>
                   <Select defaultValue="MEDIA">
                     <SelectTrigger className="h-10 border-slate-200 rounded-lg">
@@ -92,7 +93,7 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="BAIXA">Baixa (Rotina)</SelectItem>
-                      <SelectItem value="MEDIA">Média (Normal)</SelectItem>
+                      <SelectItem value="MEDIA">Média (Padrão)</SelectItem>
                       <SelectItem value="ALTA">Alta (Urgente)</SelectItem>
                     </SelectContent>
                   </Select>
@@ -100,48 +101,49 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
               </div>
             </div>
 
-            {/* Seção: Execução e Responsável */}
+            {/* Seção: Responsável e Prazos */}
             <div className="space-y-4">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
-                <Clock size={12} className="text-blue-500" /> Planejamento e Execução
+                <Clock size={12} className="text-blue-500" /> Planejamento de Execução
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Responsável Técnico</Label>
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Técnico Responsável *</Label>
                   <Select required>
                     <SelectTrigger className="h-10 border-slate-200 rounded-lg">
                       <SelectValue placeholder="Atribuir para..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="admin">Admin Master</SelectItem>
-                      <SelectItem value="tecnico1">Ricardo Silva (Técnico 01)</SelectItem>
-                      <SelectItem value="tecnico2">André Lucas (Técnico 02)</SelectItem>
+                      <SelectItem value="ricardo">Ricardo Silva (Elétrica)</SelectItem>
+                      <SelectItem value="andre">André Lucas (Climatização)</SelectItem>
+                      <SelectItem value="paula">Paula Santos (TI)</SelectItem>
+                      <SelectItem value="marcos">Marcos Lima (Obras)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                    <Calendar size={12} className="text-slate-400" /> Previsão de Conclusão *
+                    <Calendar size={12} className="text-slate-400" /> Data Prevista de Conclusão *
                   </Label>
                   <Input type="date" required className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
               </div>
             </div>
 
-            {/* Seção: Financeiro e Descrição */}
+            {/* Seção: Financeiro e Escopo */}
             <div className="space-y-4">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
-                <CreditCard size={12} className="text-emerald-600" /> Detalhes Financeiros e Técnicos
+                <CreditCard size={12} className="text-emerald-600" /> Financeiro e Descritivo
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                    <DollarSign size={12} className="text-emerald-600" /> Valor Total (R$) *
+                    <DollarSign size={12} className="text-emerald-600" /> Valor do Serviço (R$) *
                   </Label>
                   <Input placeholder="0,00" required className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Forma de Recebimento</Label>
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Forma de Pagamento</Label>
                   <Select defaultValue="PIX">
                     <SelectTrigger className="h-10 border-slate-200 rounded-lg">
                       <SelectValue />
@@ -156,11 +158,11 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
                 </div>
                 <div className="col-span-2 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Descrição Detalhada do Chamado</Label>
-                  <Textarea placeholder="Descreva o problema relatado pelo cliente e as ações previstas..." className="min-h-[100px] border-slate-200 focus-visible:ring-blue-500 rounded-lg resize-none" />
+                  <Textarea placeholder="Descreva os problemas relatados e as ações que devem ser realizadas..." className="min-h-[100px] border-slate-200 focus-visible:ring-blue-500 rounded-lg resize-none" />
                 </div>
                 <div className="col-span-2 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Observações Internas (Não visíveis ao cliente)</Label>
-                  <Textarea placeholder="Anotações de segurança, senhas de acesso, etc..." className="min-h-[80px] border-slate-200 focus-visible:ring-blue-500 rounded-lg resize-none" />
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Observações Operacionais Internas</Label>
+                  <Textarea placeholder="Anotações sobre senhas, acesso ao local ou riscos específicos..." className="min-h-[80px] border-slate-200 focus-visible:ring-blue-500 rounded-lg resize-none" />
                 </div>
               </div>
             </div>
@@ -171,7 +173,7 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
               Cancelar
             </Button>
             <Button type="submit" className="h-10 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm">
-              Gerar Ordem de Serviço
+              Abrir Ordem de Serviço
             </Button>
           </DialogFooter>
         </form>

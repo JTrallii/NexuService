@@ -21,7 +21,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { UserPlus, MapPin, Briefcase, Phone, Mail, FileText, Award } from "lucide-react";
+import { UserPlus, MapPin, Briefcase, Phone, Mail, FileText, Award, Fingerprint } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface NewTechnicianModalProps {
@@ -49,7 +49,7 @@ const NewTechnicianModal = ({ children }: NewTechnicianModalProps) => {
             <div>
               <DialogTitle className="text-xl font-bold text-slate-900">Novo Técnico</DialogTitle>
               <DialogDescription className="text-xs font-medium text-slate-500">
-                Cadastre profissionais para execução das ordens de serviço.
+                Gestão de equipe: cadastre profissionais e suas competências técnicas.
               </DialogDescription>
             </div>
           </div>
@@ -75,6 +75,12 @@ const NewTechnicianModal = ({ children }: NewTechnicianModalProps) => {
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Telefone / WhatsApp *</Label>
                   <Input placeholder="(00) 00000-0000" required className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
+                <div className="space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                    <Fingerprint size={12} className="text-slate-400" /> CPF do Técnico *
+                  </Label>
+                  <Input placeholder="000.000.000-00" required className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                </div>
               </div>
             </div>
 
@@ -83,43 +89,47 @@ const NewTechnicianModal = ({ children }: NewTechnicianModalProps) => {
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
                 <Award size={12} className="text-blue-500" /> Perfil Profissional
               </p>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-1 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Especialidade *</Label>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Especialidade Principal *</Label>
                   <Select required>
                     <SelectTrigger className="h-10 border-slate-200 rounded-lg">
                       <SelectValue placeholder="Selecione..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="eletrica">Elétrica</SelectItem>
-                      <SelectItem value="climatizacao">Climatização</SelectItem>
-                      <SelectItem value="ti">Infra de TI</SelectItem>
-                      <SelectItem value="civil">Obras Civis</SelectItem>
+                      <SelectItem value="eletrica">Elétrica Predial/Industrial</SelectItem>
+                      <SelectItem value="climatizacao">Climatização e Ar Condicionado</SelectItem>
+                      <SelectItem value="ti">Infraestrutura de TI e Redes</SelectItem>
+                      <SelectItem value="civil">Obras e Reformas Civis</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="col-span-1 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Nível Técnico</Label>
+                <div className="space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Área de Atuação</Label>
+                  <Input placeholder="Ex: Grande São Paulo, Interior" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Nível de Senioridade</Label>
                   <Select defaultValue="PLENO">
                     <SelectTrigger className="h-10 border-slate-200 rounded-lg">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="JUNIOR">Júnior</SelectItem>
-                      <SelectItem value="PLENO">Pleno</SelectItem>
-                      <SelectItem value="SENIOR">Sênior / Especialista</SelectItem>
+                      <SelectItem value="JUNIOR">Técnico Júnior</SelectItem>
+                      <SelectItem value="PLENO">Técnico Pleno</SelectItem>
+                      <SelectItem value="SENIOR">Técnico Sênior</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="col-span-1 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Status</Label>
+                <div className="space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Disponibilidade</Label>
                   <Select defaultValue="ATIVO">
                     <SelectTrigger className="h-10 border-slate-200 rounded-lg">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ATIVO">Ativo</SelectItem>
-                      <SelectItem value="INATIVO">Inativo</SelectItem>
+                      <SelectItem value="ATIVO">Ativo (Disponível)</SelectItem>
+                      <SelectItem value="INATIVO">Inativo (Afastado)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -137,21 +147,36 @@ const NewTechnicianModal = ({ children }: NewTechnicianModalProps) => {
                   <Input placeholder="00000-000" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="col-span-4 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Logradouro / Rua</Label>
-                  <Input placeholder="Rua das Flores" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Rua / Logradouro</Label>
+                  <Input placeholder="Ex: Rua das Flores" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
-                <div className="col-span-3 space-y-1.5">
+                <div className="col-span-2 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Número</Label>
+                  <Input placeholder="123" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                </div>
+                <div className="col-span-4 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Bairro</Label>
+                  <Input placeholder="Centro" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                </div>
+                <div className="col-span-4 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Cidade</Label>
                   <Input placeholder="São Paulo" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="col-span-2 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Bairro</Label>
-                  <Input placeholder="Centro" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
-                </div>
-                <div className="col-span-1 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">UF</Label>
                   <Input placeholder="SP" maxLength={2} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg uppercase text-center" />
                 </div>
+              </div>
+            </div>
+
+            {/* Seção: Observações */}
+            <div className="space-y-4">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+                <FileText size={12} className="text-blue-500" /> Notas Técnicas
+              </p>
+              <div className="space-y-1.5">
+                <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Observações / Certificações</Label>
+                <Textarea placeholder="Liste certificações (NR10, NR35) ou detalhes sobre a experiência..." className="min-h-[100px] border-slate-200 focus-visible:ring-blue-500 rounded-lg resize-none" />
               </div>
             </div>
           </div>
@@ -161,7 +186,7 @@ const NewTechnicianModal = ({ children }: NewTechnicianModalProps) => {
               Cancelar
             </Button>
             <Button type="submit" className="h-10 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm">
-              Cadastrar Técnico
+              Concluir Cadastro
             </Button>
           </DialogFooter>
         </form>
