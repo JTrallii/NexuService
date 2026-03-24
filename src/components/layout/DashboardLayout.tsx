@@ -50,10 +50,11 @@ const DashboardLayout = () => {
   return (
     <RoleContext.Provider value={{ role, toggleRole }}>
       <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+        {/* Header Superior Fixo com Logo NexuService */}
         <header className="fixed top-0 w-full h-16 bg-white border-b border-slate-200 z-50 px-6">
-          <div className="max-w-[1600px] mx-auto h-full flex items-center justify-between gap-8">
-            <Link to="/painel-principal" className="shrink-0">
-              <Logo />
+          <div className="max-w-[1600px] mx-auto h-full flex items-center justify-between gap-10">
+            <Link to="/painel-principal" className="shrink-0 hover:opacity-90 transition-opacity">
+              <Logo textSize="text-lg" iconSize={16} />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-1 shrink-0">

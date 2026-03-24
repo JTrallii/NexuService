@@ -10,23 +10,27 @@ interface LogoProps {
   showText?: boolean;
 }
 
-const Logo = ({ className, iconSize = 18, textSize = "text-lg", showText = true }: LogoProps) => {
+const Logo = ({ className, iconSize = 18, textSize = "text-xl", showText = true }: LogoProps) => {
   return (
-    <div className={cn("flex items-center gap-2.5 group", className)}>
-      <div className="relative">
-        {/* Camada de profundidade discreta */}
-        <div className="absolute inset-0 bg-blue-600/20 blur-lg rounded-lg group-hover:bg-blue-600/30 transition-all" />
+    <div className={cn("flex items-center gap-3 select-none group", className)}>
+      <div className="relative flex items-center justify-center">
+        {/* Fundo dinâmico da marca */}
+        <div className="absolute inset-0 bg-blue-600/20 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-500" />
         
-        {/* Container do Ícone */}
-        <div className="relative w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-sm group-hover:bg-blue-700 transition-colors">
-          <Wrench size={iconSize} strokeWidth={2.5} />
+        {/* Símbolo Nexu (Hexagono estilizado) */}
+        <div className="relative w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-blue-500/20 border border-blue-400/20">
+          <Wrench size={iconSize} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" />
+          
+          {/* Detalhe de conectividade (Nexus Dot) */}
+          <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-blue-400 border-2 border-white rounded-full" />
         </div>
       </div>
 
       {showText && (
-        <span className={cn("font-bold tracking-tighter text-slate-900 transition-colors", textSize)}>
-          Nexu<span className="text-blue-600">Service</span>
-        </span>
+        <div className={cn("flex items-baseline font-black tracking-tighter text-slate-900", textSize)}>
+          <span>Nexu</span>
+          <span className="text-blue-600">Service</span>
+        </div>
       )}
     </div>
   );
