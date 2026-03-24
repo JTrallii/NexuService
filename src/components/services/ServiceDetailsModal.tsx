@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { 
   Dialog, 
   DialogContent, 
@@ -20,12 +20,12 @@ import {
   Wrench,
   AlertCircle,
   XCircle,
-  Play,
-  ArrowRight
+  Play
 } from "lucide-react";
-import { showSuccess, showError } from "@/utils/toast";
+import { showSuccess } from "@/utils/toast";
 import { cn } from "@/lib/utils";
 import PaymentModal from "./PaymentModal";
+import { RoleContext } from "@/components/layout/DashboardLayout";
 
 interface OrderDetails {
   id: string;
@@ -47,6 +47,7 @@ interface ServiceDetailsModalProps {
 }
 
 const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: ServiceDetailsModalProps) => {
+  const { role } = useContext(RoleContext);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   if (!order) return null;
@@ -98,8 +99,6 @@ const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: Serv
             <DialogTitle className="text-3xl font-black tracking-tight">{order.title}</DialogTitle>
             <div className="flex gap-4 mt-2">
               <span className="text-[#9CA3AF] font-bold text-[10px] uppercase tracking-widest">Protocolo: {order.id}</span>
-              <span className="text-[#9CA3AF] font-bold text-[10px] uppercase tracking-widest">•</span>
-              <span className="text-[#9CA3AF] font-bold text-[10px] uppercase tracking-widest">Abertura: {order.date}</span>
             </div>
           </DialogHeader>
 
@@ -108,28 +107,30 @@ const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: Serv
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-1">
                   <p className="text-[10px] font-black text-[#9CA3AF] uppercase tracking-widest flex items-center gap-2">
-                    <User size={12} className="text-[#6366F1]" /> Cliente Solicitante
+                    <User size={12} className="text-[#6366F1]" /> Cliente
                   </p>
                   <p className="font-bold text-white text-lg">{order.client}</p>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-[10px] font-black text-[#9CA3AF] uppercase tracking-widest flex items-center gap-2">
-                    <CreditCard size={12} className="text-emerald-400" /> Valor do Serviço
-                  </p>
-                  <p className="text-2xl font-black text-white">{order.price}</p>
-                </div>
+                {role === "ADMIN" && (
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-black text-[#9CA3AF] uppercase tracking-widest flex items-center gap-2">
+                      <CreditCard size={12} className="text-emerald-400" /> Valor Total
+                    </p>
+                    <p className="text-2xl font-black text-white">{order.price}</p>
+                  </div>
+                )}
               </div>
 
               <div className="p-6 bg-white/5 rounded-2xl border border-white/5">
                 <p className="text-[10px] font-black text-[#9CA3AF] uppercase tracking-widest mb-3">Escopo e Descrição</p>
                 <p className="text-sm text-[#E5E7EB] leading-relaxed">
-                  {order.description || "Nenhuma descrição detalhada fornecida para esta ordem de serviço."}
+                  {order.description || "Nenhuma descrição detalhada fornecida."}
                 </p>
               </div>
             </div>
 
             <div className="space-y-6">
-              <p className="text-[10px] font-black text-[#9CA3AF] uppercase tracking-widest mb-4">Histórico do Fluxo</p>
+              <p className="text-[10px] font-black text-[#9CA3AF] uppercase tracking-widest mb-4">Timeline</p>
               <div className="space-y-6 relative before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[2px] before:bg-white/10">
                 {timelineEvents.map((event, i) => (
                   <div key={i} className="flex gap-4 relative">
@@ -152,31 +153,31 @@ const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: Serv
               {order.status === "PENDENTE" && (
                 <Button 
                   onClick={() => handleStatusUpdate("EM_ANDAMENTO")}
-                  className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-black h-12 transition-all gap-2"
+                  className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-black h-12 gap-2"
                 >
-                  <Play size={16} fill="currentColor" /> Iniciar Execução
+                  <Play size={16} fill="currentColor" /> Iniciar
                 </Button>
               )}
               
               {order.status === "EM_ANDAMENTO" && (
                 <Button 
                   onClick={() => handleStatusUpdate("CONCLUIDO")}
-                  className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-black h-12 transition-all gap-2"
+                  className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-black h-12 gap-2"
                 >
-                  <CheckCircle2 size={18} /> Concluir Trabalho
+                  <CheckCircle2 size={18} /> Concluir
                 </Button>
               )}
 
-              {order.status === "CONCLUIDO" && (
+              {order.status === "CONCLUIDO" && role === "ADMIN" && (
                 <Button 
                   onClick={() => setIsPaymentOpen(true)}
-                  className="flex-1 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-black h-12 transition-all gap-2 shadow-lg shadow-purple-500/20"
+                  className="flex-1 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-xl font-black h-12 shadow-lg shadow-purple-500/20"
                 >
-                  <CreditCard size={18} /> Marcar como Pago
+                  <CreditCard size={18} className="mr-2" /> Registrar Pagamento
                 </Button>
               )}
 
-              {["PENDENTE", "EM_ANDAMENTO"].includes(order.status) && (
+              {role === "ADMIN" && ["PENDENTE", "EM_ANDAMENTO"].includes(order.status) && (
                 <Button 
                   variant="ghost" 
                   onClick={() => handleStatusUpdate("CANCELADO")}
@@ -184,12 +185,6 @@ const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: Serv
                 >
                   <XCircle size={18} className="mr-2" /> Cancelar
                 </Button>
-              )}
-              
-              {["PAGO", "CANCELADO"].includes(order.status) && (
-                <div className="flex-1 flex items-center justify-center p-3 rounded-xl bg-white/5 border border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-[#9CA3AF]">
-                  Fluxo Finalizado • {order.status}
-                </div>
               )}
             </div>
             

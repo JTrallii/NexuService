@@ -1,15 +1,17 @@
 "use client";
 
-import { Plus, Search, ClipboardList, ChevronRight, ArrowRight } from "lucide-react";
+import { Plus, Search, ClipboardList, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import NewServiceModal from "@/components/services/NewServiceModal";
 import ServiceDetailsModal from "@/components/services/ServiceDetailsModal";
 import { cn } from "@/lib/utils";
+import { RoleContext } from "@/components/layout/DashboardLayout";
 
 const Services = () => {
+  const { role } = useContext(RoleContext);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [filter, setFilter] = useState("TODOS");
@@ -48,23 +50,27 @@ const Services = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-black text-white tracking-tight mb-1">Ordens de Serviço</h1>
-          <p className="text-[#9CA3AF] text-sm font-medium">Gestão operacional de fluxo e pagamentos.</p>
+          <p className="text-[#9CA3AF] text-sm font-medium">
+            {role === "ADMIN" ? "Gestão operacional de fluxo e pagamentos." : "Visualização e atualização das suas tarefas atribuídas."}
+          </p>
         </div>
         
-        <NewServiceModal>
-          <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold h-12 px-6 shadow-lg shadow-indigo-500/20 border-none transition-all group">
-            <Plus size={18} className="mr-2 group-hover:scale-110 transition-transform" /> Nova Ordem
-          </Button>
-        </NewServiceModal>
+        {role === "ADMIN" && (
+          <NewServiceModal>
+            <Button className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white rounded-xl font-bold h-12 px-6 shadow-lg shadow-indigo-500/20 border-none transition-all group">
+              <Plus size={18} className="mr-2 group-hover:scale-110 transition-transform" /> Nova Ordem
+            </Button>
+          </NewServiceModal>
+        )}
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={18} />
-          <Input className="pl-12 bg-white/5 border-white/10 rounded-xl text-white focus-visible:ring-[#6366F1] h-12" placeholder="Buscar por protocolo, cliente ou título..." />
+          <Input className="pl-12 bg-white/5 border-white/10 rounded-xl text-white focus-visible:ring-[#6366F1] h-12" placeholder="Buscar por protocolo..." />
         </div>
         <div className="flex gap-1 bg-white/5 p-1 rounded-xl border border-white/10 overflow-x-auto no-scrollbar">
-          {["TODOS", "PENDENTE", "EM_ANDAMENTO", "CONCLUIDO", "PAGO", "CANCELADO"].map((s) => (
+          {["TODOS", "PENDENTE", "EM_ANDAMENTO", "CONCLUIDO", "PAGO"].map((s) => (
             <button
               key={s}
               onClick={() => setFilter(s)}
@@ -105,23 +111,16 @@ const Services = () => {
                       <h3 className="font-bold text-white text-lg tracking-tight group-hover:text-[#22D3EE] transition-colors">{service.title}</h3>
                     </div>
                     <p className="text-sm text-[#9CA3AF]">Cliente: <span className="text-white font-bold">{service.client}</span></p>
-                    <div className="flex gap-4 mt-2">
-                      <p className="text-[9px] text-[#9CA3AF] uppercase font-bold tracking-widest flex items-center gap-1">
-                        Abertura: <span className="text-white">{service.date}</span>
-                      </p>
-                      {service.paidAt && (
-                        <p className="text-[9px] text-[#8B5CF6] uppercase font-black tracking-widest flex items-center gap-1">
-                          Pago em: <span>{service.paidAt}</span>
-                        </p>
-                      )}
-                    </div>
+                    {role === "USER" && (
+                      <p className="text-[9px] text-amber-400 font-bold uppercase tracking-widest mt-1">Tarefa Atribuída a Você</p>
+                    )}
                   </div>
                 </div>
                 
                 <div className="flex items-center justify-between md:justify-end gap-10">
                   <div className="text-right">
                     <p className="text-xl font-black text-white">{service.price}</p>
-                    <p className="text-[10px] text-[#9CA3AF] uppercase font-bold tracking-widest">Valor do Projeto</p>
+                    <p className="text-[10px] text-[#9CA3AF] uppercase font-bold tracking-widest">Valor</p>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border shadow-sm ${getStatusColor(service.status)}`}>
@@ -134,11 +133,6 @@ const Services = () => {
             </CardContent>
           </Card>
         ))}
-        {filteredServices.length === 0 && (
-          <div className="p-20 text-center bg-white/5 border border-dashed border-white/10 rounded-[2rem]">
-            <p className="text-[#9CA3AF] font-bold">Nenhuma ordem encontrada com este status.</p>
-          </div>
-        )}
       </div>
 
       <ServiceDetailsModal 
