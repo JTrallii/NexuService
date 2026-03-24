@@ -14,35 +14,63 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { UserPlus, MapPin, User, Phone, Mail, FileText } from "lucide-react";
+import { UserPlus, MapPin, User, Phone, Mail, FileText, Edit2 } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
-interface NewClientModalProps {
-  children: React.ReactNode;
+interface Client {
+  id?: number;
+  name: string;
+  email: string;
+  phone: string;
+  status?: string;
+  cpf?: string;
+  cep?: string;
+  address?: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  notes?: string;
 }
 
-const NewClientModal = ({ children }: NewClientModalProps) => {
-  const [open, setOpen] = useState(false);
+interface ClientModalProps {
+  children?: React.ReactNode;
+  client?: Client;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+const ClientModal = ({ children, client, open: externalOpen, onOpenChange: externalOnOpenChange }: ClientModalProps) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setOpen = externalOnOpenChange !== undefined ? externalOnOpenChange : setInternalOpen;
+
+  const isEditing = !!client;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    showSuccess("Cliente cadastrado com sucesso!");
+    showSuccess(isEditing ? "Cadastro do cliente atualizado!" : "Cliente cadastrado com sucesso!");
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="sm:max-w-[700px] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl">
         <DialogHeader className="bg-slate-50 border-b border-slate-200 p-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-sm">
-              <UserPlus size={20} />
+              {isEditing ? <Edit2 size={20} /> : <UserPlus size={20} />}
             </div>
             <div>
-              <DialogTitle className="text-xl font-bold text-slate-900">Novo Cliente</DialogTitle>
+              <DialogTitle className="text-xl font-bold text-slate-900">
+                {isEditing ? `Editar Cliente: ${client.name}` : "Novo Cliente"}
+              </DialogTitle>
               <DialogDescription className="text-xs font-medium text-slate-500">
-                Cadastre os dados completos para faturamento e atendimento.
+                {isEditing 
+                  ? "Atualize as informações cadastrais e de localização do cliente." 
+                  : "Cadastre os dados completos para faturamento e atendimento."}
               </DialogDescription>
             </div>
           </div>
@@ -58,25 +86,25 @@ const NewClientModal = ({ children }: NewClientModalProps) => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Nome Completo *</Label>
-                  <Input placeholder="Ex: João da Silva Santos" required className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Input defaultValue={client?.name} placeholder="Ex: João da Silva Santos" required className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">E-mail de Contato *</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
-                    <Input type="email" placeholder="cliente@email.com" required className="pl-9 h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                    <Input defaultValue={client?.email} type="email" placeholder="cliente@email.com" required className="pl-9 h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Telefone / WhatsApp *</Label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
-                    <Input placeholder="(00) 00000-0000" required className="pl-9 h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                    <Input defaultValue={client?.phone} placeholder="(00) 00000-0000" required className="pl-9 h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">CPF / CNPJ</Label>
-                  <Input placeholder="000.000.000-00" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Input defaultValue={client?.cpf} placeholder="000.000.000-00" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
               </div>
             </div>
@@ -89,31 +117,31 @@ const NewClientModal = ({ children }: NewClientModalProps) => {
               <div className="grid grid-cols-6 gap-4">
                 <div className="col-span-2 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">CEP</Label>
-                  <Input placeholder="00000-000" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Input defaultValue={client?.cep} placeholder="00000-000" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="col-span-4 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Logradouro / Rua</Label>
-                  <Input placeholder="Av. Paulista" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Input defaultValue={client?.address} placeholder="Av. Paulista" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="col-span-2 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Número</Label>
-                  <Input placeholder="123" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Input defaultValue={client?.number} placeholder="123" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="col-span-4 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Complemento</Label>
-                  <Input placeholder="Apto, Sala, Bloco..." className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Input defaultValue={client?.complement} placeholder="Apto, Sala, Bloco..." className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="col-span-2 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Bairro</Label>
-                  <Input placeholder="Centro" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Input defaultValue={client?.neighborhood} placeholder="Centro" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="col-span-3 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Cidade</Label>
-                  <Input placeholder="São Paulo" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
+                  <Input defaultValue={client?.city} placeholder="São Paulo" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg" />
                 </div>
                 <div className="col-span-1 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">UF</Label>
-                  <Input placeholder="SP" maxLength={2} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg uppercase text-center" />
+                  <Input defaultValue={client?.state} placeholder="SP" maxLength={2} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg uppercase text-center" />
                 </div>
               </div>
             </div>
@@ -125,7 +153,7 @@ const NewClientModal = ({ children }: NewClientModalProps) => {
               </p>
               <div className="space-y-1.5">
                 <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Observações do Cliente</Label>
-                <Textarea placeholder="Detalhes importantes, referências de localização ou histórico..." className="min-h-[100px] border-slate-200 focus-visible:ring-blue-500 rounded-lg resize-none" />
+                <Textarea defaultValue={client?.notes} placeholder="Detalhes importantes, referências de localização ou histórico..." className="min-h-[100px] border-slate-200 focus-visible:ring-blue-500 rounded-lg resize-none" />
               </div>
             </div>
           </div>
@@ -135,7 +163,7 @@ const NewClientModal = ({ children }: NewClientModalProps) => {
               Cancelar
             </Button>
             <Button type="submit" className="h-10 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm">
-              Cadastrar Cliente
+              {isEditing ? "Salvar Alterações" : "Cadastrar Cliente"}
             </Button>
           </DialogFooter>
         </form>
@@ -144,4 +172,4 @@ const NewClientModal = ({ children }: NewClientModalProps) => {
   );
 };
 
-export default NewClientModal;
+export default ClientModal;

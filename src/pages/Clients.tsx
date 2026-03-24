@@ -1,6 +1,7 @@
 "use client";
 
-import { Search, Plus, Mail, Phone, MoreHorizontal, UserPlus, Filter } from "lucide-react";
+import { useState } from "react";
+import { Search, Plus, Mail, Phone, MoreHorizontal, UserPlus, Filter, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,17 +12,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import NewClientModal from "@/components/clients/NewClientModal";
+import ClientModal from "@/components/clients/ClientModal";
 import { cn } from "@/lib/utils";
 
 const Clients = () => {
+  const [selectedClient, setSelectedClient] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const clients = [
-    { id: 1, name: "Carlos Eduardo", email: "carlos@email.com", phone: "(11) 98888-7777", status: "Ativo", lastOrder: "12/10/2023" },
-    { id: 2, name: "Mariana Souza", email: "mariana@email.com", phone: "(11) 97777-6666", status: "Ativo", lastOrder: "15/10/2023" },
-    { id: 3, name: "Roberto Lima", email: "roberto@email.com", phone: "(11) 96666-5555", status: "Inativo", lastOrder: "18/10/2023" },
-    { id: 4, name: "Ana Paula", email: "ana@email.com", phone: "(11) 95555-4444", status: "Ativo", lastOrder: "20/10/2023" },
-    { id: 5, name: "João Silva", email: "joao@email.com", phone: "(11) 94444-3333", status: "Ativo", lastOrder: "22/10/2023" },
+    { id: 1, name: "Carlos Eduardo", email: "carlos@email.com", phone: "(11) 98888-7777", status: "Ativo", lastOrder: "12/10/2023", cpf: "123.456.789-00", cep: "01001-000", address: "Praça da Sé", number: "1", neighborhood: "Sé", city: "São Paulo", state: "SP" },
+    { id: 2, name: "Mariana Souza", email: "mariana@email.com", phone: "(11) 97777-6666", status: "Ativo", lastOrder: "15/10/2023", cpf: "234.567.890-11", cep: "01310-000", address: "Avenida Paulista", number: "1000", neighborhood: "Bela Vista", city: "São Paulo", state: "SP" },
+    { id: 3, name: "Roberto Lima", email: "roberto@email.com", phone: "(11) 96666-5555", status: "Inativo", lastOrder: "18/10/2023", cpf: "345.678.901-22" },
+    { id: 4, name: "Ana Paula", email: "ana@email.com", phone: "(11) 95555-4444", status: "Ativo", lastOrder: "20/10/2023", cpf: "456.789.012-33" },
+    { id: 5, name: "João Silva", email: "joao@email.com", phone: "(11) 94444-3333", status: "Ativo", lastOrder: "22/10/2023", cpf: "567.890.123-44" },
   ];
+
+  const handleEdit = (client: any) => {
+    setSelectedClient(client);
+    setIsModalOpen(true);
+  };
+
+  const handleAdd = () => {
+    setSelectedClient(null);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -31,11 +45,12 @@ const Clients = () => {
           <p className="text-sm text-slate-500 font-medium mt-1">Gerencie sua base de contatos e histórico de atendimentos.</p>
         </div>
         
-        <NewClientModal>
-          <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
-            <UserPlus size={16} /> Novo Cliente
-          </Button>
-        </NewClientModal>
+        <Button 
+          onClick={handleAdd}
+          className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2"
+        >
+          <UserPlus size={16} /> Novo Cliente
+        </Button>
       </div>
 
       <div className="flex flex-wrap items-center gap-3 py-2">
@@ -64,7 +79,7 @@ const Clients = () => {
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">E-mail</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Telefone</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
-              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Última Ordem</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -92,7 +107,17 @@ const Clients = () => {
                   </span>
                 </TableCell>
                 <TableCell className="pr-6 py-4 text-right">
-                  <span className="text-[11px] font-medium text-slate-400">{client.lastOrder}</span>
+                  <div className="flex items-center justify-end gap-3">
+                    <span className="text-[11px] font-medium text-slate-400">{client.lastOrder}</span>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => handleEdit(client)}
+                      className="h-8 w-8 text-slate-400 hover:text-blue-600"
+                    >
+                      <Edit2 size={14} />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -105,6 +130,12 @@ const Clients = () => {
           </p>
         </div>
       </div>
+
+      <ClientModal 
+        open={isModalOpen} 
+        onOpenChange={setIsModalOpen} 
+        client={selectedClient} 
+      />
     </div>
   );
 };
