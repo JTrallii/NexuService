@@ -2,7 +2,6 @@
 
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { 
-  Search, 
   User as UserIcon,
   RefreshCw,
   LogOut,
@@ -11,7 +10,6 @@ import {
 } from "lucide-react";
 import { useState, createContext } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Logo from "./Logo";
 import {
   DropdownMenu,
@@ -51,34 +49,28 @@ const DashboardLayout = () => {
       <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
         {/* Header Superior Fixo com Logo NexuService */}
         <header className="fixed top-0 w-full h-16 bg-white border-b border-slate-200 z-50 px-6">
-          <div className="max-w-[1600px] mx-auto h-full flex items-center justify-between gap-10">
-            <Link to="/painel-principal" className="shrink-0 hover:opacity-90 transition-opacity">
-              <Logo textSize="text-lg" iconSize={16} />
-            </Link>
+          <div className="max-w-[1600px] mx-auto h-full flex items-center justify-between">
+            <div className="flex items-center gap-10">
+              <Link to="/painel-principal" className="shrink-0 hover:opacity-90 transition-opacity">
+                <Logo textSize="text-lg" iconSize={16} />
+              </Link>
 
-            <nav className="hidden lg:flex items-center gap-1 shrink-0">
-              {visibleNav.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={cn(
-                    "px-4 py-2 text-sm font-semibold rounded-md transition-colors",
-                    location.pathname === item.path 
-                      ? "text-blue-600 bg-blue-50" 
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="flex-1 max-w-xl relative group hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={16} />
-              <Input 
-                placeholder="Buscar cliente, serviço, ordem ou pagamento..." 
-                className="pl-10 h-10 bg-slate-100 border-none focus-visible:ring-1 focus-visible:ring-blue-500 rounded-lg text-sm"
-              />
+              <nav className="hidden lg:flex items-center gap-1 shrink-0">
+                {visibleNav.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={cn(
+                      "px-4 py-2 text-sm font-semibold rounded-md transition-colors",
+                      location.pathname === item.path 
+                        ? "text-blue-600 bg-blue-50" 
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
             </div>
 
             <div className="flex items-center gap-3 shrink-0">
