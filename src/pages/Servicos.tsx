@@ -36,35 +36,30 @@ const Servicos = () => {
     { 
       id: 1, 
       name: "Manutenção Preventiva AC", 
-      price: "R$ 150,00", 
       specialty: "Climatização",
       description: "Limpeza de filtros, verificação de dreno e higienização da evaporadora."
     },
     { 
       id: 2, 
       name: "Instalação de Quadro Elétrico", 
-      price: "R$ 450,00", 
       specialty: "Elétrica",
       description: "Montagem completa de QDC com barramentos e identificação de circuitos."
     },
     { 
       id: 3, 
       name: "Reparo de Vazamento", 
-      price: "R$ 200,00", 
       specialty: "Hidráulica",
       description: "Localização e conserto de vazamentos em tubulações de PVC ou cobre."
     },
     { 
       id: 4, 
       name: "Configuração de Roteador", 
-      price: "R$ 120,00", 
       specialty: "Infra de TI",
       description: "Configuração de rede Wi-Fi, segurança WPA3 e controle parental."
     },
     { 
       id: 5, 
       name: "Troca de Disjuntor", 
-      price: "R$ 80,00", 
       specialty: "Elétrica",
       description: "Substituição de disjuntor danificado por modelo compatível (DIN ou NEMA)."
     },
@@ -117,7 +112,6 @@ const Servicos = () => {
                   <TableRow className="hover:bg-transparent border-b border-slate-200">
                     <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 pl-4 md:pl-6">Serviço / Descrição</TableHead>
                     <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500">Especialidade</TableHead>
-                    <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 text-right">Preço</TableHead>
                     <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-4 md:pr-6">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -136,9 +130,6 @@ const Servicos = () => {
                         <span className="text-[9px] md:text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
                           {item.specialty}
                         </span>
-                      </TableCell>
-                      <TableCell className="py-3 md:py-4 text-right">
-                        <span className="text-xs md:text-sm font-black text-slate-900">{item.price}</span>
                       </TableCell>
                       <TableCell className="pr-4 md:pr-6 py-3 md:py-4 text-right">
                         <div className="flex justify-end gap-1">

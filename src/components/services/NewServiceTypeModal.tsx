@@ -21,7 +21,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { Briefcase, DollarSign, Award, FileText } from "lucide-react";
+import { Briefcase, Award, FileText } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface NewServiceTypeModalProps {
@@ -62,27 +62,21 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
               <Input placeholder="Ex: Manutenção Preventiva" required className="h-10 border-slate-200 rounded-lg text-xs" />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                  <Award size={12} className="text-blue-500" /> Especialidade *
-                </Label>
-                <Select required>
-                  <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
-                    <SelectValue placeholder="Selecione..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="eletrica">Elétrica</SelectItem>
-                    <SelectItem value="climatizacao">Climatização</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                  <DollarSign size={12} className="text-emerald-600" /> Preço Base *
-                </Label>
-                <Input placeholder="0,00" required className="h-10 border-slate-200 rounded-lg text-xs" />
-              </div>
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                <Award size={12} className="text-blue-500" /> Especialidade *
+              </Label>
+              <Select required>
+                <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="eletrica">Elétrica</SelectItem>
+                  <SelectItem value="climatizacao">Climatização</SelectItem>
+                  <SelectItem value="hidraulica">Hidráulica</SelectItem>
+                  <SelectItem value="infra-ti">Infra de TI</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
