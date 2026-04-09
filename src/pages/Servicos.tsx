@@ -11,7 +11,8 @@ import {
   Trash2, 
   Edit2,
   Search,
-  Filter
+  Filter,
+  Info
 } from "lucide-react";
 import {
   Table,
@@ -26,18 +27,48 @@ import NewSpecialtyModal from "@/components/services/NewSpecialtyModal";
 
 const Servicos = () => {
   const [specialties] = useState([
-    { id: 1, name: "Elétrica", description: "Instalações e reparos elétricos prediais e industriais." },
-    { id: 2, name: "Hidráulica", description: "Manutenção de redes de água, esgoto e reparos pontuais." },
-    { id: 3, name: "Climatização", description: "Instalação e manutenção de ar condicionado e ventilação." },
-    { id: 4, name: "Infra de TI", description: "Cabeamento estruturado, redes mesh e racks de TI." },
+    { id: 1, name: "Elétrica" },
+    { id: 2, name: "Hidráulica" },
+    { id: 3, name: "Climatização" },
+    { id: 4, name: "Infra de TI" },
   ]);
 
   const [serviceTypes] = useState([
-    { id: 1, name: "Manutenção Preventiva AC", price: "R$ 150,00", specialty: "Climatização" },
-    { id: 2, name: "Instalação de Quadro Elétrico", price: "R$ 450,00", specialty: "Elétrica" },
-    { id: 3, name: "Reparo de Vazamento", price: "R$ 200,00", specialty: "Hidráulica" },
-    { id: 4, name: "Configuração de Roteador", price: "R$ 120,00", specialty: "Infra de TI" },
-    { id: 5, name: "Troca de Disjuntor", price: "R$ 80,00", specialty: "Elétrica" },
+    { 
+      id: 1, 
+      name: "Manutenção Preventiva AC", 
+      price: "R$ 150,00", 
+      specialty: "Climatização",
+      description: "Limpeza de filtros, verificação de dreno e higienização da evaporadora."
+    },
+    { 
+      id: 2, 
+      name: "Instalação de Quadro Elétrico", 
+      price: "R$ 450,00", 
+      specialty: "Elétrica",
+      description: "Montagem completa de QDC com barramentos e identificação de circuitos."
+    },
+    { 
+      id: 3, 
+      name: "Reparo de Vazamento", 
+      price: "R$ 200,00", 
+      specialty: "Hidráulica",
+      description: "Localização e conserto de vazamentos em tubulações de PVC ou cobre."
+    },
+    { 
+      id: 4, 
+      name: "Configuração de Roteador", 
+      price: "R$ 120,00", 
+      specialty: "Infra de TI",
+      description: "Configuração de rede Wi-Fi, segurança WPA3 e controle parental."
+    },
+    { 
+      id: 5, 
+      name: "Troca de Disjuntor", 
+      price: "R$ 80,00", 
+      specialty: "Elétrica",
+      description: "Substituição de disjuntor danificado por modelo compatível (DIN ou NEMA)."
+    },
   ]);
 
   return (
@@ -84,7 +115,7 @@ const Servicos = () => {
             <Table>
               <TableHeader className="bg-slate-50/50">
                 <TableRow className="hover:bg-transparent border-b border-slate-200">
-                  <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">Serviço</TableHead>
+                  <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">Serviço / Descrição</TableHead>
                   <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Especialidade</TableHead>
                   <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right">Preço Base</TableHead>
                   <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Ações</TableHead>
@@ -94,7 +125,12 @@ const Servicos = () => {
                 {serviceTypes.map((item) => (
                   <TableRow key={item.id} className="table-row-hover border-b border-slate-100 last:border-0 transition-colors">
                     <TableCell className="pl-6 py-4">
-                      <span className="text-sm font-bold text-slate-900">{item.name}</span>
+                      <div className="space-y-1">
+                        <p className="text-sm font-bold text-slate-900">{item.name}</p>
+                        <p className="text-[11px] text-slate-500 font-medium leading-relaxed max-w-md">
+                          {item.description}
+                        </p>
+                      </div>
                     </TableCell>
                     <TableCell className="py-4">
                       <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
@@ -140,23 +176,21 @@ const Servicos = () => {
               <TableHeader className="bg-slate-50/50">
                 <TableRow className="hover:bg-transparent border-b border-slate-200">
                   <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">Especialidade</TableHead>
-                  <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Descrição</TableHead>
                   <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {specialties.map((item) => (
                   <TableRow key={item.id} className="table-row-hover border-b border-slate-100 last:border-0 transition-colors">
-                    <td className="pl-6 py-4">
+                    <TableCell className="pl-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center text-amber-600 border border-amber-100">
                           <Award size={16} />
                         </div>
                         <span className="text-sm font-bold text-slate-900">{item.name}</span>
                       </div>
-                    </td>
-                    <td className="py-4 text-sm text-slate-500 font-medium">{item.description}</td>
-                    <td className="pr-6 py-4 text-right">
+                    </TableCell>
+                    <TableCell className="pr-6 py-4 text-right">
                       <div className="flex justify-end gap-1">
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-blue-600">
                           <Edit2 size={14} />
@@ -165,7 +199,7 @@ const Servicos = () => {
                           <Trash2 size={14} />
                         </Button>
                       </div>
-                    </td>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

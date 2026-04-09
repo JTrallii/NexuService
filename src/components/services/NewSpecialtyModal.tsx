@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Award, FileText } from "lucide-react";
+import { Award } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface NewSpecialtyModalProps {
@@ -33,7 +32,7 @@ const NewSpecialtyModal = ({ children }: NewSpecialtyModalProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl">
+      <DialogContent className="sm:max-w-[450px] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl">
         <DialogHeader className="bg-slate-50 border-b border-slate-200 p-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center text-white shadow-sm">
@@ -42,7 +41,7 @@ const NewSpecialtyModal = ({ children }: NewSpecialtyModalProps) => {
             <div>
               <DialogTitle className="text-xl font-bold text-slate-900">Nova Especialidade</DialogTitle>
               <DialogDescription className="text-xs font-medium text-slate-500">
-                Adicione uma nova categoria técnica para organizar seus serviços e equipe.
+                Adicione uma nova categoria técnica para organizar seus serviços.
               </DialogDescription>
             </div>
           </div>
@@ -53,13 +52,6 @@ const NewSpecialtyModal = ({ children }: NewSpecialtyModalProps) => {
             <div className="space-y-2">
               <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Nome da Especialidade *</Label>
               <Input placeholder="Ex: Segurança Eletrônica" required className="h-10 border-slate-200 rounded-lg" />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                <FileText size={12} className="text-slate-400" /> Descrição Curta
-              </Label>
-              <Textarea placeholder="Descreva brevemente o que esta especialidade abrange..." className="min-h-[100px] border-slate-200 rounded-lg resize-none" />
             </div>
           </div>
 

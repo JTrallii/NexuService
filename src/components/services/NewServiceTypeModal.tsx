@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   Select, 
   SelectContent, 
@@ -20,7 +21,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { Briefcase, DollarSign, Award } from "lucide-react";
+import { Briefcase, DollarSign, Award, FileText } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface NewServiceTypeModalProps {
@@ -39,7 +40,7 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl">
+      <DialogContent className="sm:max-w-[550px] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl">
         <DialogHeader className="bg-slate-50 border-b border-slate-200 p-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-sm">
@@ -48,7 +49,7 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
             <div>
               <DialogTitle className="text-xl font-bold text-slate-900">Novo Tipo de Serviço</DialogTitle>
               <DialogDescription className="text-xs font-medium text-slate-500">
-                Defina um novo serviço padrão para o catálogo da plataforma.
+                Defina um novo serviço padrão com descrição detalhada para o cliente.
               </DialogDescription>
             </div>
           </div>
@@ -74,6 +75,7 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
                     <SelectItem value="eletrica">Elétrica</SelectItem>
                     <SelectItem value="hidraulica">Hidráulica</SelectItem>
                     <SelectItem value="climatizacao">Climatização</SelectItem>
+                    <SelectItem value="ti">Infra de TI</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -83,6 +85,17 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
                 </Label>
                 <Input placeholder="0,00" required className="h-10 border-slate-200 rounded-lg" />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                <FileText size={12} className="text-slate-400" /> Descrição para o Cliente *
+              </Label>
+              <Textarea 
+                placeholder="Descreva o que está incluso neste serviço, materiais utilizados e o que o cliente pode esperar da execução..." 
+                required 
+                className="min-h-[120px] border-slate-200 rounded-lg resize-none" 
+              />
             </div>
           </div>
 
