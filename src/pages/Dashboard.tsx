@@ -63,9 +63,9 @@ const Dashboard = () => {
     const completed = filteredServices.filter(s => s.status === "CONCLUIDO" || s.status === "PAGO").length;
 
     return [
-      { label: "Total de Ordens", value: total, icon: ClipboardList, color: "text-blue-600", bg: "bg-blue-50" },
+      { label: "Total", value: total, icon: ClipboardList, color: "text-blue-600", bg: "bg-blue-50" },
       { label: "Aguardando", value: pending, icon: Clock, color: "text-amber-600", bg: "bg-amber-50" },
-      { label: "Em Execução", value: inProgress, icon: AlertCircle, color: "text-indigo-600", bg: "bg-indigo-50" },
+      { label: "Execução", value: inProgress, icon: AlertCircle, color: "text-indigo-600", bg: "bg-indigo-50" },
       { label: "Concluídas", value: completed, icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50" },
     ];
   }, [filteredServices]);
@@ -91,29 +91,29 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="space-y-6 md:space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-lg md:text-2xl font-bold text-slate-900 tracking-tight">
             {role === "ADMIN" ? "Gestão de Ordens" : role === "CLIENT" ? "Meus Chamados" : "Minhas Tarefas"}
           </h1>
-          <p className="text-xs md:text-sm text-slate-500 font-medium mt-1">
+          <p className="text-[10px] md:text-sm text-slate-500 font-medium mt-1">
             {role === "ADMIN" ? "Acompanhe ordens, clientes e técnicos alocados." : "Acompanhe o status dos seus serviços em tempo real."}
           </p>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-4 md:p-6 rounded-xl border border-slate-200 shadow-sm">
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <div className={cn("w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center", stat.bg, stat.color)}>
-                <stat.icon size={18} />
+          <div key={i} className="bg-white p-3 md:p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="flex items-center justify-between mb-2 md:mb-4">
+              <div className={cn("w-7 h-7 md:w-10 md:h-10 rounded-lg flex items-center justify-center", stat.bg, stat.color)}>
+                <stat.icon size={14} className="md:w-5 md:h-5" />
               </div>
             </div>
-            <p className="text-[10px] md:text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
-            <h3 className="text-xl md:text-2xl font-black text-slate-900">{stat.value}</h3>
+            <p className="text-[9px] md:text-[11px] font-black text-slate-400 uppercase tracking-widest mb-0.5 md:mb-1">{stat.label}</p>
+            <h3 className="text-lg md:text-2xl font-black text-slate-900">{stat.value}</h3>
           </div>
         ))}
       </div>
@@ -121,16 +121,16 @@ const Dashboard = () => {
       {/* Search and Filter Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 py-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
           <Input 
-            placeholder="Buscar por protocolo, cliente ou serviço..." 
+            placeholder="Buscar protocolo..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-10 pl-10 bg-white border-slate-200 text-sm rounded-lg focus-visible:ring-blue-500 w-full"
+            className="h-9 pl-9 bg-white border-slate-200 text-xs rounded-lg focus-visible:ring-blue-500 w-full"
           />
         </div>
-        <Button variant="outline" className="h-10 bg-white border-slate-200 rounded-lg px-4 flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
-          <Filter size={14} />
+        <Button variant="outline" className="h-9 bg-white border-slate-200 rounded-lg px-3 flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+          <Filter size={12} />
           Filtros
         </Button>
       </div>
@@ -141,12 +141,12 @@ const Dashboard = () => {
           <Table>
             <TableHeader className="bg-slate-50/50">
               <TableRow className="hover:bg-transparent border-b border-slate-200">
-                <TableHead className="w-[100px] h-12 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">Protocolo</TableHead>
-                <TableHead className="h-12 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-500">Cliente</TableHead>
-                <TableHead className="h-12 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-500">Técnico</TableHead>
-                <TableHead className="h-12 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-500">Serviço</TableHead>
-                <TableHead className="h-12 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
-                <TableHead className="h-12 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Abertura</TableHead>
+                <TableHead className="w-[80px] h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 pl-4 md:pl-6">ID</TableHead>
+                <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500">Cliente</TableHead>
+                <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500">Técnico</TableHead>
+                <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500">Serviço</TableHead>
+                <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
+                <TableHead className="h-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-4 md:pr-6">Data</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -158,36 +158,29 @@ const Dashboard = () => {
                     className="table-row-hover border-b border-slate-100 last:border-0 transition-colors whitespace-nowrap"
                     onClick={() => { setSelectedOrder(service); setIsDetailsOpen(true); }}
                   >
-                    <TableCell className="pl-6 py-4">
-                      <span className="text-[11px] font-bold text-slate-400 font-mono tracking-tighter">{service.id}</span>
+                    <TableCell className="pl-4 md:pl-6 py-3 md:py-4">
+                      <span className="text-[10px] font-bold text-slate-400 font-mono tracking-tighter">{service.id}</span>
                     </TableCell>
-                    <TableCell className="py-4">
-                      <span className="text-sm font-bold text-slate-900">{service.client}</span>
+                    <TableCell className="py-3 md:py-4">
+                      <span className="text-xs md:text-sm font-bold text-slate-900">{service.client}</span>
                     </TableCell>
-                    <TableCell className="py-4">
-                      <span className="text-xs font-semibold text-slate-600">{service.technician}</span>
+                    <TableCell className="py-3 md:py-4">
+                      <span className="text-[10px] md:text-xs font-semibold text-slate-600">{service.technician}</span>
                     </TableCell>
-                    <TableCell className="py-4">
-                      <span className="text-xs font-medium text-slate-500">{service.title}</span>
+                    <TableCell className="py-3 md:py-4">
+                      <span className="text-[10px] md:text-xs font-medium text-slate-500">{service.title}</span>
                     </TableCell>
-                    <TableCell className="py-4 text-center">
-                      <span className={cn("status-badge", status.class)}>
+                    <TableCell className="py-3 md:py-4 text-center">
+                      <span className={cn("status-badge text-[9px] md:text-[11px]", status.class)}>
                         {status.label}
                       </span>
                     </TableCell>
-                    <TableCell className="pr-6 py-4 text-right">
-                      <span className="text-[11px] font-medium text-slate-400">{service.date}</span>
+                    <TableCell className="pr-4 md:pr-6 py-3 md:py-4 text-right">
+                      <span className="text-[10px] font-medium text-slate-400">{service.date}</span>
                     </TableCell>
                   </TableRow>
                 );
               })}
-              {filteredServices.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="h-32 text-center text-slate-400 font-medium">
-                    Nenhuma ordem de serviço encontrada.
-                  </TableCell>
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </div>
