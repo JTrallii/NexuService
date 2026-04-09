@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { 
   Select, 
   SelectContent, 
@@ -21,7 +20,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { UserPlus, Briefcase, Award, Edit2 } from "lucide-react";
+import { UserPlus, Briefcase, Award, Edit2, MapPin, ShieldCheck, FileText } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface Technician {
@@ -33,6 +32,7 @@ interface Technician {
   level: string;
   status: string;
   cpf?: string;
+  area?: string;
 }
 
 interface TechnicianModalProps {
@@ -69,7 +69,7 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
                 {isEditing ? "Editar Técnico" : "Novo Técnico"}
               </DialogTitle>
               <DialogDescription className="text-[10px] md:text-xs font-medium text-slate-500">
-                Gestão de equipe técnica.
+                Gestão de equipe técnica e especialidades.
               </DialogDescription>
             </div>
           </div>
@@ -77,9 +77,10 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
 
         <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 no-scrollbar">
           <div className="p-4 md:p-8 space-y-6 md:space-y-8">
+            {/* Seção: Identificação */}
             <div className="space-y-4">
               <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
-                <Briefcase size={12} className="text-blue-500" /> Identificação
+                <Briefcase size={12} className="text-blue-500" /> Identificação e Contato
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2 space-y-1.5">
@@ -94,9 +95,30 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Telefone *</Label>
                   <Input defaultValue={technician?.phone} placeholder="(00) 00000-0000" required className="h-10 border-slate-200 rounded-lg text-xs" />
                 </div>
+                <div className="space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                    <FileText size={12} className="text-slate-400" /> CPF *
+                  </Label>
+                  <Input defaultValue={technician?.cpf} placeholder="000.000.000-00" required className="h-10 border-slate-200 rounded-lg text-xs" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                    <ShieldCheck size={12} className="text-slate-400" /> Status
+                  </Label>
+                  <Select defaultValue={technician?.status || "Ativo"}>
+                    <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Ativo">Ativo</SelectItem>
+                      <SelectItem value="Inativo">Inativo</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 
+            {/* Seção: Perfil Profissional */}
             <div className="space-y-4">
               <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
                 <Award size={12} className="text-blue-500" /> Perfil Profissional
@@ -111,6 +133,10 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
                     <SelectContent>
                       <SelectItem value="elétrica">Elétrica</SelectItem>
                       <SelectItem value="climatização">Climatização</SelectItem>
+                      <SelectItem value="infra de ti">Infra de TI</SelectItem>
+                      <SelectItem value="obras civis">Obras Civis</SelectItem>
+                      <SelectItem value="segurança eletrônica">Segurança Eletrônica</SelectItem>
+                      <SelectItem value="hidráulica">Hidráulica</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -124,8 +150,15 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
                       <SelectItem value="JUNIOR">Júnior</SelectItem>
                       <SelectItem value="PLENO">Pleno</SelectItem>
                       <SelectItem value="SÊNIOR">Sênior</SelectItem>
+                      <SelectItem value="ESPECIALISTA">Especialista</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+                <div className="sm:col-span-2 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                    <MapPin size={12} className="text-slate-400" /> Área de Atuação
+                  </Label>
+                  <Input defaultValue={technician?.area} placeholder="Ex: São Paulo - Capital e ABCD" className="h-10 border-slate-200 rounded-lg text-xs" />
                 </div>
               </div>
             </div>
