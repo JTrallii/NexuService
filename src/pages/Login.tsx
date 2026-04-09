@@ -26,7 +26,7 @@ const Login = () => {
       };
       localStorage.setItem("user", JSON.stringify(mockUser));
       showSuccess("Bem-vindo à Operon!");
-      navigate("/painel-principal");
+      navigate("/ordens");
       setLoading(false);
     }, 1500);
   };

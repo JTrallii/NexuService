@@ -26,13 +26,15 @@ function App() {
         <Route path="/privacidade" element={<Privacidade />} />
         
         <Route element={<DashboardLayout />}>
-          <Route path="/painel-principal" element={<Dashboard />} />
+          <Route path="/ordens" element={<Dashboard />} />
           <Route path="/clientes" element={<Clients />} />
           <Route path="/tecnicos" element={<Technicians />} />
           <Route path="/orcamentos" element={<Budgets />} />
           <Route path="/servicos" element={<Servicos />} />
           <Route path="/financeiro" element={<Financeiro />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
+          {/* Redireciona o painel antigo para a nova rota de ordens */}
+          <Route path="/painel-principal" element={<Navigate to="/ordens" replace />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

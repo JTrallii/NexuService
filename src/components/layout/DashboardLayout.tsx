@@ -48,7 +48,7 @@ const DashboardLayout = () => {
   if (!user) return null;
 
   const navigation = [
-    { name: "Ordens", href: "/painel-principal", icon: LayoutDashboard, roles: ["ADMIN", "TECHNICIAN", "CLIENT"] },
+    { name: "Ordens", href: "/ordens", icon: LayoutDashboard, roles: ["ADMIN", "TECHNICIAN", "CLIENT"] },
     { name: "Clientes", href: "/clientes", icon: Users, roles: ["ADMIN"] },
     { name: "Técnicos", href: "/tecnicos", icon: Wrench, roles: ["ADMIN"] },
     { name: "Orçamentos", href: "/orcamentos", icon: FileText, roles: ["ADMIN", "CLIENT"] },
