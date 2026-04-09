@@ -19,7 +19,7 @@ import {
   CardDescription, 
   CardHeader, 
   CardTitle 
-} from "@/card";
+} from "@/components/ui/card";
 import { 
   Wrench, 
   Calendar, 
