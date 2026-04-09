@@ -11,12 +11,37 @@ import { RoleContext } from "@/components/layout/DashboardLayout";
 const Configuracoes = () => {
   const { user, role } = useContext(RoleContext);
   const [loading, setLoading] = useState(false);
+  
+  // Estados locais para os campos de endereço
+  const [formData, setFormData] = useState({
+    name: user?.name || "",
+    phone: user?.phone || "",
+    cep: user?.cep || "",
+    address: user?.address || "",
+    number: user?.number || "",
+    neighborhood: user?.neighborhood || "",
+    city: user?.city || "",
+    state: user?.state || "SP"
+  });
 
   const handleSave = () => {
     setLoading(true);
+    
+    // Simula o salvamento e atualiza o localStorage
     setTimeout(() => {
-      showSuccess("Configurações atualizadas com sucesso!");
+      const updatedUser = {
+        ...user,
+        ...formData,
+        // Garante que a string 'address' principal exista para a validação simples
+        address: formData.address || `${formData.city} - ${formData.state}`
+      };
+      
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      showSuccess("Configurações atualizadas! Recarregue a página para aplicar as mudanças.");
       setLoading(false);
+      
+      // Força um refresh para que o Contexto do DashboardLayout pegue os novos dados
+      window.location.reload();
     }, 800);
   };
 
@@ -61,7 +86,11 @@ const Configuracoes = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome Completo</Label>
-                <Input defaultValue={user?.name} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                <Input 
+                  value={formData.name} 
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" 
+                />
               </div>
               <div className="space-y-2">
                 <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
@@ -77,7 +106,11 @@ const Configuracoes = () => {
               </div>
               <div className="space-y-2">
                 <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Telefone de Contato</Label>
-                <Input defaultValue={user?.phone || "(11) 99999-9999"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                <Input 
+                  value={formData.phone} 
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" 
+                />
               </div>
             </div>
           </div>
@@ -91,23 +124,43 @@ const Configuracoes = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">CEP</Label>
-                  <Input defaultValue={user?.cep || "01001-000"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                  <Input 
+                    value={formData.cep} 
+                    onChange={(e) => setFormData({...formData, cep: e.target.value})}
+                    className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" 
+                  />
                 </div>
                 <div className="md:col-span-2 space-y-2">
                   <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Logradouro (Rua/Avenida)</Label>
-                  <Input defaultValue={user?.address?.split('-')[0]?.trim() || "Praça da Sé"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                  <Input 
+                    value={formData.address} 
+                    onChange={(e) => setFormData({...formData, address: e.target.value})}
+                    className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Número</Label>
-                  <Input defaultValue={user?.number || "1"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                  <Input 
+                    value={formData.number} 
+                    onChange={(e) => setFormData({...formData, number: e.target.value})}
+                    className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Bairro</Label>
-                  <Input defaultValue={user?.neighborhood || "Sé"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                  <Input 
+                    value={formData.neighborhood} 
+                    onChange={(e) => setFormData({...formData, neighborhood: e.target.value})}
+                    className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" 
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade / UF</Label>
-                  <Input defaultValue={user?.city ? `${user.city} - ${user.state || 'SP'}` : "São Paulo - SP"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                  <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade</Label>
+                  <Input 
+                    value={formData.city} 
+                    onChange={(e) => setFormData({...formData, city: e.target.value})}
+                    className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" 
+                  />
                 </div>
               </div>
             </div>

@@ -19,7 +19,7 @@ import {
   CardDescription, 
   CardHeader, 
   CardTitle 
-} from "@/components/ui/card";
+} from "@/card";
 import { 
   Wrench, 
   Calendar, 
@@ -57,8 +57,8 @@ const RequestService = () => {
     }, 1500);
   };
 
-  // Verifica se o usuário tem endereço (simulação baseada no objeto user)
-  const hasAddress = user?.address || false;
+  // Validação robusta de endereço: verifica se existe a string principal ou os campos individuais
+  const hasAddress = !!(user?.address || (user?.city && user?.neighborhood));
 
   if (!hasAddress) {
     return (
@@ -145,7 +145,9 @@ const RequestService = () => {
               <MapPin size={18} className="text-blue-600 shrink-0 mt-0.5" />
               <div>
                 <p className="text-[10px] font-black text-blue-700 uppercase tracking-widest mb-1">Local de Atendimento</p>
-                <p className="text-xs font-bold text-slate-700">{user?.address || "Endereço Padrão Cadastrado"}</p>
+                <p className="text-xs font-bold text-slate-700">
+                  {user?.address || `${user?.city} - ${user?.neighborhood}`}
+                </p>
                 <p className="text-[10px] text-slate-500 font-medium mt-1">O técnico utilizará o endereço salvo em seu perfil.</p>
               </div>
             </div>
