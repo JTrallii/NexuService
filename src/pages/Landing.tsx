@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/layout/Logo";
-import { ArrowRight, Shield, Zap, BarChart3, ChevronRight, Users, Wrench, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Shield, Zap, BarChart3, Users, Wrench, CheckCircle2 } from "lucide-react";
 
 const Landing = () => {
   return (
@@ -14,11 +14,15 @@ const Landing = () => {
             <Logo />
           </Link>
           
-          <div className="flex items-center gap-6">
-            <Link to="/login" className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Área do Cliente</Link>
+          <div className="flex items-center gap-3">
             <Link to="/login">
+              <Button variant="ghost" className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors h-9 px-4">
+                Entrar
+              </Button>
+            </Link>
+            <Link to="/register">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg px-5 h-9 text-xs">
-                Acessar Portal
+                Cadastrar
               </Button>
             </Link>
           </div>
