@@ -16,9 +16,7 @@ import {
   User, 
   Briefcase,
   FileText, 
-  XCircle,
   Play,
-  Phone,
 } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 import { cn } from "@/lib/utils";
@@ -74,117 +72,103 @@ const ServiceDetailsModal = ({ order, open, onOpenChange, onUpdateStatus }: Serv
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[700px] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl">
-          <div className="flex flex-col max-h-[90vh]">
-            {/* Modal Header */}
-            <div className="bg-slate-50 border-b border-slate-200 p-6 flex items-start justify-between">
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[10px] font-black text-slate-400 font-mono tracking-tight uppercase">Protocolo {order.id}</span>
-                  <span className={cn("status-badge", getStatusColor(order.status))}>
-                    {order.status.replace('_', ' ')}
-                  </span>
-                </div>
-                <h2 className="text-xl font-bold text-slate-900 leading-tight">{order.title}</h2>
+        <DialogContent className="sm:max-w-[700px] w-[95vw] max-h-[90vh] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl flex flex-col">
+          <div className="bg-slate-50 border-b border-slate-200 p-4 md:p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4 shrink-0">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-[9px] md:text-[10px] font-black text-slate-400 font-mono tracking-tight uppercase">Protocolo {order.id}</span>
+                <span className={cn("status-badge text-[9px] md:text-[11px]", getStatusColor(order.status))}>
+                  {order.status.replace('_', ' ')}
+                </span>
               </div>
-              <div className="text-right">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Valor Total</p>
-                <p className="text-2xl font-black text-slate-900">{order.price}</p>
-              </div>
+              <h2 className="text-lg md:text-xl font-bold text-slate-900 leading-tight">{order.title}</h2>
             </div>
+            <div className="sm:text-right">
+              <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Valor Total</p>
+              <p className="text-xl md:text-2xl font-black text-slate-900">{order.price}</p>
+            </div>
+          </div>
 
-            <div className="p-8 overflow-y-auto no-scrollbar">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div className="md:col-span-2 space-y-8">
-                  {/* Allocation Info */}
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-1.5">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                        <User size={12} className="text-blue-500" /> Cliente Solicitante
-                      </p>
-                      <p className="text-sm font-bold text-slate-900">{order.client}</p>
-                    </div>
-                    <div className="space-y-1.5">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                        <Briefcase size={12} className="text-blue-500" /> Técnico Responsável
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded-full bg-blue-600 text-[8px] flex items-center justify-center text-white font-black uppercase">
-                          {order.technician?.[0] || 'T'}
-                        </div>
-                        <p className="text-sm font-bold text-slate-900">{order.technician || "Não atribuído"}</p>
-                      </div>
-                    </div>
+          <div className="p-4 md:p-8 overflow-y-auto flex-1 no-scrollbar">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+              <div className="md:col-span-2 space-y-6 md:space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                  <div className="space-y-1.5">
+                    <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                      <User size={12} className="text-blue-500" /> Cliente
+                    </p>
+                    <p className="text-xs md:text-sm font-bold text-slate-900">{order.client}</p>
                   </div>
-
-                  {/* Description */}
-                  <div className="space-y-2.5">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Escopo Técnico</p>
-                    <div className="p-5 bg-slate-50 rounded-lg border border-slate-200">
-                      <p className="text-sm text-slate-600 leading-relaxed">
-                        {order.description || "Descrição operacional não preenchida."}
-                      </p>
-                    </div>
+                  <div className="space-y-1.5">
+                    <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                      <Briefcase size={12} className="text-blue-500" /> Técnico
+                    </p>
+                    <p className="text-xs md:text-sm font-bold text-slate-900">{order.technician || "Não atribuído"}</p>
                   </div>
                 </div>
 
-                {/* Vertical Stats */}
-                <div className="space-y-6">
+                <div className="space-y-2.5">
+                  <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Escopo Técnico</p>
                   <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Logs do Protocolo</p>
-                    <div className="space-y-4">
-                      <div className="flex gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5" />
-                        <div>
-                          <p className="text-[10px] font-bold text-slate-900">Abertura</p>
-                          <p className="text-[10px] text-slate-500">{order.date}</p>
-                        </div>
-                      </div>
+                    <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+                      {order.description || "Descrição não preenchida."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Logs</p>
+                  <div className="flex gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5" />
+                    <div>
+                      <p className="text-[10px] font-bold text-slate-900">Abertura</p>
+                      <p className="text-[10px] text-slate-500">{order.date}</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Modal Footer */}
-            <div className="bg-slate-50 border-t border-slate-200 p-6 flex flex-col sm:flex-row gap-3">
-              <div className="flex-1 flex gap-2">
-                {order.status === "PENDENTE" && (
-                  <Button 
-                    onClick={() => handleStatusUpdate("EM_ANDAMENTO")}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 rounded-lg gap-2 text-xs"
-                  >
-                    <Play size={14} fill="currentColor" /> Iniciar Execução
-                  </Button>
-                )}
-                
-                {order.status === "EM_ANDAMENTO" && (
-                  <Button 
-                    onClick={() => handleStatusUpdate("CONCLUIDO")}
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-10 rounded-lg gap-2 text-xs"
-                  >
-                    <CheckCircle2 size={16} /> Concluir Serviço
-                  </Button>
-                )}
-
-                {order.status === "CONCLUIDO" && role === "ADMIN" && (
-                  <Button 
-                    onClick={() => setIsPaymentOpen(true)}
-                    className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold h-10 rounded-lg gap-2 text-xs"
-                  >
-                    <CreditCard size={16} /> Confirmar Recebimento
-                  </Button>
-                )}
-              </div>
+          <div className="bg-slate-50 border-t border-slate-200 p-4 md:p-6 flex flex-col sm:flex-row gap-2 shrink-0">
+            <div className="flex-1 flex flex-col sm:flex-row gap-2">
+              {order.status === "PENDENTE" && (
+                <Button 
+                  onClick={() => handleStatusUpdate("EM_ANDAMENTO")}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 rounded-lg gap-2 text-xs"
+                >
+                  <Play size={14} fill="currentColor" /> Iniciar
+                </Button>
+              )}
               
-              <Button 
-                variant="ghost" 
-                onClick={() => onOpenChange(false)}
-                className="h-10 text-slate-500 hover:bg-slate-100 font-bold px-6 text-xs rounded-lg"
-              >
-                Fechar Painel
-              </Button>
+              {order.status === "EM_ANDAMENTO" && (
+                <Button 
+                  onClick={() => handleStatusUpdate("CONCLUIDO")}
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-10 rounded-lg gap-2 text-xs"
+                >
+                  <CheckCircle2 size={16} /> Concluir
+                </Button>
+              )}
+
+              {order.status === "CONCLUIDO" && role === "ADMIN" && (
+                <Button 
+                  onClick={() => setIsPaymentOpen(true)}
+                  className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold h-10 rounded-lg gap-2 text-xs"
+                >
+                  <CreditCard size={16} /> Receber
+                </Button>
+              )}
             </div>
+            
+            <Button 
+              variant="ghost" 
+              onClick={() => onOpenChange(false)}
+              className="h-10 text-slate-500 hover:bg-slate-100 font-bold px-6 text-xs rounded-lg w-full sm:w-auto"
+            >
+              Fechar
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
