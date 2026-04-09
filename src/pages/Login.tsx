@@ -6,86 +6,85 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Logo from "@/components/layout/Logo";
-import { ArrowRight } from "lucide-react";
-import { showError } from "@/utils/toast";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { showError, showSuccess } from "@/utils/toast";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Mock de usuários
-    const users = [
-      { email: "admin@gmail.com", password: "123456", role: "ADMIN", name: "Admin Master" },
-      { email: "carlos@gmail.com", password: "123456", role: "CLIENT", name: "Carlos Eduardo" },
-      { email: "ricardo@gmail.com", password: "123456", role: "TECHNICIAN", name: "Ricardo Silva" },
-    ];
-
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+    setLoading(true);
+    
+    // Simulação de login
+    setTimeout(() => {
+      const mockUser = {
+        name: "Admin Master",
+        email: "admin@operon.com",
+        role: "ADMIN"
+      };
+      localStorage.setItem("user", JSON.stringify(mockUser));
+      showSuccess("Bem-vindo à Operon!");
       navigate("/painel-principal");
-    } else {
-      showError("Credenciais inválidas. Tente admin@gmail.com / 123456");
-    }
+      setLoading(false);
+    }, 1500);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-10">
-          <Link to="/" className="inline-flex mb-8">
-            <Logo textSize="text-2xl" iconSize={20} />
-          </Link>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Bem-vindo de volta</h1>
-          <p className="text-slate-500 text-sm font-medium mt-1">Acesse sua conta operacional</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
+      <Link 
+        to="/" 
+        className="absolute top-8 left-8 flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors group"
+      >
+        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+        Voltar para o Início
+      </Link>
+
+      <div className="w-full max-w-[400px] space-y-8">
+        <div className="flex flex-col items-center text-center space-y-2">
+          <Logo textSize="text-2xl" iconSize={24} />
+          <p className="text-slate-500 font-medium text-sm">Acesse o portal de soluções técnicas</p>
         </div>
 
         <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50">
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">E-mail de acesso</Label>
+              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">E-mail</Label>
               <Input 
                 type="email" 
-                placeholder="seu@email.com" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="exemplo@operon.com" 
                 required 
-                className="h-11 border-slate-200 rounded-lg focus-visible:ring-blue-500"
+                className="h-11 border-slate-200 focus-visible:ring-blue-500 rounded-lg"
               />
             </div>
             <div className="space-y-2">
-              <div className="flex justify-between items-center px-1">
+              <div className="flex justify-between items-center ml-1">
                 <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Senha</Label>
-                <a href="#" className="text-[10px] text-blue-600 hover:underline font-bold uppercase tracking-widest">Esqueceu?</a>
+                <button type="button" className="text-[10px] font-bold text-blue-600 hover:underline">Esqueceu a senha?</button>
               </div>
               <Input 
                 type="password" 
                 placeholder="••••••••" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 required 
-                className="h-11 border-slate-200 rounded-lg focus-visible:ring-blue-500"
+                className="h-11 border-slate-200 focus-visible:ring-blue-500 rounded-lg"
               />
             </div>
-            
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-11 rounded-lg transition-all group">
-              Entrar no sistema <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+
+            <Button 
+              type="submit" 
+              disabled={loading}
+              className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg shadow-blue-500/20"
+            >
+              {loading ? <Loader2 className="animate-spin" /> : "Entrar no Sistema"}
             </Button>
           </form>
         </div>
 
-        <div className="mt-8 text-center text-sm">
-          <div className="p-4 bg-blue-50 rounded-lg border border-blue-100 text-[10px] text-blue-700 font-bold uppercase tracking-wider space-y-1">
-            <p>Admin: admin@gmail.com / 123456</p>
-            <p>Cliente: carlos@gmail.com / 123456</p>
-            <p>Técnico: ricardo@gmail.com / 123456</p>
-          </div>
-        </div>
+        <p className="text-center text-sm text-slate-500 font-medium">
+          Ainda não tem acesso?{" "}
+          <Link to="/register" className="text-blue-600 font-bold hover:underline">Solicitar Cadastro</Link>
+        </p>
       </div>
     </div>
   );

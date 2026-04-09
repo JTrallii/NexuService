@@ -1,66 +1,93 @@
 "use client";
 
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import Logo from "@/components/layout/Logo";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { showSuccess } from "@/utils/toast";
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/painel-principal");
+    setLoading(true);
+    
+    setTimeout(() => {
+      showSuccess("Solicitação enviada! Aguarde a aprovação.");
+      navigate("/login");
+      setLoading(false);
+    }, 1500);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4 py-20">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-10">
-          <Link to="/" className="inline-flex mb-8">
-            <Logo textSize="text-2xl" iconSize={20} />
-          </Link>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Criar nova conta</h1>
-          <p className="text-slate-500 text-sm font-medium mt-1">Comece a gerenciar seus serviços hoje</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
+      <Link 
+        to="/" 
+        className="absolute top-8 left-8 flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors group"
+      >
+        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+        Voltar para o Início
+      </Link>
+
+      <div className="w-full max-w-[450px] space-y-8">
+        <div className="flex flex-col items-center text-center space-y-2">
+          <Logo textSize="text-2xl" iconSize={24} />
+          <p className="text-slate-500 font-medium text-sm">Solicite seu acesso à plataforma Operon</p>
         </div>
 
         <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50">
           <form onSubmit={handleRegister} className="space-y-5">
-            <div className="space-y-2">
-              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome completo</Label>
-              <Input required className="h-11 border-slate-200 rounded-lg focus-visible:ring-blue-500" placeholder="Ex: João Silva" />
-            </div>
-            
-            <div className="space-y-2">
-              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">E-mail profissional</Label>
-              <Input type="email" required className="h-11 border-slate-200 rounded-lg focus-visible:ring-blue-500" placeholder="joao@empresa.com" />
-            </div>
-            
-            <div className="space-y-2">
-              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Senha de acesso</Label>
-              <Input type="password" required className="h-11 border-slate-200 rounded-lg focus-visible:ring-blue-500" placeholder="Mínimo 8 caracteres" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome</Label>
+                <Input placeholder="João" required className="h-11 border-slate-200 rounded-lg" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Sobrenome</Label>
+                <Input placeholder="Silva" required className="h-11 border-slate-200 rounded-lg" />
+              </div>
             </div>
 
-            <div className="flex items-start space-x-2 pt-2">
-              <input type="checkbox" id="terms" className="mt-1 rounded border-slate-300 text-blue-600 focus:ring-blue-500" required />
-              <label htmlFor="terms" className="text-[11px] text-slate-500 font-medium leading-tight">
-                Aceito os <a href="#" className="text-blue-600 font-bold hover:underline">Termos de Serviço</a> e as diretrizes de privacidade do sistema.
-              </label>
+            <div className="space-y-2">
+              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">E-mail Profissional</Label>
+              <Input type="email" placeholder="joao@empresa.com" required className="h-11 border-slate-200 rounded-lg" />
             </div>
 
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-12 rounded-lg mt-4 transition-all">
-              Concluir Cadastro
+            <div className="space-y-2">
+              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Senha</Label>
+              <Input type="password" placeholder="••••••••" required className="h-11 border-slate-200 rounded-lg" />
+            </div>
+
+            <div className="flex items-start space-x-3 pt-2">
+              <Checkbox id="terms" className="mt-0.5 border-slate-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600" required />
+              <Label 
+                htmlFor="terms" 
+                className="text-xs font-medium text-slate-500 leading-relaxed cursor-pointer select-none"
+              >
+                Aceito os <button type="button" className="text-blue-600 font-bold hover:underline">Termos de Serviço</button> e as <button type="button" className="text-blue-600 font-bold hover:underline">diretrizes de privacidade</button> do sistema.
+              </Label>
+            </div>
+
+            <Button 
+              type="submit" 
+              disabled={loading}
+              className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg shadow-blue-500/20"
+            >
+              {loading ? <Loader2 className="animate-spin" /> : "Criar Minha Conta"}
             </Button>
           </form>
         </div>
 
-        <div className="mt-8 text-center text-sm">
-          <span className="text-slate-500 font-medium">Já possui acesso?</span>{" "}
-          <Link to="/login" className="text-blue-600 font-bold hover:underline">
-            Fazer login
-          </Link>
-        </div>
+        <p className="text-center text-sm text-slate-500 font-medium">
+          Já possui uma conta?{" "}
+          <Link to="/login" className="text-blue-600 font-bold hover:underline">Fazer Login</Link>
+        </p>
       </div>
     </div>
   );
