@@ -142,7 +142,7 @@ const DashboardLayout = () => {
                 <span>Sessão ativa como: <span className="text-blue-600 font-bold">{user.role}</span></span>
               </div>
               <div className="flex gap-4">
-                <span>NexuService &copy; {new Date().getFullYear()}</span>
+                <span>Operon &copy; {new Date().getFullYear()}</span>
               </div>
             </div>
           </footer>

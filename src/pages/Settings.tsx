@@ -31,7 +31,7 @@ const Settings = () => {
             </div>
             <div className="text-center sm:text-left">
               <h4 className="text-slate-900 font-bold text-lg">Admin Master</h4>
-              <p className="text-xs text-slate-500 font-medium mb-3">admin@serviceflow.com</p>
+              <p className="text-xs text-slate-500 font-medium mb-3">admin@operon.com</p>
               <Button variant="outline" size="sm" className="h-8 text-[10px] font-bold uppercase tracking-wider">
                 Alterar Foto
               </Button>
@@ -47,11 +47,11 @@ const Settings = () => {
             </div>
             <div className="space-y-2">
               <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">E-mail Corporativo</Label>
-              <Input defaultValue="admin@serviceflow.com" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+              <Input defaultValue="admin@operon.com" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
             </div>
             <div className="space-y-2">
               <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Empresa</Label>
-              <Input defaultValue="NexuService Enterprise" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+              <Input defaultValue="Operon Soluções Técnicas" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
             </div>
             <div className="space-y-2">
               <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Telefone</Label>
