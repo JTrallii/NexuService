@@ -64,19 +64,8 @@ const Privacidade = () => {
               </p>
               <ul className="list-disc pl-5 text-slate-600 font-medium space-y-2">
                 <li>Agendamento e execução de visitas técnicas;</li>
-                <li>Emissão de orçamentos e notas fiscais;</li><dythink
-The previous response was cut off mid-sentence in the `src/pages/Privacidade.tsx` file. I need to complete that file, then create `src/pages/Termos.tsx`, update `src/pages/Landing.tsx` (to remove "Trabalhe Conosco" and link the new pages), and update `src/App.tsx` to include the new routes.
-
-Plan:
-1.  Complete `src/pages/Privacidade.tsx`.
-2.  Create `src/pages/Termos.tsx`.
-3.  Update `src/pages/Landing.tsx` (footer links).
-4.  Update `src/App.tsx` (routes).
-
-Let's start by finishing `src/pages/Privacidade.tsx`.
-The last line was: `<li>Emissão de orçamentos e notas fiscais;</li><dy`
-
-I will continue from there.<li>Comunicação sobre o status de ordens de serviço;</li>
+                <li>Emissão de orçamentos e notas fiscais;</li>
+                <li>Comunicação sobre o status de ordens de serviço;</li>
                 <li>Melhoria contínua de nossos processos operacionais.</li>
               </ul>
             </section>
@@ -86,7 +75,7 @@ I will continue from there.<li>Comunicação sobre o status de ordens de serviç
                 <FileText size={20} className="text-blue-600" /> 3. Compartilhamento
               </h2>
               <p className="text-slate-600 leading-relaxed font-medium">
-                Não compartilhamos informações pessoais com terceiros, exceto quando necessário para o cumprimento de obrigações legais ou para a execução de serviços específicos solicitados pelo cliente (ex: parceiros de logística ou fornecedores de peças específicas).
+                Não compartilhamos informações pessoais com terceiros, exceto quando necessário para o cumprimento de obrigações legais ou para a execução de serviços específicos solicitados pelo cliente.
               </p>
             </section>
 
