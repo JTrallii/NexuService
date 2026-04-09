@@ -1,20 +1,33 @@
 "use client";
 
-import { Camera, Save, Trash2 } from "lucide-react";
+import { useContext, useState } from "react";
+import { Camera, Save, Trash2, User, MapPin, Phone, Mail, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { showSuccess } from "@/utils/toast";
+import { RoleContext } from "@/components/layout/DashboardLayout";
 
 const Configuracoes = () => {
+  const { user, role } = useContext(RoleContext);
+  const [loading, setLoading] = useState(false);
+
   const handleSave = () => {
-    showSuccess("Configurações atualizadas com sucesso!");
+    setLoading(true);
+    setTimeout(() => {
+      showSuccess("Configurações atualizadas com sucesso!");
+      setLoading(false);
+    }, 800);
   };
+
+  const isClient = role === "CLIENT";
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Configurações do Sistema</h1>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          {isClient ? "Configurações da Conta" : "Configurações do Sistema"}
+        </h1>
         <p className="text-sm text-slate-500 font-medium mt-1">Gerencie seu perfil e preferências de conta.</p>
       </div>
 
@@ -23,15 +36,15 @@ const Configuracoes = () => {
           <div className="flex flex-col sm:flex-row items-center gap-8">
             <div className="relative group">
               <div className="w-20 h-20 rounded-2xl bg-blue-600 flex items-center justify-center text-white text-2xl font-black shadow-lg">
-                AD
+                {user?.name?.charAt(0) || "U"}
               </div>
               <button className="absolute -bottom-2 -right-2 p-2 bg-white border border-slate-200 rounded-lg text-slate-600 shadow-sm hover:text-blue-600 transition-colors">
                 <Camera size={14} />
               </button>
             </div>
             <div className="text-center sm:text-left">
-              <h4 className="text-slate-900 font-bold text-lg">Admin Master</h4>
-              <p className="text-xs text-slate-500 font-medium mb-3">admin@operon.com</p>
+              <h4 className="text-slate-900 font-bold text-lg">{user?.name || "Usuário"}</h4>
+              <p className="text-xs text-slate-500 font-medium mb-3">{user?.email || "email@exemplo.com"}</p>
               <Button variant="outline" size="sm" className="h-8 text-[10px] font-bold uppercase tracking-wider">
                 Alterar Foto
               </Button>
@@ -39,21 +52,74 @@ const Configuracoes = () => {
           </div>
         </div>
 
-        <div className="p-8 space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome Completo</Label>
-              <Input defaultValue="Admin User" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
-            </div>
-            <div className="space-y-2">
-              <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">E-mail Corporativo</Label>
-              <Input defaultValue="admin@operon.com" className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+        <div className="p-8 space-y-10">
+          {/* Seção: Dados Pessoais */}
+          <div className="space-y-6">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+              <User size={14} className="text-blue-500" /> Informações Pessoais
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome Completo</Label>
+                <Input defaultValue={user?.name} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
+                  E-mail <span className="text-[9px] text-slate-400 font-normal">(Apenas leitura)</span>
+                </Label>
+                <Input value={user?.email} disabled className="h-10 bg-slate-50 border-slate-200 rounded-lg text-sm cursor-not-allowed" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
+                  CPF / CNPJ <span className="text-[9px] text-slate-400 font-normal">(Apenas leitura)</span>
+                </Label>
+                <Input value={user?.cpf || "123.456.789-00"} disabled className="h-10 bg-slate-50 border-slate-200 rounded-lg text-sm cursor-not-allowed" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Telefone de Contato</Label>
+                <Input defaultValue={user?.phone || "(11) 99999-9999"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+              </div>
             </div>
           </div>
 
+          {/* Seção: Endereço (Focada no Cliente) */}
+          {isClient && (
+            <div className="space-y-6">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+                <MapPin size={14} className="text-blue-500" /> Endereço de Atendimento
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">CEP</Label>
+                  <Input defaultValue={user?.cep || "01001-000"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                </div>
+                <div className="md:col-span-2 space-y-2">
+                  <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Logradouro (Rua/Avenida)</Label>
+                  <Input defaultValue={user?.address?.split('-')[0]?.trim() || "Praça da Sé"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Número</Label>
+                  <Input defaultValue={user?.number || "1"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Bairro</Label>
+                  <Input defaultValue={user?.neighborhood || "Sé"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade / UF</Label>
+                  <Input defaultValue={user?.city ? `${user.city} - ${user.state || 'SP'}` : "São Paulo - SP"} className="h-10 border-slate-200 focus-visible:ring-blue-500 rounded-lg text-sm" />
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="pt-6 border-t border-slate-100 flex justify-end gap-3">
-            <Button onClick={handleSave} className="h-10 px-8 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs gap-2 rounded-lg">
-              <Save size={16} /> Salvar Alterações
+            <Button 
+              onClick={handleSave} 
+              disabled={loading}
+              className="h-10 px-8 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs gap-2 rounded-lg shadow-lg shadow-blue-500/20"
+            >
+              <Save size={16} /> {loading ? "Salvando..." : "Salvar Alterações"}
             </Button>
           </div>
         </div>
