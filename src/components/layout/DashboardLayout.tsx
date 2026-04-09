@@ -55,7 +55,7 @@ const DashboardLayout = () => {
     { name: "Técnicos", href: "/tecnicos", icon: Wrench, roles: ["ADMIN"] },
     { name: "Orçamentos", href: "/orcamentos", icon: FileText, roles: ["ADMIN", "CLIENT"] },
     { name: "Serviços", href: "/servicos", icon: ClipboardList, roles: ["ADMIN"] },
-    { name: "Financeiro", href: "/financeiro", icon: DollarSign, roles: ["ADMIN", "TECHNICIAN"] },
+    { name: "Financeiro", href: "/financeiro", icon: DollarSign, roles: ["ADMIN", "TECHNICIAN", "CLIENT"] },
   ].filter(item => item.roles.includes(user.role));
 
   const handleLogout = () => {

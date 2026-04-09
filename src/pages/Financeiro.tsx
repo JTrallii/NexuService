@@ -49,23 +49,23 @@ const Financeiro = () => {
       { 
         label: role === "CLIENT" ? "Total Investido" : "Total Faturado", 
         value: `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, 
-        sub: "+12% vs mês anterior", 
+        sub: role === "CLIENT" ? "Histórico total" : "+12% vs mês anterior", 
         icon: DollarSign, 
         color: "text-blue-600", 
         bg: "bg-blue-50",
         trend: "up"
       },
       { 
-        label: "A Receber", 
+        label: role === "CLIENT" ? "A Pagar" : "A Receber", 
         value: role === "CLIENT" ? "R$ 0,00" : "R$ 8.400,00", 
-        sub: "5 ordens pendentes", 
+        sub: role === "CLIENT" ? "Nenhuma pendência" : "5 ordens pendentes", 
         icon: Clock, 
         color: "text-amber-600", 
         bg: "bg-amber-50",
         trend: "neutral"
       },
       { 
-        label: "Ticket Médio", 
+        label: role === "CLIENT" ? "Custo Médio" : "Ticket Médio", 
         value: `R$ ${ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, 
         sub: `Baseado em ${count} serviços`, 
         icon: TrendingUp, 
@@ -76,7 +76,7 @@ const Financeiro = () => {
       { 
         label: "Serviços Concluídos", 
         value: count.toString(), 
-        sub: "Este mês", 
+        sub: "Total na plataforma", 
         icon: CheckCircle2, 
         color: "text-emerald-600", 
         bg: "bg-emerald-50",
