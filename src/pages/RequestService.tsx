@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,22 +24,26 @@ import {
   Wrench, 
   Calendar, 
   FileText, 
-  Clock, 
   MapPin,
-  Send
+  Send,
+  AlertTriangle,
+  ArrowRight
 } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
+import { RoleContext } from "@/components/layout/DashboardLayout";
 
 const RequestService = () => {
   const navigate = useNavigate();
+  const { user } = useContext(RoleContext);
   const [loading, setLoading] = useState(false);
 
-  const services = [
-    { id: "1", name: "Manutenção Preventiva AC" },
-    { id: "2", name: "Instalação de Quadro Elétrico" },
-    { id: "3", name: "Reparo de Vazamento" },
-    { id: "4", name: "Configuração de Rede" },
-    { id: "5", name: "Consultoria Técnica" },
+  // Especialidades cadastradas no sistema
+  const specialties = [
+    { id: "1", name: "Elétrica" },
+    { id: "2", name: "Hidráulica" },
+    { id: "3", name: "Climatização" },
+    { id: "4", name: "Infra de TI" },
+    { id: "5", name: "Segurança Eletrônica" },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -52,6 +56,35 @@ const RequestService = () => {
       setLoading(false);
     }, 1500);
   };
+
+  // Verifica se o usuário tem endereço (simulação baseada no objeto user)
+  const hasAddress = user?.address || false;
+
+  if (!hasAddress) {
+    return (
+      <div className="max-w-2xl mx-auto pt-10 animate-in fade-in duration-500">
+        <Card className="border-amber-200 bg-amber-50/50 shadow-sm">
+          <CardContent className="p-8 text-center space-y-6">
+            <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto">
+              <AlertTriangle size={32} />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-xl font-bold text-slate-900">Endereço não localizado</h2>
+              <p className="text-sm text-slate-600 font-medium leading-relaxed">
+                Você não pode solicitar um serviço enquanto não cadastrar seu endereço completo no sistema. 
+                Precisamos saber onde o técnico deverá comparecer.
+              </p>
+            </div>
+            <Link to="/configuracoes">
+              <Button className="bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg gap-2 mt-4">
+                Cadastrar Endereço Agora <ArrowRight size={16} />
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-500">
@@ -70,7 +103,7 @@ const RequestService = () => {
             </div>
             <div>
               <CardTitle className="text-lg">Formulário de Solicitação</CardTitle>
-              <CardDescription className="text-xs">Nossa equipe técnica avaliará seu pedido em breve.</CardDescription>
+              <CardDescription className="text-xs">O serviço será realizado no seu endereço cadastrado.</CardDescription>
             </div>
           </div>
         </CardHeader>
@@ -79,16 +112,16 @@ const RequestService = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
-                  <Wrench size={14} className="text-blue-500" /> Tipo de Serviço *
+                  <Wrench size={14} className="text-blue-500" /> Especialidade *
                 </Label>
                 <Select required>
                   <SelectTrigger className="h-11 border-slate-200 rounded-lg text-sm">
-                    <SelectValue placeholder="Selecione o serviço..." />
+                    <SelectValue placeholder="Selecione a especialidade..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {services.map((service) => (
-                      <SelectItem key={service.id} value={service.id}>
-                        {service.name}
+                    {specialties.map((item) => (
+                      <SelectItem key={item.id} value={item.id}>
+                        {item.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -106,31 +139,14 @@ const RequestService = () => {
                   className="h-11 border-slate-200 rounded-lg text-sm" 
                 />
               </div>
+            </div>
 
-              <div className="space-y-2">
-                <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
-                  <Clock size={14} className="text-blue-500" /> Período de Preferência
-                </Label>
-                <Select defaultValue="manha">
-                  <SelectTrigger className="h-11 border-slate-200 rounded-lg text-sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="manha">Manhã (08:00 - 12:00)</SelectItem>
-                    <SelectItem value="tarde">Tarde (13:00 - 18:00)</SelectItem>
-                    <SelectItem value="noite">Noite (Emergencial)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
-                  <MapPin size={14} className="text-blue-500" /> Local do Serviço
-                </Label>
-                <Input 
-                  placeholder="Ex: Escritório Central / Sala 202" 
-                  className="h-11 border-slate-200 rounded-lg text-sm" 
-                />
+            <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-xl flex items-start gap-3">
+              <MapPin size={18} className="text-blue-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-[10px] font-black text-blue-700 uppercase tracking-widest mb-1">Local de Atendimento</p>
+                <p className="text-xs font-bold text-slate-700">{user?.address || "Endereço Padrão Cadastrado"}</p>
+                <p className="text-[10px] text-slate-500 font-medium mt-1">O técnico utilizará o endereço salvo em seu perfil.</p>
               </div>
             </div>
 
@@ -139,9 +155,9 @@ const RequestService = () => {
                 <FileText size={14} className="text-blue-500" /> Descrição do Problema / Necessidade *
               </Label>
               <Textarea 
-                placeholder="Descreva detalhadamente o que está acontecendo ou o que você precisa..." 
+                placeholder="Descreva detalhadamente o que você precisa..." 
                 required 
-                className="min-h-[120px] border-slate-200 rounded-lg text-sm resize-none" 
+                className="min-h-[150px] border-slate-200 rounded-lg text-sm resize-none" 
               />
             </div>
 

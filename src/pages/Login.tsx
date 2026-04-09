@@ -30,7 +30,8 @@ const Login = () => {
         mockUser = {
           name: "Carlos Eduardo",
           email: "cliente@operon.com",
-          role: "CLIENT"
+          role: "CLIENT",
+          address: "Rua das Flores, 123 - São Paulo, SP" // Adicionado para teste
         };
       } else if (email === "tecnico@operon.com") {
         mockUser = {
