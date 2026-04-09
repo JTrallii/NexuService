@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { FileText, DollarSign, Calendar, User, ClipboardCheck, AlertCircle } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
+import { RoleContext } from "@/components/layout/DashboardLayout";
 
 interface NewBudgetModalProps {
   children: React.ReactNode;
@@ -30,10 +31,12 @@ interface NewBudgetModalProps {
 
 const NewBudgetModal = ({ children }: NewBudgetModalProps) => {
   const [open, setOpen] = useState(false);
+  const { role, user } = useContext(RoleContext);
+  const isClient = role === "CLIENT";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    showSuccess("Orçamento gerado e pronto para envio!");
+    showSuccess(isClient ? "Solicitação de orçamento enviada!" : "Orçamento gerado e pronto para envio!");
     setOpen(false);
   };
 
@@ -47,9 +50,11 @@ const NewBudgetModal = ({ children }: NewBudgetModalProps) => {
               <FileText size={18} />
             </div>
             <div>
-              <DialogTitle className="text-lg md:text-xl font-bold text-slate-900">Novo Orçamento</DialogTitle>
+              <DialogTitle className="text-lg md:text-xl font-bold text-slate-900">
+                {isClient ? "Solicitar Orçamento" : "Novo Orçamento"}
+              </DialogTitle>
               <DialogDescription className="text-[10px] md:text-xs font-medium text-slate-500">
-                Gere propostas comerciais profissionais.
+                {isClient ? "Descreva o serviço que você precisa." : "Gere propostas comerciais profissionais."}
               </DialogDescription>
             </div>
           </div>
@@ -63,65 +68,82 @@ const NewBudgetModal = ({ children }: NewBudgetModalProps) => {
                 <ClipboardCheck size={12} className="text-blue-500" /> Informações da Proposta
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="sm:col-span-2 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                    <User size={12} className="text-slate-400" /> Cliente / Empresa *
-                  </Label>
-                  <Select required>
-                    <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
-                      <SelectValue placeholder="Selecione o cliente" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="carlos">Carlos Eduardo</SelectItem>
-                      <SelectItem value="mariana">Mariana Souza</SelectItem>
-                      <SelectItem value="construtora">Construtora Alfa</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                {!isClient ? (
+                  <div className="sm:col-span-2 space-y-1.5">
+                    <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                      <User size={12} className="text-slate-400" /> Cliente / Empresa *
+                    </Label>
+                    <Select required>
+                      <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
+                        <SelectValue placeholder="Selecione o cliente" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="carlos">Carlos Eduardo</SelectItem>
+                        <SelectItem value="mariana">Mariana Souza</SelectItem>
+                        <SelectItem value="construtora">Construtora Alfa</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ) : (
+                  <div className="sm:col-span-2 space-y-1.5">
+                    <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                      <User size={12} className="text-slate-400" /> Solicitante
+                    </Label>
+                    <Input value={user?.name} disabled className="h-10 bg-slate-50 border-slate-200 rounded-lg text-xs cursor-not-allowed" />
+                  </div>
+                )}
+                
                 <div className="sm:col-span-2 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Serviço / Projeto *</Label>
                   <Input placeholder="Ex: Reforma Elétrica Predial" required className="h-10 border-slate-200 rounded-lg text-xs" />
                 </div>
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                    <DollarSign size={12} className="text-emerald-600" /> Valor Estimado *
-                  </Label>
-                  <Input placeholder="R$ 0,00" required className="h-10 border-slate-200 rounded-lg text-xs" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                    <AlertCircle size={12} className="text-amber-500" /> Status Inicial
-                  </Label>
-                  <Select defaultValue="PENDENTE">
-                    <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="PENDENTE">Aguardando Aprovação</SelectItem>
-                      <SelectItem value="APROVADO">Aprovado pelo Cliente</SelectItem>
-                      <SelectItem value="REJEITADO">Rejeitado</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+
+                {!isClient && (
+                  <>
+                    <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                        <DollarSign size={12} className="text-emerald-600" /> Valor Estimado *
+                      </Label>
+                      <Input placeholder="R$ 0,00" required className="h-10 border-slate-200 rounded-lg text-xs" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                        <AlertCircle size={12} className="text-amber-500" /> Status Inicial
+                      </Label>
+                      <Select defaultValue="PENDENTE">
+                        <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="PENDENTE">Aguardando Aprovação</SelectItem>
+                          <SelectItem value="APROVADO">Aprovado pelo Cliente</SelectItem>
+                          <SelectItem value="REJEITADO">Rejeitado</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
-            {/* Seção: Prazos */}
-            <div className="space-y-4">
-              <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
-                <Calendar size={12} className="text-blue-500" /> Datas e Validade
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Data de Emissão</Label>
-                  <Input type="date" defaultValue={new Date().toISOString().split('T')[0]} className="h-10 border-slate-200 rounded-lg text-xs" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Validade da Proposta *</Label>
-                  <Input type="date" required className="h-10 border-slate-200 rounded-lg text-xs" />
+            {/* Seção: Prazos (Oculta para o cliente na solicitação inicial) */}
+            {!isClient && (
+              <div className="space-y-4">
+                <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+                  <Calendar size={12} className="text-blue-500" /> Datas e Validade
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Data de Emissão</Label>
+                    <Input type="date" defaultValue={new Date().toISOString().split('T')[0]} className="h-10 border-slate-200 rounded-lg text-xs" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Validade da Proposta *</Label>
+                    <Input type="date" required className="h-10 border-slate-200 rounded-lg text-xs" />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Seção: Descrição */}
             <div className="space-y-4">
@@ -130,23 +152,31 @@ const NewBudgetModal = ({ children }: NewBudgetModalProps) => {
               </p>
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Descrição Detalhada</Label>
-                  <Textarea placeholder="Liste os itens, materiais e serviços inclusos..." className="min-h-[100px] border-slate-200 rounded-lg resize-none text-xs" />
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">
+                    {isClient ? "O que você precisa?" : "Descrição Detalhada"}
+                  </Label>
+                  <Textarea 
+                    placeholder={isClient ? "Descreva o problema ou o serviço que deseja orçar..." : "Liste os itens, materiais e serviços inclusos..."} 
+                    className="min-h-[100px] border-slate-200 rounded-lg resize-none text-xs" 
+                    required
+                  />
                 </div>
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Condições de Pagamento</Label>
-                  <Textarea placeholder="Ex: 50% entrada + 50% na conclusão..." className="min-h-[60px] border-slate-200 rounded-lg resize-none text-xs" />
-                </div>
+                {!isClient && (
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Condições de Pagamento</Label>
+                    <Textarea placeholder="Ex: 50% entrada + 50% na conclusão..." className="min-h-[60px] border-slate-200 rounded-lg resize-none text-xs" />
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           <DialogFooter className="bg-slate-50 border-t border-slate-200 p-4 md:p-6 gap-2 flex-col sm:flex-row shrink-0">
             <Button type="button" variant="ghost" onClick={() => setOpen(false)} className="h-10 text-slate-500 font-bold text-xs px-6 w-full sm:w-auto">
-              Descartar
+              {isClient ? "Cancelar" : "Descartar"}
             </Button>
             <Button type="submit" className="h-10 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm w-full sm:w-auto">
-              Gerar Orçamento
+              {isClient ? "Enviar Solicitação" : "Gerar Orçamento"}
             </Button>
           </DialogFooter>
         </form>

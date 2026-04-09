@@ -53,10 +53,10 @@ const Budgets = () => {
           </p>
         </div>
         
-        {role === "ADMIN" && (
+        {(role === "ADMIN" || role === "CLIENT") && (
           <NewBudgetModal>
             <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
-              <Plus size={16} /> Nova Proposta
+              <Plus size={16} /> {role === "CLIENT" ? "Solicitar Orçamento" : "Nova Proposta"}
             </Button>
           </NewBudgetModal>
         )}

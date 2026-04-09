@@ -12,7 +12,6 @@ import Configuracoes from "./pages/Configuracoes";
 import Servicos from "./pages/Servicos";
 import Termos from "./pages/Termos";
 import Privacidade from "./pages/Privacidade";
-import RequestService from "./pages/RequestService";
 import { Toaster } from "@/components/ui/sonner";
 
 function App() {
@@ -34,7 +33,6 @@ function App() {
           <Route path="/servicos" element={<Servicos />} />
           <Route path="/financeiro" element={<Financeiro />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
-          <Route path="/solicitar-servico" element={<RequestService />} />
           {/* Redireciona o painel antigo para a nova rota de ordens */}
           <Route path="/painel-principal" element={<Navigate to="/ordens" replace />} />
         </Route>
