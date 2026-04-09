@@ -1,14 +1,13 @@
 "use client";
 
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { 
   User as UserIcon,
-  RefreshCw,
   LogOut,
   ChevronDown,
   Plus
 } from "lucide-react";
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Logo from "./Logo";
 import NewServiceModal from "@/components/services/NewServiceModal";
@@ -24,33 +23,45 @@ import { cn } from "@/lib/utils";
 
 export const RoleContext = createContext({
   role: "ADMIN",
-  toggleRole: () => {},
+  user: null as any,
 });
 
 const DashboardLayout = () => {
-  const [role, setRole] = useState("ADMIN");
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const toggleRole = () => {
-    setRole(role === "ADMIN" ? "USER" : "ADMIN");
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+    setLoading(false);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+
   const navItems = [
-    { label: "Ordens", path: "/painel-principal", roles: ["ADMIN", "USER"] },
+    { label: "Ordens", path: "/painel-principal", roles: ["ADMIN", "USER", "CLIENT", "TECHNICIAN"] },
     { label: "Clientes", path: "/clientes", roles: ["ADMIN"] },
     { label: "Técnicos", path: "/tecnicos", roles: ["ADMIN"] },
-    { label: "Orçamentos", path: "/orcamentos", roles: ["ADMIN"] },
+    { label: "Orçamentos", path: "/orcamentos", roles: ["ADMIN", "CLIENT"] },
     { label: "Financeiro", path: "/financeiro", roles: ["ADMIN"] },
-    { label: "Configurações", path: "/configuracoes", roles: ["ADMIN"] },
+    { label: "Configurações", path: "/configuracoes", roles: ["ADMIN", "CLIENT", "TECHNICIAN"] },
   ];
 
-  const visibleNav = navItems.filter(item => item.roles.includes(role));
+  const visibleNav = navItems.filter(item => item.roles.includes(user.role));
 
   return (
-    <RoleContext.Provider value={{ role, toggleRole }}>
+    <RoleContext.Provider value={{ role: user.role, user }}>
       <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-        {/* Header Superior Fixo com Logo NexuService */}
         <header className="fixed top-0 w-full h-16 bg-white border-b border-slate-200 z-50 px-6">
           <div className="max-w-[1600px] mx-auto h-full flex items-center justify-between">
             <div className="flex items-center gap-10">
@@ -77,7 +88,7 @@ const DashboardLayout = () => {
             </div>
 
             <div className="flex items-center gap-3 shrink-0">
-              {role === "ADMIN" && (
+              {user.role === "ADMIN" && (
                 <NewServiceModal>
                   <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2 hidden sm:flex">
                     <Plus size={16} /> Nova Ordem
@@ -91,13 +102,13 @@ const DashboardLayout = () => {
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2.5 pl-2 py-1.5 pr-1.5 hover:bg-slate-50 rounded-lg transition-colors border border-transparent hover:border-slate-200">
                     <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs">
-                      {role === "ADMIN" ? "AD" : "US"}
+                      {user.name[0]}
                     </div>
                     <div className="text-left hidden lg:block">
                       <p className="text-xs font-bold text-slate-900 leading-none mb-1">
-                        {role === "ADMIN" ? "Admin Master" : "Técnico Operacional"}
+                        {user.name}
                       </p>
-                      <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">{role}</p>
+                      <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">{user.role}</p>
                     </div>
                     <ChevronDown size={14} className="text-slate-400" />
                   </button>
@@ -105,14 +116,11 @@ const DashboardLayout = () => {
                 <DropdownMenuContent align="end" className="w-56 mt-1">
                   <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={toggleRole} className="cursor-pointer gap-2">
-                    <RefreshCw size={14} /> Alternar para {role === "ADMIN" ? "Usuário" : "Admin"}
-                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/configuracoes")} className="gap-2 cursor-pointer">
                     <UserIcon size={14} /> Meu Perfil
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/login")} className="text-red-600 gap-2 cursor-pointer">
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 gap-2 cursor-pointer">
                     <LogOut size={14} /> Sair
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -129,12 +137,10 @@ const DashboardLayout = () => {
           <footer className="w-full bg-white border-t border-slate-200 py-3 px-6 shrink-0 mt-auto">
             <div className="max-w-[1600px] mx-auto flex justify-between items-center text-[11px] font-medium text-slate-500 uppercase tracking-wider">
               <div className="flex gap-4">
-                <span>Última atualização: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                <span className="text-slate-300">|</span>
-                <span className="text-amber-600 font-bold">2 pagamentos em atraso</span>
+                <span>Sessão ativa como: <span className="text-blue-600 font-bold">{user.role}</span></span>
               </div>
               <div className="flex gap-4">
-                <span>V1.0.4 - NexuService &copy; {new Date().getFullYear()}</span>
+                <span>NexuService &copy; {new Date().getFullYear()}</span>
               </div>
             </div>
           </footer>

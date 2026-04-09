@@ -1,17 +1,6 @@
 "use client";
 
-import { useState, useContext } from "react";
-import { 
-  ClipboardList, 
-  Search, 
-  Filter, 
-  ChevronRight, 
-  Clock, 
-  CheckCircle2, 
-  AlertCircle,
-  User,
-  ArrowRight
-} from "lucide-react";
+import { useState, useContext, useMemo } from "react";
 import { 
   Table, 
   TableBody, 
@@ -20,14 +9,12 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import ServiceDetailsModal from "@/components/services/ServiceDetailsModal";
 import { RoleContext } from "@/components/layout/DashboardLayout";
 import { cn } from "@/lib/utils";
 
 const Dashboard = () => {
-  const { role } = useContext(RoleContext);
+  const { role, user } = useContext(RoleContext);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
@@ -38,6 +25,14 @@ const Dashboard = () => {
     { id: "OS-004", title: "Configuração de Rede", client: "Ana Paula", technician: "Paula Santos", date: "20/10/2023", status: "PAGO", price: "R$ 450,00", description: "Configuração de roteadores mesh.", paidAt: "21/10/2023" },
     { id: "OS-005", title: "Aguardando Peça", client: "João Silva", technician: "Ricardo Silva", date: "22/10/2023", status: "AGUARDANDO_PECA", price: "R$ 2.100,00", description: "Troca de placa-mãe de servidor Dell." },
   ]);
+
+  // Filtro de dados baseado na Role
+  const filteredServices = useMemo(() => {
+    if (role === "ADMIN") return services;
+    if (role === "CLIENT") return services.filter(s => s.client === user.name);
+    if (role === "TECHNICIAN") return services.filter(s => s.technician === user.name);
+    return [];
+  }, [services, role, user]);
 
   const updateOrderStatus = (id: string, newStatus: string, extraData?: any) => {
     setServices(prev => prev.map(s => s.id === id ? { 
@@ -62,41 +57,38 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Gestão de Ordens</h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">Acompanhe ordens, clientes e técnicos alocados.</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            {role === "ADMIN" ? "Gestão de Ordens" : role === "CLIENT" ? "Meus Chamados" : "Minhas Tarefas"}
+          </h1>
+          <p className="text-sm text-slate-500 font-medium mt-1">
+            {role === "ADMIN" ? "Acompanhe ordens, clientes e técnicos alocados." : "Acompanhe o status dos seus serviços em tempo real."}
+          </p>
         </div>
         
         <div className="flex items-center gap-6 text-[13px] font-bold text-slate-600 bg-white px-5 py-2.5 rounded-lg border border-slate-200 shadow-sm">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-            Ordens abertas: <span className="text-slate-900">12</span>
-          </div>
-          <div className="w-px h-4 bg-slate-200" />
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-            Equipe em campo: <span className="text-slate-900">8</span>
+            Total: <span className="text-slate-900">{filteredServices.length}</span>
           </div>
         </div>
       </div>
 
-      {/* Main Table */}
       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
         <Table>
           <TableHeader className="bg-slate-50/50">
             <TableRow className="hover:bg-transparent border-b border-slate-200">
               <TableHead className="w-[100px] h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 pl-6">Protocolo</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Cliente</TableHead>
-              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Técnico Responsável</TableHead>
+              <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Técnico</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500">Serviço</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-center">Status</TableHead>
               <TableHead className="h-12 text-[11px] font-black uppercase tracking-widest text-slate-500 text-right pr-6">Abertura</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {services.map((service) => {
+            {filteredServices.map((service) => {
               const status = getStatusInfo(service.status);
               return (
                 <TableRow 
@@ -111,12 +103,7 @@ const Dashboard = () => {
                     <span className="text-sm font-bold text-slate-900">{service.client}</span>
                   </TableCell>
                   <TableCell className="py-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center text-[10px] font-bold text-blue-600 border border-blue-100">
-                        {service.technician[0]}
-                      </div>
-                      <span className="text-xs font-semibold text-slate-600">{service.technician}</span>
-                    </div>
+                    <span className="text-xs font-semibold text-slate-600">{service.technician}</span>
                   </TableCell>
                   <TableCell className="py-4">
                     <span className="text-xs font-medium text-slate-500">{service.title}</span>
@@ -132,6 +119,13 @@ const Dashboard = () => {
                 </TableRow>
               );
             })}
+            {filteredServices.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="h-32 text-center text-slate-400 font-medium">
+                  Nenhuma ordem de serviço encontrada.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
