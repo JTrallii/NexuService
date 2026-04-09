@@ -51,7 +51,7 @@ const DashboardLayout = () => {
     { name: "Ordens", href: "/ordens", icon: LayoutDashboard, roles: ["ADMIN", "TECHNICIAN", "CLIENT"] },
     { name: "Clientes", href: "/clientes", icon: Users, roles: ["ADMIN"] },
     { name: "Técnicos", href: "/tecnicos", icon: Wrench, roles: ["ADMIN"] },
-    { name: "Orçamentos", href: "/orcamentos", icon: FileText, roles: ["ADMIN", "CLIENT"] },
+    { name: "Orçamentos", href: "/orcamentos", icon: FileText, roles: ["ADMIN", "CLIENT", "TECHNICIAN"] },
     { name: "Serviços", href: "/servicos", icon: ClipboardList, roles: ["ADMIN"] },
     { name: "Financeiro", href: "/financeiro", icon: DollarSign, roles: ["ADMIN", "TECHNICIAN", "CLIENT"] },
   ].filter(item => item.roles.includes(user.role));
