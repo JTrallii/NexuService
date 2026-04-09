@@ -9,6 +9,15 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { 
+  ClipboardList, 
+  Clock, 
+  CheckCircle2, 
+  AlertCircle,
+  Search,
+  Filter
+} from "lucide-react";
 import ServiceDetailsModal from "@/components/services/ServiceDetailsModal";
 import { RoleContext } from "@/components/layout/DashboardLayout";
 import { cn } from "@/lib/utils";
@@ -17,6 +26,7 @@ const Dashboard = () => {
   const { role, user } = useContext(RoleContext);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [services, setServices] = useState([
     { id: "OS-001", title: "Reparo de Ar Condicionado", client: "Carlos Eduardo", technician: "Ricardo Silva", date: "12/10/2023", status: "CONCLUIDO", price: "R$ 350,00", description: "Limpeza de filtros e carga de gás refrigerante R410A." },
@@ -30,13 +40,35 @@ const Dashboard = () => {
     { id: "OS-009", title: "Montagem de Móveis", client: "Gabriel Santos", technician: "Gabriel Santos", date: "27/10/2023", status: "CONCLUIDO", price: "R$ 600,00", description: "Montagem de estação de trabalho corporativa." },
   ]);
 
-  // Filtro de dados baseado na Role
   const filteredServices = useMemo(() => {
-    if (role === "ADMIN") return services;
-    if (role === "CLIENT") return services.filter(s => s.client === user.name);
-    if (role === "TECHNICIAN") return services.filter(s => s.technician === user.name);
-    return [];
-  }, [services, role, user]);
+    let result = services;
+    if (role === "CLIENT") result = result.filter(s => s.client === user.name);
+    if (role === "TECHNICIAN") result = result.filter(s => s.technician === user.name);
+    
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(s => 
+        s.id.toLowerCase().includes(query) || 
+        s.client.toLowerCase().includes(query) || 
+        s.title.toLowerCase().includes(query)
+      );
+    }
+    return result;
+  }, [services, role, user, searchQuery]);
+
+  const stats = useMemo(() => {
+    const total = filteredServices.length;
+    const pending = filteredServices.filter(s => s.status === "PENDENTE").length;
+    const inProgress = filteredServices.filter(s => s.status === "EM_ANDAMENTO").length;
+    const completed = filteredServices.filter(s => s.status === "CONCLUIDO" || s.status === "PAGO").length;
+
+    return [
+      { label: "Total de Ordens", value: total, icon: ClipboardList, color: "text-blue-600", bg: "bg-blue-50" },
+      { label: "Aguardando", value: pending, icon: Clock, color: "text-amber-600", bg: "bg-amber-50" },
+      { label: "Em Execução", value: inProgress, icon: AlertCircle, color: "text-indigo-600", bg: "bg-indigo-50" },
+      { label: "Concluídas", value: completed, icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-50" },
+    ];
+  }, [filteredServices]);
 
   const updateOrderStatus = (id: string, newStatus: string, extraData?: any) => {
     setServices(prev => prev.map(s => s.id === id ? { 
@@ -54,13 +86,12 @@ const Dashboard = () => {
       case "PAGO": return { label: "Paga", class: "bg-purple-50 text-purple-700 border-purple-200" };
       case "PENDENTE": return { label: "Aberta", class: "bg-slate-100 text-slate-700 border-slate-200" };
       case "AGUARDANDO_PECA": return { label: "Aguardando Peça", class: "bg-amber-50 text-amber-700 border-amber-200" };
-      case "ATRASADA": return { label: "Atrasada", class: "bg-rose-50 text-rose-700 border-rose-200" };
       default: return { label: status, class: "bg-slate-50 text-slate-500 border-slate-200" };
     }
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
@@ -70,15 +101,41 @@ const Dashboard = () => {
             {role === "ADMIN" ? "Acompanhe ordens, clientes e técnicos alocados." : "Acompanhe o status dos seus serviços em tempo real."}
           </p>
         </div>
-        
-        <div className="flex items-center gap-6 text-[13px] font-bold text-slate-600 bg-white px-5 py-2.5 rounded-lg border border-slate-200 shadow-sm">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-            Total: <span className="text-slate-900">{filteredServices.length}</span>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, i) => (
+          <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", stat.bg, stat.color)}>
+                <stat.icon size={20} />
+              </div>
+            </div>
+            <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
+            <h3 className="text-2xl font-black text-slate-900">{stat.value}</h3>
           </div>
+        ))}
+      </div>
+
+      {/* Search and Filter Bar */}
+      <div className="flex flex-wrap items-center gap-3 py-2">
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+          <Input 
+            placeholder="Buscar por protocolo, cliente ou serviço..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="h-10 pl-10 bg-white border-slate-200 text-sm rounded-lg focus-visible:ring-blue-500"
+          />
+        </div>
+        <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2">
+          <Filter size={14} className="text-slate-400" />
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtros</span>
         </div>
       </div>
 
+      {/* Table */}
       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
         <Table>
           <TableHeader className="bg-slate-50/50">
