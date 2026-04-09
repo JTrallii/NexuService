@@ -49,12 +49,12 @@ const DashboardLayout = () => {
   if (!user) return <Navigate to="/login" replace />;
 
   const navItems = [
-    { label: "Ordens", path: "/painel-principal", roles: ["ADMIN", "USER", "CLIENT", "TECHNICIAN"] },
+    { label: "Ordens", path: "/painel-principal", roles: ["ADMIN", "CLIENT", "TECHNICIAN"] },
     { label: "Clientes", path: "/clientes", roles: ["ADMIN"] },
     { label: "Técnicos", path: "/tecnicos", roles: ["ADMIN"] },
-    { label: "Orçamentos", path: "/orcamentos", roles: ["ADMIN", "CLIENT"] },
-    { label: "Financeiro", path: "/financeiro", roles: ["ADMIN"] },
-    { label: "Configurações", path: "/configuracoes", roles: ["ADMIN", "CLIENT", "TECHNICIAN"] },
+    { label: "Orçamentos", path: "/orcamentos", roles: ["ADMIN", "CLIENT", "TECHNICIAN"] },
+    { label: "Financeiro", path: "/financeiro", roles: ["ADMIN", "CLIENT", "TECHNICIAN"] },
+    { label: "Configurações", path: "/configuracoes", roles: ["ADMIN"] },
   ];
 
   const visibleNav = navItems.filter(item => item.roles.includes(user.role));
@@ -116,9 +116,11 @@ const DashboardLayout = () => {
                 <DropdownMenuContent align="end" className="w-56 mt-1">
                   <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/configuracoes")} className="gap-2 cursor-pointer">
-                    <UserIcon size={14} /> Meu Perfil
-                  </DropdownMenuItem>
+                  {user.role === "ADMIN" && (
+                    <DropdownMenuItem onClick={() => navigate("/configuracoes")} className="gap-2 cursor-pointer">
+                      <UserIcon size={14} /> Configurações
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="text-red-600 gap-2 cursor-pointer">
                     <LogOut size={14} /> Sair

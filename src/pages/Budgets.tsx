@@ -1,6 +1,7 @@
 "use client";
 
-import { Plus, FileText, Download, Check, X, Clock, Filter, Search } from "lucide-react";
+import { useContext, useMemo } from "react";
+import { Plus, Download, Filter, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,20 +13,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import NewBudgetModal from "@/components/budgets/NewBudgetModal";
-import { showSuccess } from "@/utils/toast";
+import { RoleContext } from "@/components/layout/DashboardLayout";
 import { cn } from "@/lib/utils";
 
 const Budgets = () => {
-  const budgets = [
-    { id: "ORC-23-001", client: "Construtora Alfa", value: "R$ 15.400,00", date: "20/10/2023", status: "Aprovado" },
-    { id: "ORC-23-002", client: "Condomínio Solar", value: "R$ 2.150,00", date: "21/10/2023", status: "Pendente" },
-    { id: "ORC-23-003", client: "Padaria Central", value: "R$ 890,00", date: "22/10/2023", status: "Rejeitado" },
-    { id: "ORC-23-004", client: "Escola Objetivo", value: "R$ 4.200,00", date: "23/10/2023", status: "Aprovado" },
+  const { role, user } = useContext(RoleContext);
+
+  const allBudgets = [
+    { id: "ORC-23-001", client: "Construtora Alfa", technician: "Ricardo Silva", value: "R$ 15.400,00", date: "20/10/2023", status: "Aprovado" },
+    { id: "ORC-23-002", client: "Condomínio Solar", technician: "André Lucas", value: "R$ 2.150,00", date: "21/10/2023", status: "Pendente" },
+    { id: "ORC-23-003", client: "Padaria Central", technician: "Ricardo Silva", value: "R$ 890,00", date: "22/10/2023", status: "Rejeitado" },
+    { id: "ORC-23-004", client: "Escola Objetivo", technician: "Paula Santos", value: "R$ 4.200,00", date: "23/10/2023", status: "Aprovado" },
+    { id: "ORC-23-005", client: "Carlos Eduardo", technician: "Ricardo Silva", value: "R$ 1.200,00", date: "24/10/2023", status: "Pendente" },
   ];
 
-  const handleGenerateOS = (client: string) => {
-    showSuccess(`Ordem de serviço gerada para ${client}!`);
-  };
+  const filteredBudgets = useMemo(() => {
+    if (role === "ADMIN") return allBudgets;
+    if (role === "CLIENT") return allBudgets.filter(b => b.client === user.name);
+    if (role === "TECHNICIAN") return allBudgets.filter(b => b.technician === user.name);
+    return [];
+  }, [role, user]);
 
   const getStatusInfo = (status: string) => {
     switch (status) {
@@ -41,14 +48,18 @@ const Budgets = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Propostas e Orçamentos</h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">Acompanhe propostas comerciais enviadas e taxas de aprovação.</p>
+          <p className="text-sm text-slate-500 font-medium mt-1">
+            {role === "ADMIN" ? "Acompanhe propostas comerciais enviadas e taxas de aprovação." : "Acompanhe suas propostas e orçamentos solicitados."}
+          </p>
         </div>
         
-        <NewBudgetModal>
-          <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
-            <Plus size={16} /> Nova Proposta
-          </Button>
-        </NewBudgetModal>
+        {role === "ADMIN" && (
+          <NewBudgetModal>
+            <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
+              <Plus size={16} /> Nova Proposta
+            </Button>
+          </NewBudgetModal>
+        )}
       </div>
 
       <div className="flex flex-wrap items-center gap-3 py-2">
@@ -81,7 +92,7 @@ const Budgets = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {budgets.map((budget) => {
+            {filteredBudgets.map((budget) => {
               const status = getStatusInfo(budget.status);
               return (
                 <TableRow key={budget.id} className="table-row-hover border-b border-slate-100 last:border-0 transition-colors">
@@ -110,14 +121,15 @@ const Budgets = () => {
                 </TableRow>
               );
             })}
+            {filteredBudgets.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={5} className="h-32 text-center text-slate-400 font-medium">
+                  Nenhum orçamento encontrado.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
-        
-        <div className="bg-slate-50/50 border-t border-slate-200 px-6 py-3 flex items-center justify-between">
-          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-            Taxa de aprovação: <span className="text-emerald-600">75%</span>
-          </p>
-        </div>
       </div>
     </div>
   );
