@@ -20,20 +20,61 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ClipboardList, FileText, Clock } from "lucide-react";
+import { 
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ClipboardList, FileText, Clock, Check, ChevronsUpDown, User } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
+import { cn } from "@/lib/utils";
 
 interface NewServiceModalProps {
   children: React.ReactNode;
 }
 
+const serviceTypes = [
+  { label: "Manutenção Preventiva AC", value: "manutencao-ac" },
+  { label: "Instalação de Quadro Elétrico", value: "instalacao-quadro" },
+  { label: "Reparo de Vazamento", value: "reparo-vazamento" },
+  { label: "Configuração de Roteador", value: "config-roteador" },
+  { label: "Troca de Disjuntor", value: "troca-disjuntor" },
+];
+
+const clients = [
+  { label: "Carlos Eduardo", value: "carlos" },
+  { label: "Mariana Souza", value: "mariana" },
+  { label: "Roberto Lima", value: "roberto" },
+  { label: "Ana Paula", value: "ana" },
+  { label: "João Silva", value: "joao" },
+  { label: "Beatriz Oliveira", value: "beatriz" },
+  { label: "Fernando Costa", value: "fernando" },
+];
+
 const NewServiceModal = ({ children }: NewServiceModalProps) => {
   const [open, setOpen] = useState(false);
+  const [openService, setOpenService] = useState(false);
+  const [openClient, setOpenClient] = useState(false);
+  
+  const [selectedService, setSelectedService] = useState("");
+  const [selectedClient, setSelectedClient] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedService || !selectedClient) return;
+    
     showSuccess("Ordem de serviço aberta e atribuída com sucesso!");
     setOpen(false);
+    setSelectedService("");
+    setSelectedClient("");
   };
 
   return (
@@ -63,32 +104,100 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2 space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Título do Serviço *</Label>
-                  <Input placeholder="Ex: Reparo Crítico no Servidor" required className="h-10 border-slate-200 rounded-lg text-xs" />
+                  <Popover open={openService} onOpenChange={setOpenService}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openService}
+                        className="w-full justify-between h-10 border-slate-200 rounded-lg text-xs font-normal"
+                      >
+                        {selectedService
+                          ? serviceTypes.find((s) => s.value === selectedService)?.label
+                          : "Selecione um serviço do catálogo..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[calc(100vw-40px)] sm:w-[686px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Pesquisar serviço..." className="h-9 text-xs" />
+                        <CommandList>
+                          <CommandEmpty className="text-xs py-3 text-center text-slate-500">Nenhum serviço encontrado.</CommandEmpty>
+                          <CommandGroup>
+                            {serviceTypes.map((service) => (
+                              <CommandItem
+                                key={service.value}
+                                value={service.value}
+                                onSelect={(currentValue) => {
+                                  setSelectedService(currentValue === selectedService ? "" : currentValue);
+                                  setOpenService(false);
+                                }}
+                                className="text-xs"
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    selectedService === service.value ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {service.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Cliente *</Label>
-                  <Select required>
-                    <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
-                      <SelectValue placeholder="Buscar cliente..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="carlos">Carlos Eduardo</SelectItem>
-                      <SelectItem value="mariana">Mariana Souza</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Urgência</Label>
-                  <Select defaultValue="MEDIA">
-                    <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="BAIXA">Baixa</SelectItem>
-                      <SelectItem value="MEDIA">Média</SelectItem>
-                      <SelectItem value="ALTA">Alta</SelectItem>
-                    </SelectContent>
-                  </Select>
+
+                <div className="sm:col-span-2 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                    <User size={12} className="text-slate-400" /> Cliente *
+                  </Label>
+                  <Popover open={openClient} onOpenChange={setOpenClient}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openClient}
+                        className="w-full justify-between h-10 border-slate-200 rounded-lg text-xs font-normal"
+                      >
+                        {selectedClient
+                          ? clients.find((c) => c.value === selectedClient)?.label
+                          : "Buscar cliente na base..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[calc(100vw-40px)] sm:w-[686px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Pesquisar cliente..." className="h-9 text-xs" />
+                        <CommandList>
+                          <CommandEmpty className="text-xs py-3 text-center text-slate-500">Nenhum cliente encontrado.</CommandEmpty>
+                          <CommandGroup>
+                            {clients.map((client) => (
+                              <CommandItem
+                                key={client.value}
+                                value={client.value}
+                                onSelect={(currentValue) => {
+                                  setSelectedClient(currentValue === selectedClient ? "" : currentValue);
+                                  setOpenClient(false);
+                                }}
+                                className="text-xs"
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    selectedClient === client.value ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {client.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
             </div>
@@ -107,6 +216,8 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
                     <SelectContent>
                       <SelectItem value="ricardo">Ricardo Silva</SelectItem>
                       <SelectItem value="andre">André Lucas</SelectItem>
+                      <SelectItem value="paula">Paula Santos</SelectItem>
+                      <SelectItem value="beatriz">Beatriz Souza</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -122,7 +233,11 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
             <Button type="button" variant="ghost" onClick={() => setOpen(false)} className="h-10 text-slate-500 font-bold text-xs px-6 w-full sm:w-auto">
               Cancelar
             </Button>
-            <Button type="submit" className="h-10 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm w-full sm:w-auto">
+            <Button 
+              type="submit" 
+              disabled={!selectedService || !selectedClient}
+              className="h-10 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm w-full sm:w-auto disabled:opacity-50"
+            >
               Abrir Ordem de Serviço
             </Button>
           </DialogFooter>
