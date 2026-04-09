@@ -11,24 +11,40 @@ import { showError, showSuccess } from "@/utils/toast";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulação de login
+    // Simulação de login baseada no e-mail para facilitar testes
     setTimeout(() => {
-      const mockUser = {
+      let mockUser = {
         name: "Admin Master",
         email: "admin@operon.com",
         role: "ADMIN"
       };
+
+      if (email === "cliente@operon.com") {
+        mockUser = {
+          name: "Carlos Eduardo",
+          email: "cliente@operon.com",
+          role: "CLIENT"
+        };
+      } else if (email === "tecnico@operon.com") {
+        mockUser = {
+          name: "Ricardo Silva",
+          email: "tecnico@operon.com",
+          role: "TECHNICIAN"
+        };
+      }
+
       localStorage.setItem("user", JSON.stringify(mockUser));
-      showSuccess("Bem-vindo à Operon!");
+      showSuccess(`Bem-vindo, ${mockUser.name}!`);
       navigate("/ordens");
       setLoading(false);
-    }, 1500);
+    }, 1000);
   };
 
   return (
@@ -54,9 +70,14 @@ const Login = () => {
               <Input 
                 type="email" 
                 placeholder="exemplo@operon.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required 
                 className="h-11 border-slate-200 focus-visible:ring-blue-500 rounded-lg"
               />
+              <p className="text-[9px] text-slate-400 font-medium px-1">
+                Dica: Use <span className="font-bold">cliente@operon.com</span> para ver como cliente.
+              </p>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between items-center ml-1">
