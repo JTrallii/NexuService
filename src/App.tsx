@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
 import Budgets from "./pages/Budgets";
 import Technicians from "./pages/Technicians";
+import Financeiro from "./pages/Financeiro";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Agilidade from "./pages/Agilidade";
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/clientes" element={<Clients />} />
             <Route path="/tecnicos" element={<Technicians />} />
             <Route path="/orcamentos" element={<Budgets />} />
+            <Route path="/financeiro" element={<Financeiro />} />
             <Route path="/configuracoes" element={<Settings />} />
             
             <Route path="/agilidade" element={<Agilidade />} />

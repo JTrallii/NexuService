@@ -41,6 +41,7 @@ const DashboardLayout = () => {
     { label: "Clientes", path: "/clientes", roles: ["ADMIN"] },
     { label: "Técnicos", path: "/tecnicos", roles: ["ADMIN"] },
     { label: "Orçamentos", path: "/orcamentos", roles: ["ADMIN"] },
+    { label: "Financeiro", path: "/financeiro", roles: ["ADMIN"] },
     { label: "Configurações", path: "/configuracoes", roles: ["ADMIN"] },
   ];
 
