@@ -97,12 +97,19 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                    <FileText size={12} className="text-slate-400" /> CPF *
+                    <FileText size={12} className="text-slate-400" /> CNPJ *
                   </Label>
-                  <Input defaultValue={technician?.cpf} placeholder="000.000.000-00" required className="h-10 border-slate-200 rounded-lg text-xs" />
+                  <Input 
+                    defaultValue={technician?.cpf} 
+                    placeholder="00.000.000/0000-00" 
+                    required 
+                    pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}"
+                    title="Digite um CNPJ válido: 00.000.000/0000-00"
+                    className="h-10 border-slate-200 rounded-lg text-xs" 
+                  />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                  <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
                     <ShieldCheck size={12} className="text-slate-400" /> Status
                   </Label>
                   <Select defaultValue={technician?.status || "Ativo"}>
