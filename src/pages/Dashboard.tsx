@@ -24,6 +24,10 @@ const Dashboard = () => {
     { id: "OS-003", title: "Manutenção de Servidor", client: "Roberto Lima", technician: "Paula Santos", date: "18/10/2023", status: "PENDENTE", price: "R$ 800,00", description: "Atualização de firmware e verificação de redundância de storage." },
     { id: "OS-004", title: "Configuração de Rede", client: "Ana Paula", technician: "Paula Santos", date: "20/10/2023", status: "PAGO", price: "R$ 450,00", description: "Configuração de roteadores mesh.", paidAt: "21/10/2023" },
     { id: "OS-005", title: "Aguardando Peça", client: "João Silva", technician: "Ricardo Silva", date: "22/10/2023", status: "AGUARDANDO_PECA", price: "R$ 2.100,00", description: "Troca de placa-mãe de servidor Dell." },
+    { id: "OS-006", title: "Instalação de Câmeras", client: "Beatriz Oliveira", technician: "Beatriz Souza", date: "24/10/2023", status: "EM_ANDAMENTO", price: "R$ 1.500,00", description: "Instalação de 4 câmeras IP e DVR." },
+    { id: "OS-007", title: "Reparo Hidráulico", client: "Fernando Costa", technician: "Fernando Costa", date: "25/10/2023", status: "PENDENTE", price: "R$ 250,00", description: "Troca de reparo de válvula de descarga." },
+    { id: "OS-008", title: "Pintura de Fachada", client: "Luciana Pereira", technician: "Luciana Pereira", date: "26/10/2023", status: "EM_ANDAMENTO", price: "R$ 3.200,00", description: "Pintura externa com tinta emborrachada." },
+    { id: "OS-009", title: "Montagem de Móveis", client: "Gabriel Santos", technician: "Gabriel Santos", date: "27/10/2023", status: "CONCLUIDO", price: "R$ 600,00", description: "Montagem de estação de trabalho corporativa." },
   ]);
 
   // Filtro de dados baseado na Role

@@ -25,6 +25,10 @@ const Clients = () => {
     { id: 3, name: "Roberto Lima", email: "roberto@email.com", phone: "(11) 96666-5555", status: "Inativo", lastOrder: "18/10/2023", cpf: "345.678.901-22" },
     { id: 4, name: "Ana Paula", email: "ana@email.com", phone: "(11) 95555-4444", status: "Ativo", lastOrder: "20/10/2023", cpf: "456.789.012-33" },
     { id: 5, name: "João Silva", email: "joao@email.com", phone: "(11) 94444-3333", status: "Ativo", lastOrder: "22/10/2023", cpf: "567.890.123-44" },
+    { id: 6, name: "Beatriz Oliveira", email: "beatriz.o@email.com", phone: "(11) 93333-2222", status: "Ativo", lastOrder: "24/10/2023", cpf: "678.901.234-55" },
+    { id: 7, name: "Fernando Costa", email: "fernando.c@email.com", phone: "(11) 92222-1111", status: "Ativo", lastOrder: "25/10/2023", cpf: "789.012.345-66" },
+    { id: 8, name: "Luciana Pereira", email: "luciana.p@email.com", phone: "(11) 91111-0000", status: "Ativo", lastOrder: "26/10/2023", cpf: "890.123.456-77" },
+    { id: 9, name: "Gabriel Santos", email: "gabriel.s@email.com", phone: "(11) 90000-9999", status: "Ativo", lastOrder: "27/10/2023", cpf: "901.234.567-88" },
   ];
 
   const handleEdit = (client: any) => {

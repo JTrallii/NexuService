@@ -24,6 +24,10 @@ const Technicians = () => {
     { id: 2, name: "André Lucas", specialty: "Climatização", level: "Pleno", phone: "(11) 98888-0002", status: "Ativo", email: "andre@empresa.com", cpf: "234.567.890-11", area: "ABCD" },
     { id: 3, name: "Paula Santos", specialty: "Infra de TI", level: "Especialista", phone: "(11) 98888-0003", status: "Ativo", email: "paula@empresa.com", cpf: "345.678.901-22", area: "Osasco/Barueri" },
     { id: 4, name: "Marcos Lima", specialty: "Obras Civis", level: "Júnior", phone: "(11) 98888-0004", status: "Inativo", email: "marcos@empresa.com", cpf: "456.789.012-33", area: "Interior" },
+    { id: 5, name: "Beatriz Souza", specialty: "Segurança Eletrônica", level: "Sênior", phone: "(11) 98888-0005", status: "Ativo", email: "beatriz@empresa.com", cpf: "567.890.123-44", area: "São Paulo - Sul" },
+    { id: 6, name: "Fernando Costa", specialty: "Hidráulica", level: "Pleno", phone: "(11) 98888-0006", status: "Ativo", email: "fernando@empresa.com", cpf: "678.901.234-55", area: "Guarulhos" },
+    { id: 7, name: "Luciana Pereira", specialty: "Pintura Industrial", level: "Especialista", phone: "(11) 98888-0007", status: "Ativo", email: "luciana@empresa.com", cpf: "789.012.345-66", area: "São Paulo - Leste" },
+    { id: 8, name: "Gabriel Santos", specialty: "Marcenaria", level: "Pleno", phone: "(11) 98888-0008", status: "Ativo", email: "gabriel@empresa.com", cpf: "890.123.456-77", area: "São Paulo - Oeste" },
   ];
 
   const handleEdit = (tech: any) => {
@@ -62,6 +66,7 @@ const Technicians = () => {
           <option>Todas as Especialidades</option>
           <option>Elétrica</option>
           <option>Climatização</option>
+          <option>Segurança</option>
         </select>
 
         <Input 
@@ -86,7 +91,7 @@ const Technicians = () => {
               <TableRow key={tech.id} className="table-row-hover border-b border-slate-100 last:border-0 transition-colors">
                 <TableCell className="pl-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-[10px]">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-[10px] border border-blue-100">
                       {tech.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
