@@ -4,7 +4,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
-import Usuarios from "./pages/Usuarios";
+import Clients from "./pages/Clients";
+import Technicians from "./pages/Technicians";
+import Budgets from "./pages/Budgets";
 import Financeiro from "./pages/Financeiro";
 import Configuracoes from "./pages/Configuracoes";
 import Servicos from "./pages/Servicos";
@@ -25,7 +27,9 @@ function App() {
         
         <Route element={<DashboardLayout />}>
           <Route path="/painel-principal" element={<Dashboard />} />
-          <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/clientes" element={<Clients />} />
+          <Route path="/tecnicos" element={<Technicians />} />
+          <Route path="/orcamentos" element={<Budgets />} />
           <Route path="/servicos" element={<Servicos />} />
           <Route path="/financeiro" element={<Financeiro />} />
           <Route path="/configuracoes" element={<Configuracoes />} />

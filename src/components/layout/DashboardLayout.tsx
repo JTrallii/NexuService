@@ -12,7 +12,10 @@ import {
   X,
   Bell,
   ChevronDown,
-  Briefcase
+  Briefcase,
+  FileText,
+  DollarSign,
+  ClipboardList
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,9 +50,11 @@ const DashboardLayout = () => {
 
   const navigation = [
     { name: "Dashboard", href: "/painel-principal", icon: LayoutDashboard, roles: ["ADMIN", "TECHNICIAN", "CLIENT"] },
-    { name: "Usuários", href: "/usuarios", icon: Users, roles: ["ADMIN"] },
-    { name: "Serviços", href: "/servicos", icon: Briefcase, roles: ["ADMIN"] },
-    { name: "Financeiro", href: "/financeiro", icon: Wrench, roles: ["ADMIN", "TECHNICIAN"] },
+    { name: "Clientes", href: "/clientes", icon: Users, roles: ["ADMIN"] },
+    { name: "Técnicos", href: "/tecnicos", icon: Wrench, roles: ["ADMIN"] },
+    { name: "Orçamentos", href: "/orcamentos", icon: FileText, roles: ["ADMIN", "CLIENT"] },
+    { name: "Serviços", href: "/servicos", icon: ClipboardList, roles: ["ADMIN"] },
+    { name: "Financeiro", href: "/financeiro", icon: DollarSign, roles: ["ADMIN", "TECHNICIAN"] },
   ].filter(item => item.roles.includes(user.role));
 
   const handleLogout = () => {
@@ -72,12 +77,13 @@ const DashboardLayout = () => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
                       isActive 
                         ? "bg-blue-50 text-blue-600" 
                         : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
                     }`}
                   >
+                    <item.icon size={16} />
                     {item.name}
                   </Link>
                 );
