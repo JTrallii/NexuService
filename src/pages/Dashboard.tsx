@@ -17,9 +17,11 @@ import {
   CheckCircle2, 
   AlertCircle,
   Search,
-  Filter
+  Filter,
+  Plus
 } from "lucide-react";
 import ServiceDetailsModal from "@/components/services/ServiceDetailsModal";
+import NewServiceModal from "@/components/services/NewServiceModal";
 import { RoleContext } from "@/components/layout/DashboardLayout";
 import { cn } from "@/lib/utils";
 
@@ -102,6 +104,14 @@ const Dashboard = () => {
             {role === "ADMIN" ? "Acompanhe ordens, clientes e técnicos alocados." : "Acompanhe o status dos seus serviços em tempo real."}
           </p>
         </div>
+
+        {role === "ADMIN" && (
+          <NewServiceModal>
+            <Button className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs gap-2">
+              <Plus size={16} /> Nova Ordem
+            </Button>
+          </NewServiceModal>
+        )}
       </div>
 
       {/* Stats Cards */}

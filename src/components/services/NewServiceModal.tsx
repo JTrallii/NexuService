@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { 
   Select,
   SelectContent,
@@ -21,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ClipboardList, User, DollarSign, FileText, Calendar, Clock, ShieldAlert, CreditCard } from "lucide-react";
+import { ClipboardList, FileText, Clock } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface NewServiceModalProps {
@@ -57,7 +56,6 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
 
         <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 no-scrollbar">
           <div className="p-4 md:p-8 space-y-6 md:space-y-8">
-            {/* Seção: Identificação do Serviço */}
             <div className="space-y-4">
               <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
                 <FileText size={12} className="text-blue-500" /> Detalhes da Operação
@@ -95,7 +93,6 @@ const NewServiceModal = ({ children }: NewServiceModalProps) => {
               </div>
             </div>
 
-            {/* Seção: Responsável e Prazos */}
             <div className="space-y-4">
               <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
                 <Clock size={12} className="text-blue-500" /> Planejamento
