@@ -17,6 +17,8 @@ import NotFound from "./pages/NotFound";
 import Agilidade from "./pages/Agilidade";
 import Seguranca from "./pages/Seguranca";
 import Metricas from "./pages/Metricas";
+import Privacidade from "./pages/Privacidade";
+import Termos from "./pages/Termos";
 import DashboardLayout from "./components/layout/DashboardLayout";
 
 const queryClient = new QueryClient();
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/privacidade" element={<Privacidade />} />
+          <Route path="/termos" element={<Termos />} />
           
           {/* Operational Routes (NexuService) */}
           <Route element={<DashboardLayout />}>

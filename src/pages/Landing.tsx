@@ -117,9 +117,8 @@ const Landing = () => {
             &copy; {new Date().getFullYear()} Operon Soluções Técnicas Ltda. Todos os direitos reservados.
           </p>
           <div className="flex gap-6 text-xs font-bold text-slate-400">
-            <a href="#" className="hover:text-blue-600 transition-colors">Privacidade</a>
-            <a href="#" className="hover:text-blue-600 transition-colors">Termos</a>
-            <a href="#" className="hover:text-blue-600 transition-colors">Trabalhe Conosco</a>
+            <Link to="/privacidade" className="hover:text-blue-600 transition-colors">Privacidade</Link>
+            <Link to="/termos" className="hover:text-blue-600 transition-colors">Termos</Link>
           </div>
         </div>
       </footer>
