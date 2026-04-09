@@ -14,7 +14,8 @@ import {
   ChevronDown,
   FileText,
   DollarSign,
-  ClipboardList
+  ClipboardList,
+  PlusCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,6 +50,7 @@ const DashboardLayout = () => {
 
   const navigation = [
     { name: "Ordens", href: "/ordens", icon: LayoutDashboard, roles: ["ADMIN", "TECHNICIAN", "CLIENT"] },
+    { name: "Solicitar Serviço", href: "/solicitar-servico", icon: PlusCircle, roles: ["CLIENT"] },
     { name: "Clientes", href: "/clientes", icon: Users, roles: ["ADMIN"] },
     { name: "Técnicos", href: "/tecnicos", icon: Wrench, roles: ["ADMIN"] },
     { name: "Orçamentos", href: "/orcamentos", icon: FileText, roles: ["ADMIN", "CLIENT"] },
