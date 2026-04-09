@@ -10,12 +10,12 @@ import Configuracoes from "./pages/Configuracoes";
 import Servicos from "./pages/Servicos";
 import Termos from "./pages/Termos";
 import Privacidade from "./pages/Privacidade";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
     <Router>
-      <Toaster position="top-right" />
+      <Toaster position="top-right" expand={false} richColors />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
