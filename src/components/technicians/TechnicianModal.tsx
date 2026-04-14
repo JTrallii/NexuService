@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   Select, 
   SelectContent, 
@@ -20,7 +21,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { UserPlus, Briefcase, Award, Edit2, MapPin, ShieldCheck, FileText } from "lucide-react";
+import { UserPlus, Briefcase, Award, Edit2, MapPin, ShieldCheck, FileText, Info } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface Technician {
@@ -32,7 +33,14 @@ interface Technician {
   level: string;
   status: string;
   cpf?: string;
-  area?: string;
+  cep?: string;
+  address?: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  notes?: string;
 }
 
 interface TechnicianModalProps {
@@ -99,14 +107,7 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
                     <FileText size={12} className="text-slate-400" /> CNPJ *
                   </Label>
-                  <Input 
-                    defaultValue={technician?.cpf} 
-                    placeholder="00.000.000/0000-00" 
-                    required 
-                    pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}"
-                    title="Digite um CNPJ válido: 00.000.000/0000-00"
-                    className="h-10 border-slate-200 rounded-lg text-xs" 
-                  />
+                  <Input defaultValue={technician?.cpf} placeholder="00.000.000/0000-00" required className="h-10 border-slate-200 rounded-lg text-xs" />
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 flex items-center gap-2">
@@ -161,12 +162,58 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="sm:col-span-2 space-y-1.5">
-                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
-                    <MapPin size={12} className="text-slate-400" /> Área de Atuação
-                  </Label>
-                  <Input defaultValue={technician?.area} placeholder="Ex: São Paulo - Capital e ABCD" className="h-10 border-slate-200 rounded-lg text-xs" />
+              </div>
+            </div>
+
+            {/* Seção: Endereço */}
+            <div className="space-y-4">
+              <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+                <MapPin size={12} className="text-blue-500" /> Endereço
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-6 gap-4">
+                <div className="col-span-2 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">CEP</Label>
+                  <Input defaultValue={technician?.cep} placeholder="01001-000" className="h-10 border-slate-200 rounded-lg text-xs" />
                 </div>
+                <div className="col-span-2 sm:col-span-3 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Logradouro / Rua</Label>
+                  <Input defaultValue={technician?.address} placeholder="Praça da Sé" className="h-10 border-slate-200 rounded-lg text-xs" />
+                </div>
+                <div className="col-span-1 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Número</Label>
+                  <Input defaultValue={technician?.number} placeholder="1" className="h-10 border-slate-200 rounded-lg text-xs" />
+                </div>
+                <div className="col-span-2 sm:col-span-2 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Complemento</Label>
+                  <Input defaultValue={technician?.complement} placeholder="Apto, Sala, Bloco..." className="h-10 border-slate-200 rounded-lg text-xs" />
+                </div>
+                <div className="col-span-2 sm:col-span-2 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Bairro</Label>
+                  <Input defaultValue={technician?.neighborhood} placeholder="Sé" className="h-10 border-slate-200 rounded-lg text-xs" />
+                </div>
+                <div className="col-span-1 sm:col-span-1 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Cidade</Label>
+                  <Input defaultValue={technician?.city} placeholder="São Paulo" className="h-10 border-slate-200 rounded-lg text-xs" />
+                </div>
+                <div className="col-span-1 sm:col-span-1 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">UF</Label>
+                  <Input defaultValue={technician?.state} placeholder="SP" maxLength={2} className="h-10 border-slate-200 rounded-lg text-xs uppercase" />
+                </div>
+              </div>
+            </div>
+
+            {/* Seção: Informações Extras */}
+            <div className="space-y-4">
+              <p className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
+                <Info size={12} className="text-blue-500" /> Informações Extras
+              </p>
+              <div className="space-y-1.5">
+                <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Observações do Técnico</Label>
+                <Textarea 
+                  defaultValue={technician?.notes}
+                  placeholder="Detalhes importantes, referências de localização ou histórico..." 
+                  className="min-h-[100px] border-slate-200 rounded-lg resize-none text-xs" 
+                />
               </div>
             </div>
           </div>
@@ -176,7 +223,7 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
               Cancelar
             </Button>
             <Button type="submit" className="h-10 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm w-full sm:w-auto">
-              {isEditing ? "Salvar Alterações" : "Concluir Cadastro"}
+              Salvar Alterações
             </Button>
           </DialogFooter>
         </form>

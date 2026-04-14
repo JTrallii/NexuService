@@ -64,7 +64,6 @@ const DashboardLayout = () => {
   return (
     <RoleContext.Provider value={{ role: user.role, user }}>
       <div className="min-h-screen bg-slate-50 flex flex-col">
-        {/* Header */}
         <header className="h-16 bg-white border-b border-slate-200 sticky top-0 z-40 px-4 md:px-8 flex items-center justify-between">
           <div className="flex items-center gap-4 md:gap-8">
             <Logo textSize="text-lg md:text-xl" iconSize={20} />
@@ -140,7 +139,6 @@ const DashboardLayout = () => {
           </div>
         </header>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-white border-b border-slate-200 p-4 space-y-2 animate-in slide-in-from-top duration-300">
             {navigation.map((item) => (
@@ -157,7 +155,6 @@ const DashboardLayout = () => {
           </div>
         )}
 
-        {/* Main Content */}
         <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-x-hidden">
           <Outlet />
         </main>
