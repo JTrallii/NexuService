@@ -94,6 +94,12 @@ const ClientModal = ({ children, client, open: externalOpen, onOpenChange: exter
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Telefone *</Label>
                   <Input defaultValue={client?.phone} placeholder="(00) 00000-0000" required className="h-10 border-slate-200 rounded-lg text-xs" />
                 </div>
+                <div className="sm:col-span-2 space-y-1.5">
+                  <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
+                    <FileText size={12} className="text-slate-400" /> CPF *
+                  </Label>
+                  <Input defaultValue={client?.cpf} placeholder="000.000.000-00" required className="h-10 border-slate-200 rounded-lg text-xs" />
+                </div>
               </div>
             </div>
 
