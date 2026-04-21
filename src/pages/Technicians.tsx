@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Plus, Mail, Phone, Filter, Briefcase, Award, Edit2 } from "lucide-react";
+import { Search, Plus, Mail, Phone, Filter, Briefcase, Award, Edit2, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,11 +13,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import TechnicianModal from "@/components/technicians/TechnicianModal";
+import ChangePasswordModal from "@/components/technicians/ChangePasswordModal";
 import { cn } from "@/lib/utils";
 
 const Technicians = () => {
   const [selectedTech, setSelectedTech] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const technicians = [
     { id: 1, name: "Ricardo Silva", specialty: "Elétrica", level: "Sênior", phone: "(11) 98888-0001", status: "Ativo", email: "ricardo@empresa.com", cpf: "123.456.789-00", area: "São Paulo - Capital" },
@@ -33,6 +35,11 @@ const Technicians = () => {
   const handleEdit = (tech: any) => {
     setSelectedTech(tech);
     setIsModalOpen(true);
+  };
+
+  const handleChangePassword = (tech: any) => {
+    setSelectedTech(tech);
+    setIsPasswordModalOpen(true);
   };
 
   const handleAdd = () => {
@@ -124,8 +131,18 @@ const Technicians = () => {
                     <Button 
                       variant="ghost" 
                       size="icon" 
+                      onClick={() => handleChangePassword(tech)}
+                      className="h-8 w-8 text-slate-400 hover:text-amber-600"
+                      title="Alterar Senha"
+                    >
+                      <Key size={14} />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
                       onClick={() => handleEdit(tech)}
                       className="h-8 w-8 text-slate-400 hover:text-blue-600"
+                      title="Editar Técnico"
                     >
                       <Edit2 size={14} />
                     </Button>
@@ -147,6 +164,12 @@ const Technicians = () => {
         open={isModalOpen} 
         onOpenChange={setIsModalOpen} 
         technician={selectedTech} 
+      />
+
+      <ChangePasswordModal 
+        open={isPasswordModalOpen}
+        onOpenChange={setIsPasswordModalOpen}
+        technician={selectedTech}
       />
     </div>
   );
