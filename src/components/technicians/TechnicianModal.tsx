@@ -21,7 +21,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { UserPlus, Briefcase, Award, Edit2, MapPin, ShieldCheck, FileText, Info } from "lucide-react";
+import { UserPlus, Briefcase, Award, Edit2, MapPin, ShieldCheck, FileText, Info, Eye, EyeOff } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface Technician {
@@ -52,6 +52,7 @@ interface TechnicianModalProps {
 
 const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChange: externalOnOpenChange }: TechnicianModalProps) => {
   const [internalOpen, setInternalOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const open = externalOpen !== undefined ? externalOpen : internalOpen;
   const setOpen = externalOnOpenChange !== undefined ? externalOnOpenChange : setInternalOpen;
 
@@ -103,6 +104,28 @@ const TechnicianModal = ({ children, technician, open: externalOpen, onOpenChang
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Telefone *</Label>
                   <Input defaultValue={technician?.phone} placeholder="(00) 00000-0000" required className="h-10 border-slate-200 rounded-lg text-xs" />
                 </div>
+                
+                {!isEditing && (
+                  <div className="sm:col-span-2 space-y-1.5">
+                    <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Senha de Acesso *</Label>
+                    <div className="relative">
+                      <Input 
+                        type={showPassword ? "text" : "password"} 
+                        placeholder="••••••••" 
+                        required 
+                        className="h-10 border-slate-200 rounded-lg text-xs pr-10" 
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                      >
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="space-y-1.5">
                   <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
                     <FileText size={12} className="text-slate-400" /> CNPJ *
