@@ -25,6 +25,12 @@ import NewServiceTypeModal from "@/components/services/NewServiceTypeModal";
 import NewSpecialtyModal from "@/components/services/NewSpecialtyModal";
 
 const Servicos = () => {
+  const [selectedServiceType, setSelectedServiceType] = useState<any>(null);
+  const [isServiceTypeModalOpen, setIsServiceTypeModalOpen] = useState(false);
+  
+  const [selectedSpecialty, setSelectedSpecialty] = useState<any>(null);
+  const [isSpecialtyModalOpen, setIsSpecialtyModalOpen] = useState(false);
+
   const [specialties] = useState([
     { id: 1, name: "Elétrica" },
     { id: 2, name: "Hidráulica" },
@@ -65,6 +71,16 @@ const Servicos = () => {
     },
   ]);
 
+  const handleEditServiceType = (item: any) => {
+    setSelectedServiceType(item);
+    setIsServiceTypeModalOpen(true);
+  };
+
+  const handleEditSpecialty = (item: any) => {
+    setSelectedSpecialty(item);
+    setIsSpecialtyModalOpen(true);
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <div>
@@ -96,12 +112,13 @@ const Servicos = () => {
               <Button variant="outline" className="h-9 px-3 border-slate-200 text-slate-600 font-bold text-[10px] gap-2 rounded-lg flex-1 sm:flex-none">
                 <Filter size={12} /> Filtros
               </Button>
-              <NewServiceTypeModal>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg h-9 px-4 text-[10px] flex-1 sm:flex-none">
-                  <Plus size={14} className="mr-1" />
-                  Novo
-                </Button>
-              </NewServiceTypeModal>
+              <Button 
+                onClick={() => { setSelectedServiceType(null); setIsServiceTypeModalOpen(true); }}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg h-9 px-4 text-[10px] flex-1 sm:flex-none"
+              >
+                <Plus size={14} className="mr-1" />
+                Novo
+              </Button>
             </div>
           </div>
 
@@ -133,7 +150,12 @@ const Servicos = () => {
                       </TableCell>
                       <TableCell className="pr-4 md:pr-6 py-3 md:py-4 text-right">
                         <div className="flex justify-end gap-1">
-                          <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400 hover:text-blue-600">
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => handleEditServiceType(item)}
+                            className="h-7 w-7 text-slate-400 hover:text-blue-600"
+                          >
                             <Edit2 size={12} />
                           </Button>
                           <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400 hover:text-red-600">
@@ -155,12 +177,13 @@ const Servicos = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
               <Input placeholder="Buscar especialidades..." className="pl-9 h-9 bg-white border-slate-200 text-xs rounded-lg w-full" />
             </div>
-            <NewSpecialtyModal>
-              <Button className="bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg h-9 px-4 text-[10px] w-full sm:w-auto">
-                <Plus size={14} className="mr-1" />
-                Nova
-              </Button>
-            </NewSpecialtyModal>
+            <Button 
+              onClick={() => { setSelectedSpecialty(null); setIsSpecialtyModalOpen(true); }}
+              className="bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg h-9 px-4 text-[10px] w-full sm:w-auto"
+            >
+              <Plus size={14} className="mr-1" />
+              Nova
+            </Button>
           </div>
 
           <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
@@ -185,7 +208,12 @@ const Servicos = () => {
                       </TableCell>
                       <TableCell className="pr-4 md:pr-6 py-3 md:py-4 text-right">
                         <div className="flex justify-end gap-1">
-                          <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400 hover:text-blue-600">
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => handleEditSpecialty(item)}
+                            className="h-7 w-7 text-slate-400 hover:text-blue-600"
+                          >
                             <Edit2 size={12} />
                           </Button>
                           <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400 hover:text-red-600">
@@ -201,6 +229,18 @@ const Servicos = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      <NewServiceTypeModal 
+        serviceType={selectedServiceType} 
+        open={isServiceTypeModalOpen} 
+        onOpenChange={setIsServiceTypeModalOpen} 
+      />
+
+      <NewSpecialtyModal 
+        specialty={selectedSpecialty} 
+        open={isSpecialtyModalOpen} 
+        onOpenChange={setIsSpecialtyModalOpen} 
+      />
     </div>
   );
 };

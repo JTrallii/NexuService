@@ -17,21 +17,28 @@ import { Award } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface NewSpecialtyModalProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  specialty?: any;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const NewSpecialtyModal = ({ children }: NewSpecialtyModalProps) => {
-  const [open, setOpen] = useState(false);
+const NewSpecialtyModal = ({ children, specialty, open: externalOpen, onOpenChange: externalOnOpenChange }: NewSpecialtyModalProps) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setOpen = externalOnOpenChange !== undefined ? externalOnOpenChange : setInternalOpen;
+
+  const isEditing = !!specialty;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    showSuccess("Especialidade cadastrada com sucesso!");
+    showSuccess(isEditing ? "Especialidade atualizada!" : "Especialidade cadastrada!");
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="sm:max-w-[450px] w-[95vw] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl">
         <DialogHeader className="bg-slate-50 border-b border-slate-200 p-4 md:p-6">
           <div className="flex items-center gap-3">
@@ -39,9 +46,11 @@ const NewSpecialtyModal = ({ children }: NewSpecialtyModalProps) => {
               <Award size={18} />
             </div>
             <div>
-              <DialogTitle className="text-lg md:text-xl font-bold text-slate-900">Nova Especialidade</DialogTitle>
+              <DialogTitle className="text-lg md:text-xl font-bold text-slate-900">
+                {isEditing ? "Editar Especialidade" : "Nova Especialidade"}
+              </DialogTitle>
               <DialogDescription className="text-[10px] md:text-xs font-medium text-slate-500">
-                Adicione uma nova categoria técnica.
+                {isEditing ? "Atualize o nome da categoria." : "Adicione uma nova categoria técnica."}
               </DialogDescription>
             </div>
           </div>
@@ -51,7 +60,12 @@ const NewSpecialtyModal = ({ children }: NewSpecialtyModalProps) => {
           <div className="p-4 md:p-8 space-y-6">
             <div className="space-y-2">
               <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Nome da Especialidade *</Label>
-              <Input placeholder="Ex: Segurança Eletrônica" required className="h-10 border-slate-200 rounded-lg text-xs" />
+              <Input 
+                defaultValue={specialty?.name} 
+                placeholder="Ex: Segurança Eletrônica" 
+                required 
+                className="h-10 border-slate-200 rounded-lg text-xs" 
+              />
             </div>
           </div>
 
@@ -60,7 +74,7 @@ const NewSpecialtyModal = ({ children }: NewSpecialtyModalProps) => {
               Cancelar
             </Button>
             <Button type="submit" className="h-10 px-10 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-lg shadow-sm w-full sm:w-auto">
-              Cadastrar Especialidade
+              {isEditing ? "Salvar Alterações" : "Cadastrar Especialidade"}
             </Button>
           </DialogFooter>
         </form>

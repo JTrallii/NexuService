@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,21 +25,28 @@ import { Briefcase, Award, FileText } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 
 interface NewServiceTypeModalProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  serviceType?: any;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
-  const [open, setOpen] = useState(false);
+const NewServiceTypeModal = ({ children, serviceType, open: externalOpen, onOpenChange: externalOnOpenChange }: NewServiceTypeModalProps) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setOpen = externalOnOpenChange !== undefined ? externalOnOpenChange : setInternalOpen;
+
+  const isEditing = !!serviceType;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    showSuccess("Tipo de serviço cadastrado com sucesso!");
+    showSuccess(isEditing ? "Tipo de serviço atualizado!" : "Tipo de serviço cadastrado!");
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="sm:max-w-[550px] w-[95vw] max-h-[90vh] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl flex flex-col">
         <DialogHeader className="bg-slate-50 border-b border-slate-200 p-4 md:p-6 shrink-0">
           <div className="flex items-center gap-3">
@@ -47,9 +54,11 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
               <Briefcase size={18} />
             </div>
             <div>
-              <DialogTitle className="text-lg md:text-xl font-bold text-slate-900">Novo Tipo de Serviço</DialogTitle>
+              <DialogTitle className="text-lg md:text-xl font-bold text-slate-900">
+                {isEditing ? "Editar Tipo de Serviço" : "Novo Tipo de Serviço"}
+              </DialogTitle>
               <DialogDescription className="text-[10px] md:text-xs font-medium text-slate-500">
-                Defina um novo serviço padrão.
+                {isEditing ? "Atualize as definições do serviço." : "Defina um novo serviço padrão."}
               </DialogDescription>
             </div>
           </div>
@@ -59,22 +68,27 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
           <div className="p-4 md:p-8 space-y-6">
             <div className="space-y-2">
               <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1">Nome do Serviço *</Label>
-              <Input placeholder="Ex: Manutenção Preventiva" required className="h-10 border-slate-200 rounded-lg text-xs" />
+              <Input 
+                defaultValue={serviceType?.name} 
+                placeholder="Ex: Manutenção Preventiva" 
+                required 
+                className="h-10 border-slate-200 rounded-lg text-xs" 
+              />
             </div>
 
             <div className="space-y-2">
               <Label className="text-[10px] font-bold text-slate-500 uppercase ml-1 flex items-center gap-2">
                 <Award size={12} className="text-blue-500" /> Especialidade *
               </Label>
-              <Select required>
+              <Select defaultValue={serviceType?.specialty?.toLowerCase()} required>
                 <SelectTrigger className="h-10 border-slate-200 rounded-lg text-xs">
                   <SelectValue placeholder="Selecione..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="eletrica">Elétrica</SelectItem>
-                  <SelectItem value="climatizacao">Climatização</SelectItem>
-                  <SelectItem value="hidraulica">Hidráulica</SelectItem>
-                  <SelectItem value="infra-ti">Infra de TI</SelectItem>
+                  <SelectItem value="elétrica">Elétrica</SelectItem>
+                  <SelectItem value="climatização">Climatização</SelectItem>
+                  <SelectItem value="hidráulica">Hidráulica</SelectItem>
+                  <SelectItem value="infra de ti">Infra de TI</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -84,6 +98,7 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
                 <FileText size={12} className="text-slate-400" /> Descrição *
               </Label>
               <Textarea 
+                defaultValue={serviceType?.description}
                 placeholder="Descreva o que está incluso..." 
                 required 
                 className="min-h-[100px] border-slate-200 rounded-lg resize-none text-xs" 
@@ -96,7 +111,7 @@ const NewServiceTypeModal = ({ children }: NewServiceTypeModalProps) => {
               Cancelar
             </Button>
             <Button type="submit" className="h-10 px-10 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-sm w-full sm:w-auto">
-              Cadastrar Serviço
+              {isEditing ? "Salvar Alterações" : "Cadastrar Serviço"}
             </Button>
           </DialogFooter>
         </form>
