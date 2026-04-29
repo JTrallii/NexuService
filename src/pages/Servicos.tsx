@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +30,9 @@ const Servicos = () => {
   
   const [selectedSpecialty, setSelectedSpecialty] = useState<any>(null);
   const [isSpecialtyModalOpen, setIsSpecialtyModalOpen] = useState(false);
+
+  const [serviceSearch, setServiceSearch] = useState("");
+  const [specialtySearch, setSpecialtySearch] = useState("");
 
   const [specialties] = useState([
     { id: 1, name: "Elétrica" },
@@ -71,6 +74,20 @@ const Servicos = () => {
     },
   ]);
 
+  const filteredServiceTypes = useMemo(() => {
+    return serviceTypes.filter(item => 
+      item.name.toLowerCase().includes(serviceSearch.toLowerCase()) ||
+      item.specialty.toLowerCase().includes(serviceSearch.toLowerCase()) ||
+      item.description.toLowerCase().includes(serviceSearch.toLowerCase())
+    );
+  }, [serviceSearch, serviceTypes]);
+
+  const filteredSpecialties = useMemo(() => {
+    return specialties.filter(item => 
+      item.name.toLowerCase().includes(specialtySearch.toLowerCase())
+    );
+  }, [specialtySearch, specialties]);
+
   const handleEditServiceType = (item: any) => {
     setSelectedServiceType(item);
     setIsServiceTypeModalOpen(true);
@@ -106,7 +123,12 @@ const Servicos = () => {
           <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
-              <Input placeholder="Buscar serviços..." className="pl-9 h-9 bg-white border-slate-200 text-xs rounded-lg w-full" />
+              <Input 
+                placeholder="Buscar serviços..." 
+                value={serviceSearch}
+                onChange={(e) => setServiceSearch(e.target.value)}
+                className="pl-9 h-9 bg-white border-slate-200 text-xs rounded-lg w-full" 
+              />
             </div>
             <div className="flex items-center gap-2">
               <Button variant="outline" className="h-9 px-3 border-slate-200 text-slate-600 font-bold text-[10px] gap-2 rounded-lg flex-1 sm:flex-none">
@@ -133,7 +155,7 @@ const Servicos = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {serviceTypes.map((item) => (
+                  {filteredServiceTypes.map((item) => (
                     <TableRow key={item.id} className="table-row-hover border-b border-slate-100 last:border-0 transition-colors whitespace-nowrap">
                       <TableCell className="pl-4 md:pl-6 py-3 md:py-4">
                         <div className="space-y-0.5">
@@ -175,7 +197,12 @@ const Servicos = () => {
           <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
-              <Input placeholder="Buscar especialidades..." className="pl-9 h-9 bg-white border-slate-200 text-xs rounded-lg w-full" />
+              <Input 
+                placeholder="Buscar especialidades..." 
+                value={specialtySearch}
+                onChange={(e) => setSpecialtySearch(e.target.value)}
+                className="pl-9 h-9 bg-white border-slate-200 text-xs rounded-lg w-full" 
+              />
             </div>
             <Button 
               onClick={() => { setSelectedSpecialty(null); setIsSpecialtyModalOpen(true); }}
@@ -196,7 +223,7 @@ const Servicos = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {specialties.map((item) => (
+                  {filteredSpecialties.map((item) => (
                     <TableRow key={item.id} className="table-row-hover border-b border-slate-100 last:border-0 transition-colors whitespace-nowrap">
                       <TableCell className="pl-4 md:pl-6 py-3 md:py-4">
                         <div className="flex items-center gap-2">
