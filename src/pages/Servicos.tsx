@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import NewServiceTypeModal from "@/components/services/NewServiceTypeModal";
 import NewSpecialtyModal from "@/components/services/NewSpecialtyModal";
+import DeleteConfirmationModal from "@/components/services/DeleteConfirmationModal";
 
 const Servicos = () => {
   const [selectedServiceType, setSelectedServiceType] = useState<any>(null);
@@ -31,17 +32,21 @@ const Servicos = () => {
   const [selectedSpecialty, setSelectedSpecialty] = useState<any>(null);
   const [isSpecialtyModalOpen, setIsSpecialtyModalOpen] = useState(false);
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<any>(null);
+  const [deleteType, setDeleteType] = useState("");
+
   const [serviceSearch, setServiceSearch] = useState("");
   const [specialtySearch, setSpecialtySearch] = useState("");
 
-  const [specialties] = useState([
+  const [specialties, setSpecialties] = useState([
     { id: 1, name: "Elétrica" },
     { id: 2, name: "Hidráulica" },
     { id: 3, name: "Climatização" },
     { id: 4, name: "Infra de TI" },
   ]);
 
-  const [serviceTypes] = useState([
+  const [serviceTypes, setServiceTypes] = useState([
     { 
       id: 1, 
       name: "Manutenção Preventiva AC", 
@@ -96,6 +101,20 @@ const Servicos = () => {
   const handleEditSpecialty = (item: any) => {
     setSelectedSpecialty(item);
     setIsSpecialtyModalOpen(true);
+  };
+
+  const handleDeleteClick = (item: any, type: string) => {
+    setItemToDelete(item);
+    setDeleteType(type);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteType === "Tipo de Serviço") {
+      setServiceTypes(prev => prev.filter(s => s.id !== itemToDelete.id));
+    } else {
+      setSpecialties(prev => prev.filter(s => s.id !== itemToDelete.id));
+    }
   };
 
   return (
@@ -180,7 +199,12 @@ const Servicos = () => {
                           >
                             <Edit2 size={12} />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400 hover:text-red-600">
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => handleDeleteClick(item, "Tipo de Serviço")}
+                            className="h-7 w-7 text-slate-400 hover:text-red-600"
+                          >
                             <Trash2 size={12} />
                           </Button>
                         </div>
@@ -243,7 +267,12 @@ const Servicos = () => {
                           >
                             <Edit2 size={12} />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400 hover:text-red-600">
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => handleDeleteClick(item, "Especialidade")}
+                            className="h-7 w-7 text-slate-400 hover:text-red-600"
+                          >
                             <Trash2 size={12} />
                           </Button>
                         </div>
@@ -267,6 +296,14 @@ const Servicos = () => {
         specialty={selectedSpecialty} 
         open={isSpecialtyModalOpen} 
         onOpenChange={setIsSpecialtyModalOpen} 
+      />
+
+      <DeleteConfirmationModal
+        open={isDeleteModalOpen}
+        onOpenChange={setIsDeleteModalOpen}
+        onConfirm={confirmDelete}
+        itemName={itemToDelete?.name || ""}
+        itemType={deleteType}
       />
     </div>
   );
