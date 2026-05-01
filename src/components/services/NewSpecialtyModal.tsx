@@ -39,7 +39,10 @@ const NewSpecialtyModal = ({ children, specialty, open: externalOpen, onOpenChan
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {children && <DialogTrigger asChild>{children}</DialogTrigger>}
-      <DialogContent className="sm:max-w-[450px] w-[95vw] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl">
+      <DialogContent 
+        key={specialty?.id || "new"} 
+        className="sm:max-w-[450px] w-[95vw] bg-white border-slate-200 rounded-xl p-0 overflow-hidden shadow-2xl"
+      >
         <DialogHeader className="bg-slate-50 border-b border-slate-200 p-4 md:p-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 md:w-10 md:h-10 bg-amber-500 rounded-lg flex items-center justify-center text-white shadow-sm">
